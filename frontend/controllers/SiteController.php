@@ -83,14 +83,25 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
+        $this->layout = 'blank';
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            // Verifica se o usuário tem permissão para acessar o back-office
+            if (!Yii::$app->user->can('manageUsers') && !Yii::$app->user->can('manageFlights')) {
+                Yii::$app->user->logout(); // desloga imediatamente
+                Yii::$app->session->setFlash('error', 'Não tem permissão para aceder ao back-office.');
+                return $this->redirect(['login']);
+            }
+
             return $this->goBack();
         }
 

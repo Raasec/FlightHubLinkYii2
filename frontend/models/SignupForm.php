@@ -15,7 +15,6 @@ class SignupForm extends Model
     public $email;
     public $password;
 
-
     /**
      * {@inheritdoc}
      */
@@ -41,14 +40,14 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return bool whether creating a new account was successful and email was sent
      */
     public function signup()
     {
         if (!$this->validate()) {
             return null;
         }
-        
+
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
@@ -56,12 +55,23 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        if ($user->save() && $this->sendEmail($user)) {
+            // ATRIBUI ROLE DEFAULT 'passageiro' via RBAC
+            $auth = Yii::$app->authManager;
+            $passageiro = $auth->getRole('passageiro');
+            if ($passageiro) {
+                $auth->assign($passageiro, $user->id);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Sends confirmation email to user
-     * @param User $user user model to with email should be send
+     * @param User $user user model to which email should be sent
      * @return bool whether the email was sent
      */
     protected function sendEmail($user)
