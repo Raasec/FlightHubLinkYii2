@@ -91,15 +91,7 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (!Yii::$app->user->can('manageUsers') && !Yii::$app->user->can('manageFlights')) {
-                Yii::$app->user->logout();
-                Yii::$app->session->setFlash('error', 'Não tem permissão para aceder ao back-office.');
-                return $this->redirect(['login']);
-            }
-            return $this->goBack();
-        }
-
+      
         return $this->render('login', ['model' => $model]);
     }
 

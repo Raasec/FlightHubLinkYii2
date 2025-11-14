@@ -12,6 +12,20 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'as access' => [
+        'class' => \yii\filters\AccessControl::class,
+        'rules' => [
+            [
+                'allow' => true,
+                // apenas funcionarios e admins podem aceder ao backend
+                'roles' => ['funcionario', 'admin'],
+            ],
+        ],
+        'denyCallback' => function ($rule, $action) {
+            // redireciona para login do backend
+            return Yii::$app->response->redirect(['/site/login']);
+        },
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
