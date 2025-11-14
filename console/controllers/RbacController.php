@@ -57,9 +57,49 @@ class RbacController extends Controller
         $editProfile->description = 'Editar perfil do utilizador';
         $auth->add($editProfile);
 
+        $receiveNotifications = $auth->createPermission('receiveNotifications');
+        $receiveNotifications->description = 'Receber notificaçoes de alterações de voos';
+        $auth->add($receiveNotifications);
+
+        $replanFlight = $auth->createPermission('replanFlight');
+        $replanFlight->description = 'Replaneamento de voos e sugestões de voos alternativos';
+        $auth->add($replanFlight);
+
+        $makePayment = $auth->createPermission('makePayment');
+        $makePayment->description = 'Fazer pagamentos';
+        $auth->add($makePayment);
+
+        $requestAssistance = $auth->createPermission('requestAssistance');
+        $requestAssistance->description = 'Submeter pedidos de assistência';
+        $auth->add($requestAssistance);
+
+        $viewMaps = $auth->createPermission('viewMaps');
+        $viewMaps->description = 'Visualizar mapas de terminais e aeroporto';
+        $auth->add($viewMaps);
+
+        $viewServices = $auth->createPermission('viewServices');
+        $viewServices->description = 'Visualizar lojas, restaurantes e serviços';
+        $auth->add($viewServices);
+
+        $submitComplaint = $auth->createPermission('submitComplaint');
+        $submitComplaint->description = 'Submeter reclamaçoẽs ou pedidos de objetos perdidos';
+        $auth->add($submitComplaint);
+
+        $rateServices = $auth->createPermission('rateServices');
+        $rateServices->description = 'Avaliar serviços';
+        $auth->add($rateServices);
+
+        $viewNews = $auth->createPermission('viewNews');
+        $viewNews->description = 'Consultar noticias e dicas de viagem';
+        $auth->add($viewNews);
+
+        $resetPassword = $auth->createPermission('resetPassword');
+        $resetPassword->description = 'Resetar a password';
+        $auth->add($resetPassword);
+
         // permissões básicas do back-office
         $manageContent = $auth->createPermission('manageContent');
-        $manageContent->description = 'Gerir conteúdo do front-office';
+        $manageContent->description = 'Gerir conteudo do front-office';
         $auth->add($manageContent);
 
         $manageIncidents = $auth->createPermission('manageIncidents');
