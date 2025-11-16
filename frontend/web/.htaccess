@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Permite seguir links simbólicos (Yii2 precisa disto)
+Options FollowSymLinks
+
+# Redireciona tudo para index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]

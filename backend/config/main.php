@@ -11,21 +11,26 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'api' => [
+            'class' => 'backend\modules\api\ModuleAPI',
+        ]
+    ],
+    'layout' => 'main',
     'as access' => [
-        'class' => \yii\filters\AccessControl::class,
+        'class' => yii\filters\AccessControl::class,
+        'ruleConfig' => [
+            'class' => yii\filters\AccessRule::class,
+        ],
+        'except' => ['site/login', 'site/error'], // permitir login
         'rules' => [
             [
                 'allow' => true,
-                // apenas funcionarios e admins podem aceder ao backend
-                'roles' => ['funcionario', 'admin'],
+                'roles' => ['admin'],   // só ADMIN pode aceder
             ],
         ],
-        'denyCallback' => function ($rule, $action) {
-            // redireciona para login do backend
-            return Yii::$app->response->redirect(['/site/login']);
-        },
     ],
+
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -51,14 +56,50 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'enableStrictParsing' => false,
+            /*'rules' => [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => [
+                    'api/voo',
+                    'api/bilhete',
+                    'api/notificacao',
+                    'api/review'
+                ],*/
             'rules' => [
-            ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/voo',
+                    'pluralize' => false
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/bilhete',
+                    'pluralize' => false
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/notificacao',
+                    'pluralize' => false
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/review',
+                    'pluralize' => false
+                ],
+            ]
         ],
-        */
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'class' => 'hail812\adminlte3\assets\AdminLteAsset'
+                ],
+            ],
+        ],    
     ],
+    
     'params' => $params,
 ];

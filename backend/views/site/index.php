@@ -2,52 +2,101 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+use yii\helpers\Url;
+
+$this->title = 'Dashboard';
+$this -> params ['breadcrumbs'][] = $this-> title;
 ?>
-<div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Congratulations!</h1>
+<div class="row">
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+    <!-- Voos -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>0</h3> <!-- depois ligamos à BD -->
+                <p>Voos</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-plane-departure"></i>
+            </div>
+            <a href="<?= Url::to(['/voo/index']) ?>" class="small-box-footer">
+                Gerir voos <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+     <!-- Bilhetes -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>0</h3>
+                <p>Bilhetes</p>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            <div class="icon">
+                <i class="fas fa-ticket-alt"></i>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <a href="<?= Url::to(['/bilhete/index']) ?>" class="small-box-footer">
+                Gerir bilhetes <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+    <!-- Notificações -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>0</h3>
+                <p>Notificações</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <a href="<?= Url::to(['/notificacao/index']) ?>" class="small-box-footer">
+                Gerir notificações <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+    <!-- Pedidos de assistência -->
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>0</h3>
+                <p>Pedidos de assistência</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-headset"></i>
+            </div>
+            <a href="<?= Url::to(['/pedido-assistencia/index']) ?>" class="small-box-footer">
+                Gerir pedidos <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Resumo do sistema</h3>
+            </div>
+            <div class="card-body">
+                <p>Aqui vamos colocar estatísticas reais de voos, bilhetes, reviews, etc.,
+                   de acordo com o DER.</p>
             </div>
         </div>
+    </div>
 
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Atividade recente</h3>
+            </div>
+            <div class="card-body">
+                <p>Mais tarde podemos listar últimos voos criados, incidentes, pedidos de
+                   assistência por resolver, etc.</p>
+            </div>
+        </div>
     </div>
 </div>

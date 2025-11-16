@@ -22,7 +22,7 @@ class RbacController extends Controller
         $funcionario = $auth->createRole('funcionario');
         $auth->add($funcionario);
 
-        $admin = $auth->createRole('admin');
+        $admin = $auth->createRole('administrador');
         $auth->add($admin);
 
 

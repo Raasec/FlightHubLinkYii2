@@ -1,0 +1,13 @@
+/* Forçar visibilidade dos ícones */
+.nav-sidebar .nav-icon {
+    display: inline-block !important;
+    font-size: 1.1rem !important;
+    margin-right: 10px !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+}
+
+/* Hover highlight */
+.nav-sidebar .nav-link:hover .nav-icon {
+    color: #ffffff !important;
+}

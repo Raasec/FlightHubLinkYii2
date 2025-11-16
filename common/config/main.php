@@ -14,4 +14,9 @@ return [
             'defaultRoles' => ['guest'], // role padrão
         ],
     ],
+    'modules' =>[
+        'api' => [
+            'class' => 'backend\modules\api\ModuleAPI',
+        ]
+    ]
 ];
