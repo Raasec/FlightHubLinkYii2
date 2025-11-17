@@ -26,7 +26,7 @@ return [
         'rules' => [
             [
                 'allow' => true,
-                'roles' => ['admin'],   // só ADMIN pode aceder
+                'roles' => ['administrador'],   // só ADMIN pode aceder
             ],
         ],
     ],
@@ -39,6 +39,9 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

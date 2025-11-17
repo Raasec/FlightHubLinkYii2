@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use Yii;
 use common\models\User;
 use common\models\UserSearch;
 use yii\web\Controller;
@@ -69,21 +68,13 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        $model->status = User::STATUS_ACTIVE;
 
-        if ($model->load(Yii::$app->request->post())) {
-
-            if (!empty($model->password)) {
-                $model->setPassword($model->password);
-            }
-
-            $model->generateAuthKey();
-
-            if ($model->save()) {
-                // Criar registro na tabela filha conforme tipo_utilizador
-                Yii::$app->runAction('user/create-child', ['userId' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -102,23 +93,8 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        $currentType = $model->tipo_utilizador;
-
-        if ($model->load(Yii::$app->request->post())) {
-
-            if (!empty($model->password)) {
-                $model->setPassword($model->password);
-            }
-
-            if ($model->save()) {
-
-                // Caso tenha mudado de tipo, atualizar tabela filha
-                if ($currentType !== $model->tipo_utilizador) {
-                    Yii::$app->runAction('user/update-child', ['id' => $model->id]);
-                }
-
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [

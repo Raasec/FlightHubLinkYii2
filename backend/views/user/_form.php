@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tipo_utilizador')->dropDownList([    'passageiro' => 'Passageiro',    'funcionario' => 'Funcionário',    'administrador' => 'Administrador',], ['prompt' => 'Selecione o tipo']) ?>
+    <?= $form->field($model, 'tipo_utilizador')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput() ?>
 

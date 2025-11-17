@@ -8,6 +8,7 @@ use common\models\CheckinSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CheckinController implements the CRUD actions for Checkin model.
@@ -20,6 +21,15 @@ class CheckinController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class CheckinController extends Controller
      */
     protected function findModel($id_checkin)
     {
-        if (($model = Checkin::findOne($id)) !== null) {
+        if (($model = Checkin::findOne($id_checkin)) !== null) {
             return $model;
         }
 

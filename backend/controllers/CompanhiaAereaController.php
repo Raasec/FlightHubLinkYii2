@@ -8,6 +8,7 @@ use common\models\CompanhiaAereaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CompanhiaAereaController implements the CRUD actions for CompanhiaAerea model.
@@ -20,6 +21,15 @@ class CompanhiaAereaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class CompanhiaAereaController extends Controller
      */
     protected function findModel($id_companhia)
     {
-        if (($model = CompanhiaAerea::findOne($id)) !== null) {
+        if (($model = CompanhiaAerea::findOne($id_companhia)) !== null) {
             return $model;
         }
 

@@ -8,6 +8,7 @@ use common\models\PedidoAssistenciaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PedidoAssistenciaController implements the CRUD actions for PedidoAssistencia model.
@@ -20,6 +21,15 @@ class PedidoAssistenciaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class PedidoAssistenciaController extends Controller
      */
     protected function findModel($id_pedido)
     {
-        if (($model = PedidoAssistencia::findOne($id)) !== null) {
+        if (($model = PedidoAssistencia::findOne($id_pedido)) !== null) {
             return $model;
         }
 

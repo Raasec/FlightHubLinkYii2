@@ -8,6 +8,7 @@ use common\models\ServicoAeroportoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ServicoAeroportoController implements the CRUD actions for ServicoAeroporto model.
@@ -20,6 +21,15 @@ class ServicoAeroportoController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class ServicoAeroportoController extends Controller
      */
     protected function findModel($id_servico)
     {
-        if (($model = ServicoAeroporto::findOne($id)) !== null) {
+        if (($model = ServicoAeroporto::findOne($id_servico)) !== null) {
             return $model;
         }
 

@@ -8,6 +8,7 @@ use common\models\ReviewSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ReviewController implements the CRUD actions for Review model.
@@ -20,6 +21,15 @@ class ReviewController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class ReviewController extends Controller
      */
     protected function findModel($id_review)
     {
-        if (($model = Review::findOne($id)) !== null) {
+        if (($model = Review::findOne($id_review)) !== null) {
             return $model;
         }
 

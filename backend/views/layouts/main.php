@@ -55,12 +55,12 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
                 <li class="nav-item">
                     <?= Html::beginForm(['/site/logout'], 'post')
                         . Html::submitButton(
-                            '<i class="fas fa-sign-out-alt"></i> Logout',
-                            ['class' => 'btn btn-link nav-link']
+                            'Logout',
+                            ['class' => 'nav-link btn btn-link logout text-dark']
                         )
-                        . Html::endForm();
+                        . Html::endForm()
                     ?>
-                </li>
+                </li>   
             <?php endif; ?>
         </ul>
     </nav>

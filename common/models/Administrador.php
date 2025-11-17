@@ -12,7 +12,7 @@ use Yii;
  * @property string|null $nivel_acesso
  * @property string|null $responsavel_area
  *
- * @property Utilizador $utilizador
+ * @property User $user
  */
 class Administrador extends \yii\db\ActiveRecord
 {

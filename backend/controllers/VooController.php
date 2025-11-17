@@ -8,6 +8,7 @@ use common\models\VooSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * VooController implements the CRUD actions for Voo model.
@@ -20,6 +21,15 @@ class VooController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -118,7 +128,7 @@ class VooController extends Controller
      */
     protected function findModel($id_voo)
     {
-        if (($model = Voo::findOne($id)) !== null) {
+        if (($model = Voo::findOne($id_voo)) !== null) {
             return $model;
         }
 
