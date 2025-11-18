@@ -26,18 +26,145 @@ class RbacController extends Controller
         $auth->add($admin);
 
 
-        // Permissions base
+        // Permissions para managing de users
+        $createUser = $auth->createPermission('createUser');
+        $createUser->description = 'Criar utilizador';
+        $auth->add($createUser);
+
+        $viewUser = $auth->createPermission('viewUser');
+        $viewUser->description = 'Ver utilizador';
+        $auth->add($viewUser);
+
+        $updateUser = $auth->createPermission('updateUser');
+        $updateUser->description = 'Editar utilizador';
+        $auth->add($updateUser);
+
+        $deleteUser = $auth->createPermission('deleteUser');
+        $deleteUser->description = 'Eliminar utilizador';
+        $auth->add($deleteUser);
+
         $manageUsers = $auth->createPermission('manageUsers');
-        $manageUsers->description = 'Gerir utilizadores';
+        $manageUsers->description = 'Gerir utilizadores (CRUD)';
         $auth->add($manageUsers);
+        $auth->addChild($manageUsers, $createUser);
+        $auth->addChild($manageUsers, $viewUser);
+        $auth->addChild($manageUsers, $updateUser);
+        $auth->addChild($manageUsers, $deleteUser);
+        
+        // Permissions para managing de Flights
+        $createFlight = $auth->createPermission('createFlight');
+        $createFlight->description = 'Criar voo';
+        $auth->add($createFlight);
+
+        $viewFlight = $auth->createPermission('viewFlight');
+        $viewFlight->description = 'Ver voo';
+        $auth->add($viewFlight);
+
+        $updateFlight = $auth->createPermission('updateFlight');
+        $updateFlight->description = 'Editar voo';
+        $auth->add($updateFlight);
+
+        $deleteFlight = $auth->createPermission('deleteFlight');
+        $deleteFlight->description = 'Eliminar voo';
+        $auth->add($deleteFlight);
 
         $manageFlights = $auth->createPermission('manageFlights');
-        $manageFlights->description = 'Gerir voos';
+        $manageFlights->description = 'Gerir voos (CRUD)';
         $auth->add($manageFlights);
+        $auth->addChild($manageFlights, $createFlight);
+        $auth->addChild($manageFlights, $viewFlight);
+        $auth->addChild($manageFlights, $updateFlight);
+        $auth->addChild($manageFlights, $deleteFlight);
+
+
+        // Permissions para managing de Incidentes
+
+        $createIncident = $auth->createPermission('createIncident');
+        $createIncident->description = 'Criar incidente';
+        $auth->add($createIncident);
+
+        $viewIncident = $auth->createPermission('viewIncident');
+        $viewIncident->description = 'Ver incidente';
+        $auth->add($viewIncident);
+
+        $updateIncident = $auth->createPermission('updateIncident');
+        $updateIncident->description = 'Editar incidente';
+        $auth->add($updateIncident);
+
+        $deleteIncident = $auth->createPermission('deleteIncident');
+        $deleteIncident->description = 'Eliminar incidente';
+        $auth->add($deleteIncident);
+
+        $manageIncidents = $auth->createPermission('manageIncidents');
+        $manageIncidents->description = 'Gerir incidentes (CRUD)';
+        $auth->add($manageIncidents);
+        $auth->addChild($manageIncidents, $createIncident);
+        $auth->addChild($manageIncidents, $viewIncident);
+        $auth->addChild($manageIncidents, $updateIncident);
+        $auth->addChild($manageIncidents, $deleteIncident);
+
+        // Permissions para managing de notificações
+        $createNotification = $auth->createPermission('createNotification');
+        $createNotification->description = 'Criar notificação';
+        $auth->add($createNotification);
+
+        $viewNotification = $auth->createPermission('viewNotification');
+        $viewNotification->description = 'Ver notificação';
+        $auth->add($viewNotification);
+
+        $updateNotification = $auth->createPermission('updateNotification');
+        $updateNotification->description = 'Editar notificação';
+        $auth->add($updateNotification);
+
+        $deleteNotification = $auth->createPermission('deleteNotification');
+        $deleteNotification->description = 'Eliminar notificação';
+        $auth->add($deleteNotification);
+
+        $sendNotification = $auth->createPermission('sendNotification');
+        $sendNotification->description = 'Enviar notificação';
+        $auth->add($sendNotification);
 
         $manageNotifications = $auth->createPermission('manageNotifications');
-        $manageNotifications->description = 'Gerir notificações';
+        $manageNotifications->description = 'Gerir notificações (CRUD + envio)';
         $auth->add($manageNotifications);
+        $auth->addChild($manageNotifications, $createNotification);
+        $auth->addChild($manageNotifications, $viewNotification);
+        $auth->addChild($manageNotifications, $updateNotification);
+        $auth->addChild($manageNotifications, $deleteNotification);
+        $auth->addChild($manageNotifications, $sendNotification);
+
+        // Permissions para managing de notificações
+        $createReview = $auth->createPermission('createReview');
+        $createReview->description = 'Criar avaliação';
+        $auth->add($createReview);
+
+        $viewReview = $auth->createPermission('viewReview');
+        $viewReview->description = 'Ver avaliação';
+        $auth->add($viewReview);
+
+        $updateReview = $auth->createPermission('updateReview');
+        $updateReview->description = 'Editar avaliação';
+        $auth->add($updateReview);
+
+        $deleteReview = $auth->createPermission('deleteReview');
+        $deleteReview->description = 'Eliminar avaliação';
+        $auth->add($deleteReview);
+
+        $manageReviews = $auth->createPermission('manageReviews');
+        $manageReviews->description = 'Gerir avaliações (CRUD)';
+        $auth->add($manageReviews);
+        $auth->addChild($manageReviews, $createReview);
+        $auth->addChild($manageReviews, $viewReview);
+        $auth->addChild($manageReviews, $updateReview);
+        $auth->addChild($manageReviews, $deleteReview);
+
+
+        //Falta lojas crud, retirar os repetidos aqui em baixo
+
+
+
+
+
 
         
         // permissões do front-office (acredito que estajam quase todas)
@@ -198,7 +325,5 @@ class RbacController extends Controller
         // admin: tudo do funcionario + gestao de utilizadores
         $auth->addChild($admin, $funcionario); // herda tudo
         $auth->addChild($admin, $manageUsers);
-
-        echo "RBAC configurado com sucesso\n";
     }
 }
