@@ -133,7 +133,7 @@ class RbacController extends Controller
         $auth->addChild($manageNotifications, $deleteNotification);
         $auth->addChild($manageNotifications, $sendNotification);
 
-        // Permissions para managing de notificações
+         // Permissions Reviews
         $createReview = $auth->createPermission('createReview');
         $createReview->description = 'Criar avaliação';
         $auth->add($createReview);
@@ -158,172 +158,169 @@ class RbacController extends Controller
         $auth->addChild($manageReviews, $updateReview);
         $auth->addChild($manageReviews, $deleteReview);
 
+        // Permissions para managing das Airlines
+        $createAirline = $auth->createPermission('createAirline');
+        $createAirline->description = 'Criar companhia aérea';
+        $auth->add($createAirline);
 
-        //Falta lojas crud, retirar os repetidos aqui em baixo
+        $viewAirline = $auth->createPermission('viewAirline');
+        $viewAirline->description = 'Ver companhia aérea';
+        $auth->add($viewAirline);
+
+        $updateAirline = $auth->createPermission('updateAirline');
+        $updateAirline->description = 'Editar companhia aérea';
+        $auth->add($updateAirline);
+
+        $deleteAirline = $auth->createPermission('deleteAirline');
+        $deleteAirline->description = 'Eliminar companhia aérea';
+        $auth->add($deleteAirline);
+
+        $manageAirlines = $auth->createPermission('manageAirlines');
+        $manageAirlines->description = 'Gerir companhias aéreas (CRUD)';
+        $auth->add($manageAirlines);
+        $auth->addChild($manageAirlines, $createAirline);
+        $auth->addChild($manageAirlines, $viewAirline);
+        $auth->addChild($manageAirlines, $updateAirline);
+        $auth->addChild($manageAirlines, $deleteAirline);
+
+        // Permissions Services lojas
+        $createService = $auth->createPermission('createService');
+        $createService->description = 'Criar serviço';
+        $auth->add($createService);
+
+        $viewService = $auth->createPermission('viewService');
+        $viewService->description = 'Ver serviço';
+        $auth->add($viewService);
+
+        $updateService = $auth->createPermission('updateService');
+        $updateService->description = 'Editar serviço';
+        $auth->add($updateService);
+
+        $deleteService = $auth->createPermission('deleteService');
+        $deleteService->description = 'Eliminar serviço';
+        $auth->add($deleteService);
+
+        $manageServices = $auth->createPermission('manageServices');
+        $manageServices->description = 'Gerir serviços (CRUD)';
+        $auth->add($manageServices);
+        $auth->addChild($manageServices, $createService);
+        $auth->addChild($manageServices, $viewService);
+        $auth->addChild($manageServices, $updateService);
+        $auth->addChild($manageServices, $deleteService);
+
+        // permissions para o managing dos bilhetes
+
+        $createTicket = $auth->createPermission('createTicket');
+        $createTicket->description = 'Criar bilhete';
+        $auth->add($createTicket);
+
+        $viewTicket = $auth->createPermission('viewTicket');
+        $viewTicket->description = 'Ver bilhete';
+        $auth->add($viewTicket);
+
+        $updateTicket = $auth->createPermission('updateTicket');
+        $updateTicket->description = 'Editar bilhete';
+        $auth->add($updateTicket);
+
+        $deleteTicket = $auth->createPermission('deleteTicket');
+        $deleteTicket->description = 'Eliminar bilhete';
+        $auth->add($deleteTicket);
+
+        $manageTickets = $auth->createPermission('manageTickets');
+        $manageTickets->description = 'Gerir bilhetes (CRUD)';
+        $auth->add($manageTickets);
+        $auth->addChild($manageTickets, $createTicket);
+        $auth->addChild($manageTickets, $viewTicket);
+        $auth->addChild($manageTickets, $updateTicket);
+        $auth->addChild($manageTickets, $deleteTicket);
+
+        // Permissions checkins
+        $createCheckin = $auth->createPermission('createCheckin');
+        $createCheckin->description = 'Criar check-in';
+        $auth->add($createCheckin);
+
+        $viewCheckin = $auth->createPermission('viewCheckin');
+        $viewCheckin->description = 'Ver check-in';
+        $auth->add($viewCheckin);
+
+        $updateCheckin = $auth->createPermission('updateCheckin');
+        $updateCheckin->description = 'Editar check-in';
+        $auth->add($updateCheckin);
+
+        $deleteCheckin = $auth->createPermission('deleteCheckin');
+        $deleteCheckin->description = 'Eliminar check-in';
+        $auth->add($deleteCheckin);
+
+        $manageCheckins = $auth->createPermission('manageCheckins');
+        $manageCheckins->description = 'Gerir check-ins (CRUD)';
+
+        $auth->add($manageCheckins);
+        $auth->addChild($manageCheckins, $createCheckin);
+        $auth->addChild($manageCheckins, $viewCheckin);
+        $auth->addChild($manageCheckins, $updateCheckin);
+        $auth->addChild($manageCheckins, $deleteCheckin);
+
+        // Permissions para os tickets
+        $createSupportTicket = $auth->createPermission('createSupportTicket');
+        $createSupportTicket->description = 'Criar ticket de suporte';
+        $auth->add($createSupportTicket);
+
+        $viewSupportTicket = $auth->createPermission('viewSupportTicket');
+        $viewSupportTicket->description = 'Ver ticket de suporte';
+        $auth->add($viewSupportTicket);
+
+        $updateSupportTicket = $auth->createPermission('updateSupportTicket');
+        $updateSupportTicket->description = 'Editar ticket de suporte';
+        $auth->add($updateSupportTicket);
+
+        $deleteSupportTicket = $auth->createPermission('deleteSupportTicket');
+        $deleteSupportTicket->description = 'Eliminar ticket de suporte';
+        $auth->add($deleteSupportTicket);
+
+        $manageSupportTickets = $auth->createPermission('manageSupportTickets');
+        $manageSupportTickets->description = 'Gerir tickets de suporte (CRUD)';
+        $auth->add($manageSupportTickets);
+        $auth->addChild($manageSupportTickets, $createSupportTicket);
+        $auth->addChild($manageSupportTickets, $viewSupportTicket);
+        $auth->addChild($manageSupportTickets, $updateSupportTicket);
+        $auth->addChild($manageSupportTickets, $deleteSupportTicket);
 
 
-
-
-
-
-        
-        // permissões do front-office (acredito que estajam quase todas)
-        $viewFlights = $auth->createPermission('viewFlights');
-        $viewFlights->description = 'Ver voos e informações públicas';
-        $auth->add($viewFlights);
-
-        $doCheckin = $auth->createPermission('doCheckin');
-        $doCheckin->description = 'Realizar check-in';
-        $auth->add($doCheckin);
-
-        $viewHistory = $auth->createPermission('viewHistory');
-        $viewHistory->description = 'Ver histórico de voos';
-        $auth->add($viewHistory);
+        // Perms gerias, fora CRUDS
 
         $editProfile = $auth->createPermission('editProfile');
-        $editProfile->description = 'Editar perfil do utilizador';
+        $editProfile->description = 'Editar perfil próprio';
         $auth->add($editProfile);
 
-        $receiveNotifications = $auth->createPermission('receiveNotifications');
-        $receiveNotifications->description = 'Receber notificaçoes de alterações de voos';
-        $auth->add($receiveNotifications);
 
-        $replanFlight = $auth->createPermission('replanFlight');
-        $replanFlight->description = 'Replaneamento de voos e sugestões de voos alternativos';
-        $auth->add($replanFlight);
-
-        $makePayment = $auth->createPermission('makePayment');
-        $makePayment->description = 'Fazer pagamentos';
-        $auth->add($makePayment);
-
-        $requestAssistance = $auth->createPermission('requestAssistance');
-        $requestAssistance->description = 'Submeter pedidos de assistência';
-        $auth->add($requestAssistance);
-
-        $viewMaps = $auth->createPermission('viewMaps');
-        $viewMaps->description = 'Visualizar mapas de terminais e aeroporto';
-        $auth->add($viewMaps);
-
-        $viewServices = $auth->createPermission('viewServices');
-        $viewServices->description = 'Visualizar lojas, restaurantes e serviços';
-        $auth->add($viewServices);
-
-        $submitComplaint = $auth->createPermission('submitComplaint');
-        $submitComplaint->description = 'Submeter reclamaçoẽs ou pedidos de objetos perdidos';
-        $auth->add($submitComplaint);
-
-        $rateServices = $auth->createPermission('rateServices');
-        $rateServices->description = 'Avaliar serviços';
-        $auth->add($rateServices);
-
-        $viewNews = $auth->createPermission('viewNews');
-        $viewNews->description = 'Consultar noticias e dicas de viagem';
-        $auth->add($viewNews);
-
-        $resetPassword = $auth->createPermission('resetPassword');
-        $resetPassword->description = 'Resetar a password';
-        $auth->add($resetPassword);
-
-        // permissões básicas do back-office
-        $manageContent = $auth->createPermission('manageContent');
-        $manageContent->description = 'Gerir conteudo do front-office';
-        $auth->add($manageContent);
-
-        $manageIncidents = $auth->createPermission('manageIncidents');
-        $manageIncidents->description = 'Gerir incidentes do aeroporto';
-        $auth->add($manageIncidents);
-
-        $manageSpecialAssistance = $auth->createPermission('manageSpecialAssistance');
-        $manageSpecialAssistance->description = 'Gerir pedidos de assistência especial';
-        $auth->add($manageSpecialAssistance);
-
-        $manageStores = $auth->createPermission('manageStores');
-        $manageStores->description = 'Gerir lojas e restaurantes';
-        $auth->add($manageStores);
-
-        $managePredefinedNotifications = $auth->createPermission('managePredefinedNotifications');
-        $managePredefinedNotifications->description = 'Gerir notificações predefinidas';
-        $auth->add($managePredefinedNotifications);
-
-        $manageReports = $auth->createPermission('manageReports');
-        $manageReports->description = 'Gerar relatórios e consultar logs de atividade';
-        $auth->add($manageReports);
-
-        $manageFrequentPassengers = $auth->createPermission('manageFrequentPassengers');
-        $manageFrequentPassengers->description = 'Gerir base de dados de passageiros frequentes';
-        $auth->add($manageFrequentPassengers);
-
-        $manageUserAccessLogs = $auth->createPermission('manageUserAccessLogs');
-        $manageUserAccessLogs->description = 'Controlar histórico de login e ações dos utilizadores';
-        $auth->add($manageUserAccessLogs);
-
-        $managePhysicalInventory = $auth->createPermission('managePhysicalInventory');
-        $managePhysicalInventory->description = 'Gerir inventário de recursos físicos';
-        $auth->add($managePhysicalInventory);
-
-        $manageSchedules = $auth->createPermission('manageSchedules');
-        $manageSchedules->description = 'Gerir horários de trabalho e turnos do pessoal';
-        $auth->add($manageSchedules);
-
-        $manageEquipment = $auth->createPermission('manageEquipment');
-        $manageEquipment->description = 'Gerir inventário de equipamentos';
-        $auth->add($manageEquipment);
-
-        $approveContent = $auth->createPermission('approveContent');
-        $approveContent->description = 'Aprovar e publicar atualizações do front-office';
-        $auth->add($approveContent);
-
-        $manageSettings = $auth->createPermission('manageSettings');
-        $manageSettings->description = 'Gerir configurações gerais do aeroporto';
-        $auth->add($manageSettings);
-
-        $generatePassword = $auth->createPermission('generatePassword');
-        $generatePassword->description = 'Gerar password para utilizador';
-        $auth->add($generatePassword);
-
-
-        // atribuicao das permissões aos roles
+        // atribuicao das perms aos roles
         // guest: 
-        $auth->addChild($guest, $viewFlights);
-        $auth->addChild($guest, $viewMaps);
-        $auth->addChild($guest, $viewServices);
-        $auth->addChild($guest, $viewNews);
+        $auth->addChild($guest, $viewFlight);
+        $auth->addChild($guest, $viewService);
+        $auth->addChild($guest, $viewReview);
+        $auth->addChild($guest, $viewAirline);
 
-        // passageiro: tudo do guest + coisas proprias
+        /* passageiro: tudo do guest + coisas proprias, temos de implentar rules aqui suponho, ou separar em mais perms
+          ou um CRUD proprio separado para as coisas, tipo o crud usado aqui fica so para o backend com o funcionario
+        e o passageiro tens os proprios*/
+        
         $auth->addChild($passageiro, $guest);
-        $auth->addChild($passageiro, $doCheckin);
-        $auth->addChild($passageiro, $viewHistory);
+        $auth->addChild($passageiro, $manageCheckins);       
+        $auth->addChild($passageiro, $manageReviews);        
+        $auth->addChild($passageiro, $manageTickets);        
+        $auth->addChild($passageiro, $manageSupportTickets); 
         $auth->addChild($passageiro, $editProfile);
-        $auth->addChild($passageiro, $receiveNotifications);
-        $auth->addChild($passageiro, $replanFlight);
-        $auth->addChild($passageiro, $makePayment);
-        $auth->addChild($passageiro, $requestAssistance);
-        $auth->addChild($passageiro, $submitComplaint);
-        $auth->addChild($passageiro, $rateServices);
-        $auth->addChild($passageiro, $resetPassword);
 
-        // funcionario: perms do back-office + herdadas do passageiro
+        // funcionario: perms do back-office + herdadas do passageiro, talvez separar em mais 1 role no futuro?
         $auth->addChild($funcionario, $passageiro);
         $auth->addChild($funcionario, $manageFlights);
         $auth->addChild($funcionario, $manageNotifications);
         $auth->addChild($funcionario, $manageIncidents);
-        $auth->addChild($funcionario, $manageContent);
-        $auth->addChild($funcionario, $manageSpecialAssistance);
-        $auth->addChild($funcionario, $manageStores);
-        $auth->addChild($funcionario, $managePredefinedNotifications);
-        $auth->addChild($funcionario, $manageReports);
-        $auth->addChild($funcionario, $manageFrequentPassengers);
-        $auth->addChild($funcionario, $manageUserAccessLogs);
-        $auth->addChild($funcionario, $managePhysicalInventory);
-        $auth->addChild($funcionario, $manageSchedules);
-        $auth->addChild($funcionario, $manageEquipment);
-        $auth->addChild($funcionario, $approveContent);
-        $auth->addChild($funcionario, $manageSettings);
-        $auth->addChild($funcionario, $generatePassword);
-
+        $auth->addChild($funcionario, $manageAirlines);
+        $auth->addChild($funcionario, $manageServices);
 
         // admin: tudo do funcionario + gestao de utilizadores
-        $auth->addChild($admin, $funcionario); // herda tudo
+        $auth->addChild($admin, $funcionario);
         $auth->addChild($admin, $manageUsers);
     }
 }
