@@ -295,7 +295,7 @@ class RbacController extends Controller
 
         // atribuicao das perms aos roles
         // guest: 
-        $auth->adadChild($guest, $viewFlight);
+        $auth->addChild($guest, $viewFlight);
         $auth->addChild($guest, $viewService);
         $auth->addChild($guest, $viewReview);
         $auth->addChild($guest, $viewAirline);
