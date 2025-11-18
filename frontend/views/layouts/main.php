@@ -58,7 +58,7 @@ AppAsset::register($this);
     <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
         <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
             <a href="<?= Yii::$app->homeUrl ?>" class="navbar-brand">
-                <img src="img/logo_azul.png" alt="Logo" class="navbar-logo">
+                <img src="<?= Yii::getAlias('@web') ?>/img/logo_azul.png" alt="Logo" class="navbar-logo">
             </a>
 
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
