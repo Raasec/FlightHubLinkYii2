@@ -295,7 +295,7 @@ class RbacController extends Controller
 
         // atribuicao das perms aos roles
         // guest: 
-        $auth->addChild($guest, $viewFlight);
+        $auth->adadChild($guest, $viewFlight);
         $auth->addChild($guest, $viewService);
         $auth->addChild($guest, $viewReview);
         $auth->addChild($guest, $viewAirline);
@@ -303,7 +303,7 @@ class RbacController extends Controller
         /* passageiro: tudo do guest + coisas proprias, temos de implentar rules aqui suponho, ou separar em mais perms
           ou um CRUD proprio separado para as coisas, tipo o crud usado aqui fica so para o backend com o funcionario
         e o passageiro tens os proprios*/
-        
+
         $auth->addChild($passageiro, $guest);
         $auth->addChild($passageiro, $manageCheckins);       
         $auth->addChild($passageiro, $manageReviews);        
