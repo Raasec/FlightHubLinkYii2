@@ -36,9 +36,9 @@ AppAsset::register($this);
         <div class="row">
             <div class="col-lg-6 text-center text-lg-left mb-2 mb-lg-0">
                 <div class="d-inline-flex align-items-center">
-                    <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                    <p><i class="fa fa-envelope mr-2"></i>2241596@my.ipleiria.pt</p>
                     <p class="text-body px-3">|</p>
-                    <p><i class="fa fa-phone-alt mr-2"></i>+012 345 6789</p>
+                    <p><i class="fa fa-phone-alt mr-2"></i>+351 910 869 735</p>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
@@ -46,8 +46,6 @@ AppAsset::register($this);
                     <a class="text-primary px-3" href="#"><i class="fab fa-facebook-f"></i></a>
                     <a class="text-primary px-3" href="#"><i class="fab fa-twitter"></i></a>
                     <a class="text-primary px-3" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="text-primary px-3" href="#"><i class="fab fa-instagram"></i></a>
-                    <a class="text-primary pl-3" href="#"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
@@ -60,16 +58,18 @@ AppAsset::register($this);
     <div class="container-lg position-relative p-0 px-lg-3" style="z-index: 9;">
         <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-5">
             <a href="<?= Yii::$app->homeUrl ?>" class="navbar-brand">
-                <h1 class="m-0 text-primary"><span class="text-dark">TRAVEL</span>ER</h1>
+                <img src="img/logo_azul.png" alt="Logo" class="navbar-logo">
             </a>
+
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                 <div class="navbar-nav ml-auto py-0">
-                    <a href="<?= Yii::$app->homeUrl ?>" class="nav-item nav-link <?= Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index' ? 'active' : '' ?>">Home</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/about']) ?>" class="nav-item nav-link">About</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Contact</a>
+                    <a href="<?= Yii::$app->homeUrl ?>" class="nav-item nav-link <?= Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index' ? 'active' : '' ?>">Voos</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/about']) ?>" class="nav-item nav-link">Serviços</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Destinos</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/index']) ?>" class="nav-item nav-link">Check-In Online</a>
 
                     <?php if (Yii::$app->user->isGuest): ?>
                         <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="nav-item nav-link">Login</a>
@@ -100,18 +100,70 @@ AppAsset::register($this);
     <?= $content ?>
 </div>
 
-<!-- Footer Start -->
-<div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5">
+<div class="container-fluid bg-dark text-white-50 py-3 px-sm-3 px-lg-5">
     <div class="row pt-5">
-        <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-            <p class="m-0 text-white-50">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <a class="footer-brand">
+                <img src="img/logo_branco.png" alt="Logo" class="footer-logo">
+            </a>
+            <h6 class="text-white text-uppercase mt-2 mb-2" style="letter-spacing: 3px;">Follow Us</h6>
+            <div class="d-flex justify-content-start">
+                <a class="btn btn-outline-primary btn-square mr-2 btn-sm" href="#"><i class="fab fa-twitter"></i></a>
+                <a class="btn btn-outline-primary btn-square mr-2 btn-sm" href="#"><i class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-outline-primary btn-square mr-2 btn-sm" href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
         </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Our Services</h5>
+            <div class="d-flex flex-column justify-content-start">
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>All Services</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>KFC</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>McDonalds</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Burger King</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Wells</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Pull&Bear</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Balvera</a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Useful Links</h5>
+            <div class="d-flex flex-column justify-content-start">
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>About</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Destinations</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Current Flights</a>
+                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Search Flight</a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Contact Us</h5>
+            <p class="small mb-1"><i class="fa fa-phone-alt mr-1"></i>+351 910 869 735</p>
+            <p class="small mb-0"><i class="fa fa-envelope mr-1"></i>2241596@my.ipleiria.pt</p>
+        </div>
+
+    </div>
+
+    <div class="container-fluid bg-dark text-white border-top py-2 px-sm-3 px-md-5" style="border-color: rgba(255, 255, 255, .1) !important;">
+        <div class="row">
+            <div class="col-lg-6 text-center text-md-left mb-2 mb-md-0">
+                <p class="m-0 text-white-50 small">Copyright &copy; <a href="#">Domain</a>. All Rights Reserved.</p>
+            </div>
+            <div class="col-lg-6 text-center text-md-right">
+                <p class="m-0 text-white-50 small">Designed by <a href="https://htmlcodex.com">HTML Codex</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-2">
         <div class="col-lg-6 text-center text-md-right">
-            <p class="m-0 text-white-50"><?= Yii::powered() ?></p>
+            <p class="m-0 text-white-50 small"><?= Yii::powered() ?></p>
         </div>
     </div>
 </div>
-<!-- Footer End -->
+
 
 <!-- JS Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
