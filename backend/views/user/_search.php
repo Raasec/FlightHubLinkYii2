@@ -21,25 +21,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nome') ?>
 
-    <?= $form->field($model, 'auth_key') ?>
+    <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'password_hash') ?>
+    <?= $form->field($model, 'tipo_utilizador')->dropDownList([
+        '' => '--- Todos ---',
+        'passageiro' => 'Passageiro',
+        'funcionario' => 'Funcionário',
+        'administrador' => 'Administrador',
+    ]) ?>
 
-    <?php // echo $form->field($model, 'password_reset_token') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'tipo_utilizador') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'data_registo') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'verification_token') ?>
+    <?= $form->field($model, 'status')->dropDownList([
+        ''  => '--- Todos ---',
+        10  => 'Ativo',
+        9   => 'Inativo',
+        0   => 'Apagado',
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

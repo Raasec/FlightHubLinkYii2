@@ -45,7 +45,7 @@ class SignupForm extends Model
     public function signup()
     {
         if (!$this->validate()) {
-            return null;
+            return false;
         }
 
         $user = new User();
@@ -55,10 +55,11 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        // definir tipo_utilizador e data_registo por defeito
+        // definir tipo_utilizador e data_registo  como também  marcar que o user está ativo apos signup
         $user->tipo_utilizador = 'passageiro';
         $user->data_registo = date('Y-m-d');
-
+        $user->status = User::STATUS_ACTIVE;
+        
         if ($user->save() && $this->sendEmail($user)) {
             
             //Alteração aqui porque agora o RBAC é tratado no afterSave() no User.php

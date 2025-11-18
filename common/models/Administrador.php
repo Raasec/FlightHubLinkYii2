@@ -16,6 +16,30 @@ use Yii;
  */
 class Administrador extends \yii\db\ActiveRecord
 {
+    
+    /**
+     * ENUM / DROPDOWN OPTIONS
+     */
+    public static function optsNiveisAcesso()
+    {
+        return [
+            'super_admin' => 'Super Administrador',
+            'admin_sistema' => 'Administrador de Sistema',
+            'admin_operacional' => 'Administrador Operacional',
+        ];
+    }
+
+    public static function optsResponsavelArea()
+    {
+        return [
+            'operacoes' => 'Operações de Voo',
+            'seguranca' => 'Segurança Aeroportuária',
+            'suporte' => 'Suporte ao Cliente',
+            'logistica' => 'Logística e Equipamentos',
+            'financas' => 'Finanças / Contabilidade',
+            'recursos_humanos' => 'Recursos Humanos',
+        ];
+    }
 
 
     /**

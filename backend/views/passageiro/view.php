@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = $model->id_passageiro;
 $this->params['breadcrumbs'][] = ['label' => 'Passageiros', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$user = $model->user;
+
 \yii\web\YiiAsset::register($this);
 ?>
 
@@ -30,13 +33,29 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
-                            'id_passageiro',
                             'id_utilizador',
+                            'id_passageiro',
+                            [
+                                'label' => 'Username',
+                                'value' => $model->user->username
+                            ],
+                            [
+                                'label' => 'Nome',
+                                'value' => $model->user->nome
+                            ],
+                            [
+                                'label' => 'Email',
+                                'value' => $model->user->email
+                            ],
                             'nif',
                             'telefone',
                             'nacionalidade',
                             'data_nascimento',
                             'preferencias:ntext',
+                            [
+                                'label' => 'Data Registo',
+                                'value' => $user ? $user->data_registo : '(n/d)'
+                            ],
                         ],
                     ]) ?>
                 </div>

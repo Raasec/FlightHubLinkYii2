@@ -33,6 +33,7 @@ use common\models\Passageiro;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $new_password;
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -76,6 +77,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['data_registo'], 'safe'],
 
             [['username', 'email'], 'unique'],
+
+            ['new_password', 'string', 'min' => 8],
         ];
     }
 
@@ -350,6 +353,7 @@ class User extends ActiveRecord implements IdentityInterface
                 if (!Funcionario::find()->where(['id_utilizador' => $this->id])->exists()) {
                     $f = new Funcionario();
                     $f->id_utilizador = $this->id;
+                    $f->data_contratacao = date ('Y-m-d');
                     $f->save(false);
                 }
                 break;
@@ -362,6 +366,20 @@ class User extends ActiveRecord implements IdentityInterface
                 }
                 break;
         }
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if (!empty($this->new_password)) {
+            $this->setPassword($this->new_password);
+            $this->generateAuthKey();
+        }
+
+        return true;
     }
 
 }

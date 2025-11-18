@@ -137,7 +137,9 @@ class Funcionario extends \yii\db\ActiveRecord
      */
     public function displayTurno()
     {
-        return self::optsTurno()[$this->turno];
+        return $this->turno !== null && isset(self::optsTurno()[$this->turno])
+        ? self::optsTurno()[$this->turno]
+        : '(não definido)';
     }
 
     /**
@@ -178,4 +180,27 @@ class Funcionario extends \yii\db\ActiveRecord
     {
         $this->turno = self::TURNO_NOITE;
     }
+
+    public static function optsCargo()
+    {
+        return [
+            'responsavel_operacoes' => 'Responsável de Operações',
+            'gestor_atendimento' => 'Gestor de Atendimento',
+            'tecnico_pista' => 'Técnico de Pista',
+            'gestor_seguranca' => 'Gestor de Segurança',
+            'supervisor_turno' => 'Supervisor de Turno',
+        ];
+    }
+
+    public static function optsDepartamento()
+    {
+        return [
+            'operacoes_voo' => 'Operações de Voo',
+            'atendimento_passageiro' => 'Atendimento ao Passageiro',
+            'servicos_tecnicos' => 'Serviços Técnicos',
+            'seguranca' => 'Segurança Aeroportuária',
+            'administracao' => 'Administração',
+        ];
+    }
+
 }

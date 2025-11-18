@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
 
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    <?php $this->render('_search', ['model' => $searchModel]); ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -30,15 +30,46 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
+                            'id_utilizador',                            
+                            [
+                                'attribute'=> 'username',
+                                'label' => 'Username',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->username : '(n/d)';
+                                }
+                            ],
                             'id_passageiro',
-                            'id_utilizador',
+                            [
+                                'attribute' => 'nome',
+                                'label' => 'Nome',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->nome : '(n/d)';
+                                }
+                            ],
+                            [
+                                'attribute' => 'email',
+                                'label' => 'Email',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->email : '(n/d)';
+                                }
+                            ],
                             'nif',
                             'telefone',
                             'nacionalidade',
-                            //'data_nascimento',
+                            'data_nascimento',
                             //'preferencias:ntext',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => '\yii\grid\ActionColumn',
+                                'header' => 'Ações',
+
+                                // Corrige o problema dos IDs
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return [$action, 'id_passageiro' => $model->id_passageiro];
+                                },
+
+                                'template' => '{view} {update} {delete}',
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [

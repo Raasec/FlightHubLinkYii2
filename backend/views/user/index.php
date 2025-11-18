@@ -32,16 +32,37 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'nome',
-            'auth_key',
-            'password_hash',
-            //'password_reset_token',
-            //'email:email',
-            //'tipo_utilizador',
-            //'status',
-            //'created_at',
-            //'data_registo',
-            //'updated_at',
-            //'verification_token',
+            'email:email',
+
+            [
+                'attribute' => 'tipo_utilizador',
+                'filter' => [
+                    'passageiro' => 'Passageiro',
+                    'funcionario' => 'Funcionário',
+                    'administrador' => 'Administrador',
+                ],
+                'value' => function($model) {
+                    return ucfirst($model->tipo_utilizador);
+                }
+            ],
+
+            [
+                'attribute' => 'status',
+                'filter' => [
+                    9 => 'Inativo',
+                    10 => 'Ativo',
+                ],
+                'value' => function($model) {
+                    return $model->status == 10 ? 'Ativo' : 'Inativo';
+                }
+            ],
+
+            [
+                'attribute' => 'created_at',
+                'value' => function($model){
+                    return date('Y-m-d H:i', $model->created_at);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {

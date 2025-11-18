@@ -23,12 +23,16 @@ class AdministradorController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['administrador','funcionario'],
+                        'roles' => ['administrador'], // só administrador pode entrar na gestão de utilizadores
                     ],
                 ],
+                'denyCallback' => function () {
+                    throw new \yii\web\ForbiddenHttpException('Apenas administradores podem aceder à gestão de utilizadores.');
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

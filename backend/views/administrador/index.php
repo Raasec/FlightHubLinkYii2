@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
 
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    <?php $this->render('_search', ['model' => $searchModel]); ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -32,10 +32,44 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'id_admin',
                             'id_utilizador',
+                            [
+                                'attribute' => 'username',
+                                'label' => 'Username',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->username : '(n/d)';
+                                }
+                            ],
+                            [
+                                'attribute' => 'nome',
+                                'label' => 'Nome',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->nome : '(n/d)';
+                                }
+                            ],
+                            [
+                                'attribute' => 'email',
+                                'label' => 'Email',
+                                'value' => function ($model) {
+                                    return $model->user ? $model->user->email : '(n/d)';
+                                }
+                            ],
                             'nivel_acesso',
                             'responsavel_area',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+
+                                'header' => 'Ações',
+                                /* O Yii envia isto no link    /administrador/view?id=1   e estamos à espera disto 
+                                no controller     /administrador/view?id_admin=1   (msm coisa para o update)
+                                entao definiu-se um UrlCreator para cada um dos Roles: Administrador, Funcionario e Passageiro
+                                */
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return [$action, 'id_admin' => $model->id_admin];
+                                },
+
+                                'template' => '{view} {update} {delete}',
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [

@@ -21,13 +21,14 @@ class Yii {
 /**
  * @property yii\rbac\DbManager $authManager 
  * @property \yii\web\User|__WebUser $user
+ * @property \common\models\User $user
  * 
  */
 class __Application {
 }
 
 /**
- * @property app\models\User $identity
+ * @property \common\models\User $identity
  */
 class __WebUser {
 }

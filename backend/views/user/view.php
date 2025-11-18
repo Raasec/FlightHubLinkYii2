@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
 
-$this->title = $model->id;
+$this->title = 'User #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -32,16 +32,44 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'nome',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
             'email:email',
-            'tipo_utilizador',
-            'status',
-            'created_at',
+
+            [
+                'attribute' => 'tipo_utilizador',
+                'value' => function($model) {
+                    return ucfirst($model->tipo_utilizador);
+                }
+            ],
+
+            [
+                'attribute' => 'status',
+                'value' => function($model) {
+                    return $model->status == 10 ? 'Ativo' : 'Inativo';
+                }
+            ],
+
+            [
+                'attribute' => 'created_at',
+                'value' => function($model) {
+                    return date('Y-m-d H:i', $model->created_at);
+                }
+            ],
+
             'data_registo',
-            'updated_at',
-            'verification_token',
+            [
+                'attribute' => 'updated_at',
+                'value' => function($model) {
+                    return date('Y-m-d H:i', $model->updated_at);
+                }
+            ],
+
+
+            // Se for preciso de ver estes campos para debugging, podes-se descomentar temporiaramente
+
+            // 'auth_key',
+            // 'password_hash',
+            // 'password_reset_token',
+            // 'verification_token',
         ],
     ]) ?>
 

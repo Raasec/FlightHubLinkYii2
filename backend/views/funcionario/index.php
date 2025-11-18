@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\FuncionarioSearch */
@@ -9,6 +10,11 @@ use yii\grid\GridView;
 
 $this->title = 'Funcionarios';
 $this->params['breadcrumbs'][] = $this->title;
+
+/** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
+$user = Yii::$app->user->identity;
+$isAdmin = $user->tipo_utilizador === 'administrador';
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -30,14 +36,57 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
-                            'id_funcionario',
                             'id_utilizador',
+                            [
+                                'attribute' => 'username',
+                                'label' => 'Username',
+                                'value' => function($model) {
+                                    return $model->user->username ?? '(sem user)';
+                                }
+                            ],
+                            'id_funcionario',
+                            [
+                                'attribute' => 'nome',
+                                'label' => 'Nome',
+                                'value' => function($model) {
+                                    return $model->user->nome ?? '(sem nome)';
+                                }
+                            ],
+                            [
+                                'attribute' => 'email',
+                                'label' => 'Email',
+                                'value' => function($model) {
+                                    return $model->user->email ?? '(sem email)';
+                                }
+                            ],
                             'departamento',
                             'cargo',
                             'turno',
+                            [
+                                'attribute' => 'data_registo',
+                                'label' => 'Registrado em',
+                                'value' => function($model) {
+                                    return $model->user->data_registo ?? '';
+                                }
+                            ],
                             //'data_contratacao',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+
+                                'template' => $isAdmin ? '{view} {update} {delete}' : '{view}',
+
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return Url::to([$action, 'id_funcionario' => $model->id_funcionario]); },
+
+                                'visibleButtons' => [
+                                    'update' => function ($model) use ($isAdmin) {
+                                        if ($isAdmin) return true;
+                                        return $model->id_utilizador == Yii::$app-> user->id;
+                                    },
+                                    'delete' => $isAdmin,
+                                ],
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [

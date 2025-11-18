@@ -22,11 +22,13 @@ return [
         'ruleConfig' => [
             'class' => yii\filters\AccessRule::class,
         ],
-        'except' => ['site/login', 'site/error'], // permitir login
+
+        // Páginas que nao requer permissoes
+        'except' => ['site/login', 'site/error', 'site/logout'], // permitir login
         'rules' => [
             [
                 'allow' => true,
-                'roles' => ['administrador'],   // só ADMIN pode aceder
+                'roles' => ['administrador','funcionario'],   // só ADMIN pode aceder  <- FILHO DA PUTA ROMAN U MISS TYPED IT AND BECAUSE OF THAT I HAD TO CHECK EVERYSINGLE THING NONSTOP AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             ],
         ],
     ],

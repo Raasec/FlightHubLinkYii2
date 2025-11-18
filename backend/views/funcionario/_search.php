@@ -6,6 +6,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\FuncionarioSearch */
 /* @var $form yii\widgets\ActiveForm */
+
+/** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
+$user = Yii::$app->user->identity;
+
+$isAdmin = $user->tipo_utilizador === 'administrador';
+
 ?>
 
 <div class="row mt-2">
@@ -16,17 +22,27 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id_funcionario') ?>
+    <?php if ($isAdmin): ?>
 
-    <?= $form->field($model, 'id_utilizador') ?>
+        <?= $form->field($model, 'id_funcionario') ?>
 
-    <?= $form->field($model, 'departamento') ?>
+        <?= $form->field($model, 'id_utilizador') ?>
 
-    <?= $form->field($model, 'cargo') ?>
+        <!-- username, nome e email do User -->
+        <?= $form->field($model, 'username')->textInput() ?>
 
-    <?= $form->field($model, 'turno') ?>
+        <?= $form->field($model, 'nome')->textInput() ?>
 
-    <?php // echo $form->field($model, 'data_contratacao') ?>
+        <?= $form->field($model, 'email')->textInput() ?>
+
+        <!-- resto do atributos do funcionario -->
+        <?= $form->field($model, 'departamento') ?>
+
+        <?= $form->field($model, 'cargo') ?>
+
+        <?= $form->field($model, 'turno') ?>
+
+        <?php endif ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

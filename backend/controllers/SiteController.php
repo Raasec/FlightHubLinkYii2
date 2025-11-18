@@ -22,22 +22,33 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                    
+                // Login e erro sempre permitidos
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
+
+                    // Logout permitido para qualqer utilizador autenticado
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['administrador', 'funcionario'], //adicionar admin e funcionario
+                        'roles' => ['@'], //adicionar admin e funcionario
+                    ],
+
+                    // A página index do backend só pode ser acedida por administrador + funcionario
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['administrador', 'funcionario'],
                     ],
                 ],
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'logout' => ['post', 'get'],
+                    'logout' => ['post', 'get'], // permitir GET para evitar ficar preso
                 ],
             ],
         ];
@@ -72,14 +83,32 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        // !SE ja esta autenticado mas nao for ou admin ou func, entao manda embora
         if (!Yii::$app->user->isGuest) {
+            if (!Yii::$app->user->can('administrador') && !Yii::$app->user->can('funcionario')){
+                Yii::$app->user->logout();
+                return $this->redirect(['site/login']);
+            }
+
             return $this->goHome();
+    
         }
+
 
         $this->layout = 'blank';
 
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            // Depois do login, confirmar o tipo de utilizador
+
+            if (!Yii::$app->user->can('administrador') && !Yii::$app->user->can('funcionario')) {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'Sem permissões para aceder ao backoffice.');
+                return $this->redirect(['site/login']);
+            }
+
             return $this->goBack();
         }
 

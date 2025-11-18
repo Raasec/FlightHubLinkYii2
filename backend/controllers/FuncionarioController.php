@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\User;
+
 
 /**
  * FuncionarioController implements the CRUD actions for Funcionario model.
@@ -26,7 +28,12 @@ class FuncionarioController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['administrador','funcionario'],
+                        'roles' => ['administrador'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['funcionario'],
                     ],
                 ],
             ],
@@ -62,6 +69,22 @@ class FuncionarioController extends Controller
      */
     public function actionView($id_funcionario)
     {
+        $model = $this->findModel($id_funcionario);
+
+        /** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
+        $user = Yii::$app->user->identity;
+
+        // Se o utilizador for Funcionario entao ele so podera ver
+        if ($user->tipo_utilizador === 'funcionario') {
+
+            // Bloqueia acesso a dados de outros funcionarios
+            if ($model->id_utilizador !== Yii::$app->user->id){
+                throw new \yii\web\ForbiddenHttpException(
+                    'Não pode ver dados de outros Funcionarios'
+                );
+            }
+
+        }
         return $this->render('view', [
             'model' => $this->findModel($id_funcionario),
         ]);

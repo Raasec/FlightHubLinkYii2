@@ -17,10 +17,14 @@ return [
         'icon'  => 'fas fa-user',
         'url'   => ['/user/index'],   // UtilizadorController (a criar)
     ],
+
+    
     [
         'label' => 'Administradores',
         'icon'  => 'fas fa-user-shield',
         'url'   => ['/administrador/index'], // AdministradorController
+        //'visible' => Yii::$app->user->can('administrador'),
+        // opcao acima faz com que o administrador fique invisvel para os funcionarios , nao sei ponho ou nao.
     ],
     [
         'label' => 'Funcionários',

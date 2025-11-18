@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Administrador */
 
-$this->title = $model->id_admin;
+$this->title = 'Administrador #' . $model->id_admin;
 $this->params['breadcrumbs'][] = ['label' => 'Administradors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -22,18 +22,35 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::a('Delete', ['delete', 'id_admin' => $model->id_admin], [
                             'class' => 'btn btn-danger',
                             'data' => [
-                                'confirm' => 'Are you sure you want to delete this item?',
+                                'confirm' => 'Are you sure you want to delete this admin?',
                                 'method' => 'post',
                             ],
                         ]) ?>
                     </p>
+                    
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
                             'id_admin',
                             'id_utilizador',
+                            [
+                                'label' => 'Username',
+                                'value' => $model->user->username
+                            ],
+                            [
+                                'label' => 'Nome',
+                                'value' => $model->user->nome
+                            ],
+                            [
+                                'label' => 'Email',
+                                'value' => $model->user->email
+                            ],
                             'nivel_acesso',
                             'responsavel_area',
+                            [
+                                'label' => 'Data de Registo',
+                                'value' => $model->user->data_registo
+                            ],
                         ],
                     ]) ?>
                 </div>

@@ -16,10 +16,18 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
+    <!-- atributos do passageiro -->
     <?= $form->field($model, 'id_passageiro') ?>
 
     <?= $form->field($model, 'id_utilizador') ?>
+    
+     <!-- username, nome e email do User -->
+    <?= $form->field($model, 'username')->textInput() ?>
 
+    <?= $form->field($model, 'nome')->textInput() ?>
+
+    <?= $form->field($model, 'email')->textInput() ?>
+     <!-- resto do atributos do passageiro --
     <?= $form->field($model, 'nif') ?>
 
     <?= $form->field($model, 'telefone') ?>
