@@ -13,7 +13,6 @@ class FuncionarioSearch extends Funcionario
 {
     
     public $username;
-    public $nome;
     public $email;
 
     /**
@@ -29,7 +28,7 @@ class FuncionarioSearch extends Funcionario
             [['departamento', 'cargo', 'turno', 'data_contratacao'], 'safe'],
 
             // pesquisa com atributos do User
-            [['username','nome','email'],'safe'],
+            [['username','email'],'safe'],
         ];
     }
 
@@ -68,16 +67,10 @@ class FuncionarioSearch extends Funcionario
             'desc' => ['user.username' => SORT_DESC],
         ];
 
-        $dataProvider->sort->attributes['nome'] = [
-            'asc' => ['user.nome' => SORT_ASC],
-            'desc' => ['user.nome' => SORT_DESC],
-        ];
-        
         $dataProvider->sort->attributes['email'] = [
             'asc' => ['user.email' => SORT_ASC],
             'desc' => ['user.email' => SORT_DESC],
         ];
-
 
 
         $this->load($params);
@@ -105,7 +98,6 @@ class FuncionarioSearch extends Funcionario
 
         //Filtros adicionais para username, nome e email
         $query->andFilterWhere(['like', 'user.username', $this->username])
-              ->andFilterWhere(['like', 'user.nome', $this->nome])
               ->andFilterWhere(['like', 'user.email', $this->email]);
         
         return $dataProvider;

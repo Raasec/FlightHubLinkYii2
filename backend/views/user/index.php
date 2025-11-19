@@ -12,16 +12,20 @@ use yii\grid\GridView;
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
+
+// Agora usa-se RBAC para as permissoes
+$isAdmin = Yii::$app->user->can('administrador');
+
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if ($isAdmin): ?>
+        <p><?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?></p>
+    <?php endif; ?>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,21 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'username',
-            'nome',
             'email:email',
-
-            [
-                'attribute' => 'tipo_utilizador',
-                'filter' => [
-                    'passageiro' => 'Passageiro',
-                    'funcionario' => 'Funcionário',
-                    'administrador' => 'Administrador',
-                ],
-                'value' => function($model) {
-                    return ucfirst($model->tipo_utilizador);
-                }
-            ],
-
             [
                 'attribute' => 'status',
                 'filter' => [
@@ -65,7 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
+                'visibleButtons' => [
+                    'update' => function() use ($isAdmin) { return $isAdmin; },
+                    'delete' => fn() => $isAdmin,
+                    'view'   => fn() => true,
+                ],
+                'urlCreator' => function ($action, User $model) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

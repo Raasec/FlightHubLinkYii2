@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\PassageiroSearch */
@@ -9,6 +10,11 @@ use yii\grid\GridView;
 
 $this->title = 'Passageiros';
 $this->params['breadcrumbs'][] = $this->title;
+
+$user = Yii::$app->user->identity;
+$isAdmin = Yii::$app->user->can('administrador');
+$isFuncionario = Yii::$app->user->can('funcionario');
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -17,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Passageiro', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?php if ($isAdmin || $isFuncionario): ?>
+                                <?= Html::a('Create Passageiro', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -32,7 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'id_utilizador',                            
                             [
-                                'attribute'=> 'username',
                                 'label' => 'Username',
                                 'value' => function ($model) {
                                     return $model->user ? $model->user->username : '(n/d)';
@@ -40,14 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'id_passageiro',
                             [
-                                'attribute' => 'nome',
-                                'label' => 'Nome',
-                                'value' => function ($model) {
-                                    return $model->user ? $model->user->nome : '(n/d)';
-                                }
-                            ],
-                            [
-                                'attribute' => 'email',
                                 'label' => 'Email',
                                 'value' => function ($model) {
                                     return $model->user ? $model->user->email : '(n/d)';
@@ -64,11 +63,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Ações',
 
                                 // Corrige o problema dos IDs
-                                'urlCreator' => function ($action, $model, $key, $index) {
+                                'urlCreator' => function ($action, $model) {
                                     return [$action, 'id_passageiro' => $model->id_passageiro];
                                 },
 
                                 'template' => '{view} {update} {delete}',
+
+                                'visibleButtons' => [
+                                    'update' => $isAdmin || $isFuncionario,
+                                    'delete' => $isAdmin,
+                                ],
                             ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],

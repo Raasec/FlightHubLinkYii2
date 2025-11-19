@@ -24,10 +24,8 @@ $user = Yii::$app->user->identity;
 
         <?= $form->field($model, 'id_utilizador') ?>
 
-        <!-- username, nome e email do User -->
+        <!-- username,  e email do User -->
         <?= $form->field($model, 'username') ?>
-
-        <?= $form->field($model, 'nome') ?>
 
         <?= $form->field($model, 'email') ?>
 

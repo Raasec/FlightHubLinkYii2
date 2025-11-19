@@ -19,16 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'nome') ?>
-
     <?= $form->field($model, 'email') ?>
-
-    <?= $form->field($model, 'tipo_utilizador')->dropDownList([
-        '' => '--- Todos ---',
-        'passageiro' => 'Passageiro',
-        'funcionario' => 'Funcionário',
-        'administrador' => 'Administrador',
-    ]) ?>
 
     <?= $form->field($model, 'status')->dropDownList([
         ''  => '--- Todos ---',

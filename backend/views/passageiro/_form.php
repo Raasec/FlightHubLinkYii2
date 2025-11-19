@@ -28,11 +28,6 @@ $user = $model->user; // relação com User
         </div>
 
         <div class="form-group">
-            <label><strong>Nome</strong></label>
-            <input class="form-control" value="<?= $model->user->nome ?>" readonly>
-        </div>
-
-        <div class="form-group">
             <label><strong>Email</strong></label>
             <input class="form-control" value="<?= $model->user->email ?>" readonly>
         </div>

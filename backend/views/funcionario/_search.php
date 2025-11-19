@@ -10,7 +10,9 @@ use yii\widgets\ActiveForm;
 /** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
 $user = Yii::$app->user->identity;
 
-$isAdmin = $user->tipo_utilizador === 'administrador';
+// funçao para verificar se o utilizador atual é administrador via RBAC
+$isAdmin = Yii::$app->user->can('administrador');
+
 
 ?>
 
@@ -28,10 +30,8 @@ $isAdmin = $user->tipo_utilizador === 'administrador';
 
         <?= $form->field($model, 'id_utilizador') ?>
 
-        <!-- username, nome e email do User -->
+        <!-- username e email do User -->
         <?= $form->field($model, 'username')->textInput() ?>
-
-        <?= $form->field($model, 'nome')->textInput() ?>
 
         <?= $form->field($model, 'email')->textInput() ?>
 

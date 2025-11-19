@@ -11,9 +11,8 @@ use yii\helpers\Url;
 $this->title = 'Funcionarios';
 $this->params['breadcrumbs'][] = $this->title;
 
-/** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
-$user = Yii::$app->user->identity;
-$isAdmin = $user->tipo_utilizador === 'administrador';
+// Agora usamos RBAC em vez de tipo-utilizador para se fazer a identifacao do utilizador
+$isAdmin = Yii::$app->user->can('administrador');
 
 ?>
 <div class="container-fluid">
@@ -28,7 +27,7 @@ $isAdmin = $user->tipo_utilizador === 'administrador';
                     </div>
 
 
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    <?php $this->render('_search', ['model' => $searchModel]); ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -46,13 +45,6 @@ $isAdmin = $user->tipo_utilizador === 'administrador';
                             ],
                             'id_funcionario',
                             [
-                                'attribute' => 'nome',
-                                'label' => 'Nome',
-                                'value' => function($model) {
-                                    return $model->user->nome ?? '(sem nome)';
-                                }
-                            ],
-                            [
                                 'attribute' => 'email',
                                 'label' => 'Email',
                                 'value' => function($model) {
@@ -62,13 +54,6 @@ $isAdmin = $user->tipo_utilizador === 'administrador';
                             'departamento',
                             'cargo',
                             'turno',
-                            [
-                                'attribute' => 'data_registo',
-                                'label' => 'Registrado em',
-                                'value' => function($model) {
-                                    return $model->user->data_registo ?? '';
-                                }
-                            ],
                             //'data_contratacao',
 
                             [
@@ -80,11 +65,17 @@ $isAdmin = $user->tipo_utilizador === 'administrador';
                                     return Url::to([$action, 'id_funcionario' => $model->id_funcionario]); },
 
                                 'visibleButtons' => [
-                                    'update' => function ($model) use ($isAdmin) {
-                                        if ($isAdmin) return true;
-                                        return $model->id_utilizador == Yii::$app-> user->id;
+                                    // butao que fica visivel
+                                    'update' => function ($url, $model, $key) use ($isAdmin) {
+                                        if ($isAdmin) {
+                                            return true;
+                                        }
+                                        // se o proprio f
+                                        return $model->id_utilizador == Yii::$app->user->id;
                                     },
-                                    'delete' => $isAdmin,
+                                    'delete' => function () use ($isAdmin) {
+                                        return $isAdmin;
+                                    },
                                 ],
                             ],
                         ],

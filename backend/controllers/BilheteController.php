@@ -74,15 +74,17 @@ class BilheteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Bilhete();
+        if(Yii::$app->user->can('createBilhete')){
+            $model = new Bilhete();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

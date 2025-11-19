@@ -7,9 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-use common\models\Administrador;
-use common\models\Funcionario;
-use common\models\Passageiro;
+
 
 
 /**
@@ -17,19 +15,16 @@ use common\models\Passageiro;
  *
  * @property integer $id
  * @property string $username
- * @property string $nome
  * @property string $email
  * @property string $password_hash
  * @property string|null $password_reset_token
  * @property string|null $verification_token
  * @property string $auth_key
- * @property string|null $tipo_utilizador
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
- * @property string|null $data_registo
  *
- * @property string $password write-only password
+ * @property string $new_password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -68,14 +63,10 @@ class User extends ActiveRecord implements IdentityInterface
 
             [['username', 'email'], 'required'],
 
-            [['nome'], 'string', 'max' => 100],
+            
             [['email'], 'email'],
-            [['email'], 'string', 'max' => 255],
 
-            [['tipo_utilizador'], 'string', 'max' => 50], // ex: ADMIN, FUNCIONARIO, PASSAGEIRO
-
-            [['data_registo'], 'safe'],
-
+            [['username', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique'],
 
             ['new_password', 'string', 'min' => 8],
@@ -234,6 +225,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    /**
+     * Relations
+     */
     public function getAdministrador()
     {
         return $this->hasOne(Administrador::class, ['id_utilizador' => 'id']);
@@ -249,125 +243,9 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Passageiro::class, ['id_utilizador' => 'id']);
     }
 
-
-
-
-
-
-    
-        /**
-     * Depois de guardar o User:
-     *  - sincroniza o ROLE de RBAC com o tipo_utilizador
-     *  - cria/atualiza o registo na tabela filha (passageiro/funcionario/administrador)
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        // 1) Sincronizar RBAC (roles)
-        $this->syncRoleWithTipoUtilizador();
-
-        // 2) Sincronizar registo na tabela filha
-        $this->syncChildRecord($insert, $changedAttributes);
-    }
-
-
-
     /**
-     * Atribui o role de RBAC correspondente ao tipo_utilizador.
-     * tipos: passageiro | funcionario | administrador
-     * roles RBAC: passageiro | funcionario | administrador
+     * Save handler (only password hashing)
      */
-    protected function syncRoleWithTipoUtilizador()
-    {
-        $auth = Yii::$app->authManager;
-        if (!$auth) {
-            return;
-        }
-
-        // Limpa roles anteriores
-        $auth->revokeAll($this->id);
-
-        $tipo = $this->tipo_utilizador;
-
-        switch ($tipo) {
-            case 'administrador':
-                $roleName = 'administrador';
-                break;
-            case 'funcionario':
-                $roleName = 'funcionario';
-                break;
-            default:
-                // fallback: passageiro
-                $roleName = 'passageiro';
-                break;
-        }
-
-        $role = $auth->getRole($roleName);
-        if ($role) {
-            $auth->assign($role, $this->id);
-        }
-    }
-
-    /**
-     * Garante que existe exatamente um registo na tabela filha
-     * correspondente ao tipo_utilizador atual.
-     *
-     * Se o tipo for alterado (ex: passageiro -> funcionario),
-     * apaga o registo antigo e cria o novo.
-     */
-    protected function syncChildRecord($insert, $changedAttributes)
-    {
-        $tipoAtual = $this->tipo_utilizador;
-
-        // Se for update e o tipo mudou, apagar registo antigo
-        if (!$insert && array_key_exists('tipo_utilizador', $changedAttributes)) {
-            $tipoAntigo = $changedAttributes['tipo_utilizador'];
-
-            if ($tipoAntigo && $tipoAntigo !== $tipoAtual) {
-                switch ($tipoAntigo) {
-                    case 'passageiro':
-                        Passageiro::deleteAll(['id_utilizador' => $this->id]);
-                        break;
-                    case 'funcionario':
-                        Funcionario::deleteAll(['id_utilizador' => $this->id]);
-                        break;
-                    case 'administrador':
-                        Administrador::deleteAll(['id_utilizador' => $this->id]);
-                        break;
-                }
-            }
-        }
-
-        // Criar (se não existir) o registo correspondente ao tipo atual
-        switch ($tipoAtual) {
-            case 'passageiro':
-                if (!Passageiro::find()->where(['id_utilizador' => $this->id])->exists()) {
-                    $p = new Passageiro();
-                    $p->id_utilizador = $this->id;
-                    $p->save(false);
-                }
-                break;
-
-            case 'funcionario':
-                if (!Funcionario::find()->where(['id_utilizador' => $this->id])->exists()) {
-                    $f = new Funcionario();
-                    $f->id_utilizador = $this->id;
-                    $f->data_contratacao = date ('Y-m-d');
-                    $f->save(false);
-                }
-                break;
-
-            case 'administrador':
-                if (!Administrador::find()->where(['id_utilizador' => $this->id])->exists()) {
-                    $a = new Administrador();
-                    $a->id_utilizador = $this->id;
-                    $a->save(false);
-                }
-                break;
-        }
-    }
-
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {

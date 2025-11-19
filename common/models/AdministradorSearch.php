@@ -13,7 +13,6 @@ class AdministradorSearch extends Administrador
 {
 
     public $username;
-    public $nome;
     public $email;
 
     /**
@@ -29,7 +28,7 @@ class AdministradorSearch extends Administrador
             [['nivel_acesso', 'responsavel_area'], 'safe'],
 
             // pesquisa com atributos vindos dio User
-            [['username','nome','email'],'safe'],
+            [['username','email'],'safe'],
         ];
     }
 
@@ -69,11 +68,6 @@ class AdministradorSearch extends Administrador
             'desc' => ['user.username' => SORT_DESC],
         ];
 
-        $dataProvider->sort->attributes['nome'] = [
-            'asc' => ['user.nome' => SORT_ASC],
-            'desc' => ['user.nome' => SORT_DESC],
-        ];
-
         $dataProvider->sort->attributes['email'] = [
             'asc' => ['user.email' => SORT_ASC],
             'desc' => ['user.email' => SORT_DESC],
@@ -101,7 +95,6 @@ class AdministradorSearch extends Administrador
 
         //Campos da Tabela user
         $query->andFilterWhere(['like', 'user.username', $this->username])
-              ->andFilterWhere(['like', 'user.nome', $this->nome])
               ->andFilterWhere(['like', 'user.email', $this->email]);
 
         return $dataProvider;

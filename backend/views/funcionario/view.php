@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Funcionario */
+/** @var \common\models\User $user */
 
 $this->title = "Funcionário #".$model->id_funcionario;
 
@@ -13,10 +14,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 \yii\web\YiiAsset::register($this);
 
-/** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
-$user = Yii::$app->user->identity;
 
-$isAdmin = $user->tipo_utilizador === 'administrador';
+
+$user = $user ?? Yii::$app->user->identity;
+
+// Agora usamos RBAC em vez de tipo-utilizador para se fazer a identifacao do utilizador
+$isAdmin = Yii::$app->user->can('administrador');
+
+// + Owner para deixar o proprio funcionario visualizar
 $isOwner = $model->id_utilizador == $user->id;
 
 ?>
@@ -52,10 +57,6 @@ $isOwner = $model->id_utilizador == $user->id;
                                 'value' => $model->user->username
                             ],
                             [
-                                'label' => 'Nome',
-                                'value' => $model->user->nome
-                            ],
-                            [
                                 'label' => 'Email',
                                 'value' => $model->user->email
                             ],
@@ -66,10 +67,6 @@ $isOwner = $model->id_utilizador == $user->id;
                                 'value' => $model->displayTurno(),
                             ],
                             'data_contratacao',
-                            [
-                                'label' => 'Data de Registo',
-                                'value' => $model->user->data_registo
-                            ],
                         ],
                     ]) ?>
                 </div>

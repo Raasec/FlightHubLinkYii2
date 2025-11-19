@@ -6,10 +6,14 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Administrador */
 
-$this->title = 'Administrador #' . $model->id_admin;
+$this->title = "Administrador #{$model->id_admin}";
+
 $this->params['breadcrumbs'][] = ['label' => 'Administradors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+
+
+$isAdmin = Yii::$app->user->can('administrador');
+
 ?>
 
 <div class="container-fluid">
@@ -18,14 +22,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <p>
-                        <?= Html::a('Update', ['update', 'id_admin' => $model->id_admin], ['class' => 'btn btn-primary']) ?>
-                        <?= Html::a('Delete', ['delete', 'id_admin' => $model->id_admin], [
-                            'class' => 'btn btn-danger',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to delete this admin?',
-                                'method' => 'post',
-                            ],
-                        ]) ?>
+                        <?php if ($isAdmin): ?>
+                            <?= Html::a('Update', ['update', 'id_admin' => $model->id_admin], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a('Delete', ['delete', 'id_admin' => $model->id_admin], [
+                                'class' => 'btn btn-danger',
+                                'data' => [
+                                    'confirm' => 'Are you sure you want to delete this admin?',
+                                    'method' => 'post',
+                                ],
+                            ]) ?>
+                        <?php endif; ?>
                     </p>
                     
                     <?= DetailView::widget([
@@ -38,19 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => $model->user->username
                             ],
                             [
-                                'label' => 'Nome',
-                                'value' => $model->user->nome
-                            ],
-                            [
                                 'label' => 'Email',
                                 'value' => $model->user->email
                             ],
                             'nivel_acesso',
                             'responsavel_area',
-                            [
-                                'label' => 'Data de Registo',
-                                'value' => $model->user->data_registo
-                            ],
                         ],
                     ]) ?>
                 </div>

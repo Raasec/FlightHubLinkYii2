@@ -71,7 +71,7 @@ class Funcionario extends \yii\db\ActiveRecord
     {
         return [
             'id_funcionario' => 'ID Funcionário',
-            'id_utilizador' => 'ID User',
+            'id_utilizador' => 'ID Utilizador',
             'departamento' => 'Departamento',
             'cargo' => 'Cargo',
             'turno' => 'Turno',

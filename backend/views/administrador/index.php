@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\AdministradorSearch */
@@ -9,6 +10,9 @@ use yii\grid\GridView;
 
 $this->title = 'Administradors';
 $this->params['breadcrumbs'][] = $this->title;
+
+$isAdmin = Yii::$app->user->can('administrador');
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -17,7 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Administrador', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?php if ($isAdmin): ?>
+                                <p><?= Html::a('Criar Administrador', ['create'], ['class' => 'btn btn-success']) ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -36,21 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'username',
                                 'label' => 'Username',
                                 'value' => function ($model) {
-                                    return $model->user ? $model->user->username : '(n/d)';
-                                }
-                            ],
-                            [
-                                'attribute' => 'nome',
-                                'label' => 'Nome',
-                                'value' => function ($model) {
-                                    return $model->user ? $model->user->nome : '(n/d)';
+                                    return $model->user ? $model->user->username : '(n/a)';
                                 }
                             ],
                             [
                                 'attribute' => 'email',
                                 'label' => 'Email',
                                 'value' => function ($model) {
-                                    return $model->user ? $model->user->email : '(n/d)';
+                                    return $model->user ? $model->user->email : '(n/a)';
                                 }
                             ],
                             'nivel_acesso',
@@ -60,13 +59,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'class' => 'yii\grid\ActionColumn',
 
                                 'header' => 'Ações',
-                                /* O Yii envia isto no link    /administrador/view?id=1   e estamos à espera disto 
-                                no controller     /administrador/view?id_admin=1   (msm coisa para o update)
+                                /* O Yii envia isto no link:    /administrador/view?id=1   
+                                e estamos à espera disto no controller     /administrador/view?id_admin=1   
                                 entao definiu-se um UrlCreator para cada um dos Roles: Administrador, Funcionario e Passageiro
                                 */
-                                'urlCreator' => function ($action, $model, $key, $index) {
-                                    return [$action, 'id_admin' => $model->id_admin];
+                                'urlCreator' => function ($action, $model) {
+                                    return Url::to([$action, 'id_admin' => $model->id_admin]);
                                 },
+
+                                'visibleButtons' => [
+                                    'update' => function() use ($isAdmin) { return $isAdmin; },
+                                    'delete' => function() use ($isAdmin) { return $isAdmin; },
+                                    'view'   => function() { return true; },
+                                ],
 
                                 'template' => '{view} {update} {delete}',
                             ],

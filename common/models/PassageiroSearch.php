@@ -13,7 +13,6 @@ class PassageiroSearch extends Passageiro
 {
 
     public $username;
-    public $nome;
     public $email;
 
     /**
@@ -29,7 +28,7 @@ class PassageiroSearch extends Passageiro
             [['nif', 'telefone', 'nacionalidade', 'data_nascimento', 'preferencias'], 'safe'],
 
             // pesquisa com atributos vindos dio User
-            [['username', 'nome', 'email'], 'safe'],
+            [['username', 'email'], 'safe'],
         ];
     }
 
@@ -65,10 +64,6 @@ class PassageiroSearch extends Passageiro
             'asc' => ['user.username' => SORT_ASC],
             'desc' => ['user.username' => SORT_DESC],
         ];
-        $dataProvider->sort->attributes['nome'] = [
-            'asc' => ['user.nome' => SORT_ASC],
-            'desc' => ['user.nome' => SORT_DESC],
-        ];
         $dataProvider->sort->attributes['email'] = [
             'asc' => ['user.email' => SORT_ASC],
             'desc' => ['user.email' => SORT_DESC],
@@ -99,7 +94,6 @@ class PassageiroSearch extends Passageiro
 
         // Filtros da tabela user
         $query->andFilterWhere(['like', 'user.username', $this->username])
-                ->andFilterWhere(['like', 'user.nome', $this->nome])
                 ->andFilterWhere(['like', 'user.email', $this->email]);
                 
         return $dataProvider;

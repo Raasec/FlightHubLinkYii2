@@ -24,8 +24,6 @@ use yii\widgets\ActiveForm;
      <!-- username, nome e email do User -->
     <?= $form->field($model, 'username')->textInput() ?>
 
-    <?= $form->field($model, 'nome')->textInput() ?>
-
     <?= $form->field($model, 'email')->textInput() ?>
      <!-- resto do atributos do passageiro --
     <?= $form->field($model, 'nif') ?>

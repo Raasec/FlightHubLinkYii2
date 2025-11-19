@@ -7,6 +7,10 @@ use common\models\Administrador;
 /* @var $this yii\web\View */
 /* @var $model common\models\Administrador */
 /* @var $form yii\bootstrap4\ActiveForm */
+
+
+$user = $model->user; // relação User
+
 ?>
 
 <div class="administrador-form">
@@ -20,22 +24,17 @@ use common\models\Administrador;
     <?php if ($model->user): ?>
         <div class="form-group">
             <label><strong>Username</strong></label>
-            <input class="form-control" value="<?= $model->user->username ?>" readonly>
-        </div>
-
-        <div class="form-group">
-            <label><strong>Nome</strong></label>
-            <input class="form-control" value="<?= $model->user->nome ?>" readonly>
+            <input class="form-control" readonly value="<?= $user->username ?>" >
         </div>
 
         <div class="form-group">
             <label><strong>Email</strong></label>
-            <input class="form-control" value="<?= $model->user->email ?>" readonly>
+            <input class="form-control" value="<?= $user->email ?>" readonly>
         </div>
     <?php endif; ?>
 
     <!-- Nivel de Acesso, um dropdown -->
-    <?= $form->field($model, 'nivel_acesso')->dropDownList(Administrador::optsNiveisAcesso(),['prompt' => 'Selecione o nível de acesso']) ?>
+    <?= $form->field($model, 'nivel_acesso')->dropDownList(Administrador::optsNiveisAcesso(),['prompt' => 'Selecione o nível']) ?>
 
     <!-- Responsavel pela Area, outro dropdown -->
     <?= $form->field($model, 'responsavel_area')->dropDownList(Administrador::optsResponsavelArea(),['prompt' => 'Selecione a área']) ?>

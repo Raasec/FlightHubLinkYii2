@@ -9,7 +9,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\User;
 
 
 /**
@@ -27,9 +26,12 @@ class FuncionarioController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
+                        //Administradores podem tudo aceder a tudo
                         'allow' => true,
                         'roles' => ['administrador'],
                     ],
+
+                    // Funcionarios so podem ver o proprio perfil
                     [
                         'allow' => true,
                         'actions' => ['view'],
@@ -52,6 +54,12 @@ class FuncionarioController extends Controller
      */
     public function actionIndex()
     {
+        // Apenas administradores podem listar funcionários
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        }
+
+
         $searchModel = new FuncionarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -71,22 +79,24 @@ class FuncionarioController extends Controller
     {
         $model = $this->findModel($id_funcionario);
 
-        /** @var \common\models\User $user */  //buscar o User para conseguir identificar no tipo
         $user = Yii::$app->user->identity;
 
-        // Se o utilizador for Funcionario entao ele so podera ver
-        if ($user->tipo_utilizador === 'funcionario') {
+        $isAdmin = Yii::$app->user->can('administrador');
+        $isFuncionario = Yii::$app->user->can('funcionario');
 
-            // Bloqueia acesso a dados de outros funcionarios
-            if ($model->id_utilizador !== Yii::$app->user->id){
+        // Alteração aqui do tipo_utilizador para $user->can para seguir as regras do RBAC
+        //  Se o utilizador for Funcionario entao ele so podera ver
+        if ($isFuncionario && !$isAdmin) {
+            if ($model->id_utilizador !== $user) {
                 throw new \yii\web\ForbiddenHttpException(
-                    'Não pode ver dados de outros Funcionarios'
+                    'Não pode ver dados de outros funcionários.'
                 );
             }
-
         }
+
         return $this->render('view', [
-            'model' => $this->findModel($id_funcionario),
+            'model' => $model,
+            'user' => Yii::$app->user->identity, // isto envia para a view
         ]);
     }
 
@@ -97,6 +107,10 @@ class FuncionarioController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        }
+
         $model = new Funcionario();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -117,6 +131,10 @@ class FuncionarioController extends Controller
      */
     public function actionUpdate($id_funcionario)
     {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        }
+
         $model = $this->findModel($id_funcionario);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -137,6 +155,10 @@ class FuncionarioController extends Controller
      */
     public function actionDelete($id_funcionario)
     {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        }
+
         $this->findModel($id_funcionario)->delete();
 
         return $this->redirect(['index']);

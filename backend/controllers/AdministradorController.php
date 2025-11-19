@@ -27,11 +27,11 @@ class AdministradorController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['administrador'], // só administrador pode entrar na gestão de utilizadores
+                        'roles' => ['administrador'], // só administrador pode entrar 
                     ],
                 ],
                 'denyCallback' => function () {
-                    throw new \yii\web\ForbiddenHttpException('Apenas administradores podem aceder à gestão de utilizadores.');
+                    throw new \yii\web\ForbiddenHttpException('Apenas administradores podem aceder a esta area do back-office.');
                 },
             ],
             'verbs' => [
@@ -49,6 +49,11 @@ class AdministradorController extends Controller
      */
     public function actionIndex()
     {
+
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         $searchModel = new AdministradorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -66,6 +71,10 @@ class AdministradorController extends Controller
      */
     public function actionView($id_admin)
     {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_admin),
         ]);
@@ -78,6 +87,10 @@ class AdministradorController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         $model = new Administrador();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -98,6 +111,11 @@ class AdministradorController extends Controller
      */
     public function actionUpdate($id_admin)
     {
+
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         $model = $this->findModel($id_admin);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -118,6 +136,11 @@ class AdministradorController extends Controller
      */
     public function actionDelete($id_admin)
     {
+
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         $this->findModel($id_admin)->delete();
 
         return $this->redirect(['index']);

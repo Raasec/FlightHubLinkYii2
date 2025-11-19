@@ -24,9 +24,19 @@ class PassageiroController extends Controller
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
+
+                    // Admin pode tudo
                     [
                         'allow' => true,
-                        'roles' => ['administrador','funcionario'],
+                        'actions' => ['index','view','create','update','delete'],
+                        'roles' => ['administrador'],
+                    ],
+
+                    // Funcionário só pode ver e listar
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view'],
+                        'roles' => ['funcionario'],
                     ],
                 ],
             ],
@@ -45,6 +55,14 @@ class PassageiroController extends Controller
      */
     public function actionIndex()
     {
+
+        // Funcionário pode listar passageiros e claro que administador tambem
+        if (!Yii::$app->user->can('funcionario') 
+            && !Yii::$app->user->can('administrador')) 
+        {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         $searchModel = new PassageiroSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +80,14 @@ class PassageiroController extends Controller
      */
     public function actionView($id_passageiro)
     {
+
+        // Funcionários e administradores podem ver qqlr passagfeiro
+        if (!Yii::$app->user->can('funcionario') 
+            && !Yii::$app->user->can('administrador')) 
+        {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_passageiro),
         ]);
@@ -74,6 +100,12 @@ class PassageiroController extends Controller
      */
     public function actionCreate()
     {
+
+        //criar apenas os administradores
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Apenas administradores podem criar passageiros.');
+        }
+
         $model = new Passageiro();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +126,11 @@ class PassageiroController extends Controller
      */
     public function actionUpdate($id_passageiro)
     {
+
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Apenas administradores podem editar passageiros.');
+        }
+
         $model = $this->findModel($id_passageiro);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +151,11 @@ class PassageiroController extends Controller
      */
     public function actionDelete($id_passageiro)
     {
+        // SO os ADMINS poderao deletar passageiros
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Apenas administradores podem apagar passageiros.');
+        }
+
         $this->findModel($id_passageiro)->delete();
 
         return $this->redirect(['index']);

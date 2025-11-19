@@ -55,21 +55,17 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        // definir tipo_utilizador e data_registo  como também  marcar que o user está ativo apos signup
-        $user->tipo_utilizador = 'passageiro';
-        $user->data_registo = date('Y-m-d');
+        // definir que o user está ativo apos signup
         $user->status = User::STATUS_ACTIVE;
         
         if ($user->save() && $this->sendEmail($user)) {
-            
-            //Alteração aqui porque agora o RBAC é tratado no afterSave() no User.php
 
             // ATRIBUI ROLE DEFAULT 'passageiro' via RBAC
-            /*$auth = Yii::$app->authManager;
+            $auth = Yii::$app->authManager;
             $passageiro = $auth->getRole('passageiro');
             if ($passageiro) {
                 $auth->assign($passageiro, $user->id);
-            } */
+            } 
 
             return true;
         }

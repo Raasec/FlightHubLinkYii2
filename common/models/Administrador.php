@@ -78,8 +78,8 @@ class Administrador extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_admin' => 'Id Admin',
-            'id_utilizador' => 'Id Utilizador',
+            'id_admin' => 'ID Administrador',
+            'id_utilizador' => 'ID Utilizador',
             'nivel_acesso' => 'Nivel Acesso',
             'responsavel_area' => 'Responsavel Area',
         ];
