@@ -21,9 +21,9 @@ $isAdmin = Yii::$app->user->can('administrador');
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?php if ($isAdmin): ?>
+                            <?php /* if ($isAdmin): ?>
                                 <p><?= Html::a('Criar Administrador', ['create'], ['class' => 'btn btn-success']) ?></p>
-                            <?php endif; ?>
+                            <?php endif; */ ?>
                         </div>
                     </div>
 

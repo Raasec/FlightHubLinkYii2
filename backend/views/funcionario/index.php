@@ -21,9 +21,11 @@ $isAdmin = Yii::$app->user->can('administrador');
             <div class="card">
                 <div class="card-body">
                     <div class="row mb-2">
+                        <!--
                         <div class="col-md-12">
-                            <?= Html::a('Create Funcionario', ['create'], ['class' => 'btn btn-success']) ?>
+                            <php /*?= Html::a('Create Funcionario', ['create'], ['class' => 'btn btn-success']) */?>
                         </div>
+                        -->
                     </div>
 
 

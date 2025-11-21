@@ -23,9 +23,9 @@ $isFuncionario = Yii::$app->user->can('funcionario');
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?php if ($isAdmin || $isFuncionario): ?>
+                            <?php /*if ($isAdmin || $isFuncionario): ?>
                                 <?= Html::a('Create Passageiro', ['create'], ['class' => 'btn btn-success']) ?>
-                            <?php endif; ?>
+                            <?php endif; */?>
                         </div>
                     </div>
 

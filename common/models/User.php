@@ -28,7 +28,10 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    public $new_password;
+    //public $new_password;
+    public $role;
+    public $password;
+    
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -69,7 +72,12 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique'],
 
-            ['new_password', 'string', 'min' => 8],
+            [['password'], 'required', 'on' => 'create'],   // este é o campo usado no form para criar password
+            [['password'], 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            [['role'], 'string'],   // este é o campo usado para atribuir role via RBAC
+
+            //['new_password', 'string', 'min' => 8],
         ];
     }
 
@@ -246,6 +254,9 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Save handler (only password hashing)
      */
+
+    
+    /*
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
@@ -259,5 +270,6 @@ class User extends ActiveRecord implements IdentityInterface
 
         return true;
     }
+        */
 
 }
