@@ -147,6 +147,16 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionCheckin()
+    {
+        return $this->render('checkin');
+    }
+
+    public function actionServicos()
+    {
+        return $this->render('servicos');
+    }
+
     /**
      * Signs user up.
      *

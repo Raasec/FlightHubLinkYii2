@@ -9909,6 +9909,130 @@ h6,
     color: white;
 }
 
+.booking-content.checkin-tab {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  min-height: 600px;       
+  padding: 20px;           
+}
+
+.checkin-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 500px;
+  text-align: center;
+}
+
+.checkin-container h2 {
+  margin-bottom: 20px;
+}
+
+.checkin-container h6 {
+  margin-bottom: 20px;
+}
+
+.checkin-container p {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.checkin-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.checkin-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.auth-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.auth-left {
+    flex: 1;
+    position: relative;
+    background: url('../img/airPortsidePanel.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/*overlay azul transparente com o index 1*/
+.auth-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #0045DD;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.auth-left > * {
+    position: relative;
+    z-index: 2;
+}
+
+.auth-left img.icon {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+.auth-left h2, .auth-left p {
+    margin: 0 0 10px;
+}
+
+.auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    background-color: #f7f8fa;
+}
+
+.auth-form-wrapper {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.1);
+}
+
+.auth-left h2, 
+.auth-left p {
+    color: white;
+    text-shadow:
+        0 0 5px rgba(0, 69, 221, 0.8),  
+        0 2px 6px rgba(0,0,0,0.5);       
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 6px;
+}
 .status.ontime { background: #2ecc71; }
 .status.delayed { background: #e74c3c; }
 .status.boarding { background: #3498db; }

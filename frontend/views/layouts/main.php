@@ -67,10 +67,9 @@ AppAsset::register($this);
             <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                 <div class="navbar-nav ml-auto py-0">
                     <a href="<?= Yii::$app->homeUrl ?>" class="nav-item nav-link <?= Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index' ? 'active' : '' ?>">Voos</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/about']) ?>" class="nav-item nav-link">Serviços</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Destinos</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/index']) ?>" class="nav-item nav-link">Check-In Online</a>
-
+                    <a href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>" class="nav-item nav-link">Serviços</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Check-In Online</a>  
+                    <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Support</a>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="nav-item nav-link">Login</a>
                         <a href="<?= \yii\helpers\Url::to(['/site/signup']) ?>" class="nav-item nav-link">Signup</a>
