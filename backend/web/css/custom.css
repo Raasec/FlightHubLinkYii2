@@ -11,3 +11,82 @@
 .nav-sidebar .nav-link:hover .nav-icon {
     color: #ffffff !important;
 }
+
+
+
+/* Css da table no dashboard */
+
+.flight-table-wrapper {
+    background: white;
+    border-radius: 22px;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+.flight-tabs {
+    background: #f2f2f2;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.flight-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    padding: 10px 0;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+.flight-tab.active {
+    background: white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.15);
+}
+
+/* Table styling */
+.flight-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.flight-table thead th {
+    color: #555;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 5px;
+    font-size: 14px;
+}
+
+.flight-table tbody tr {
+    background: #f8f8f8;
+    border-radius: 12px;
+}
+
+.flight-table td {
+    padding: 12px 10px;
+    font-size: 15px;
+}
+
+/* Css dos status na table do dashboard */
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.status.ontime {
+    background-color: #28a745; /* verde */
+}
+
+.status.delayed {
+    background-color: #dc3545; /* vermelho */
+}
+
+.status.boarding {
+    background-color: #007bff; /* azul */
+}
+
+

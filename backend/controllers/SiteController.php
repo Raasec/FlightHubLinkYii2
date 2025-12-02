@@ -39,7 +39,7 @@ class SiteController extends Controller
 
                     // A página index do backend só pode ser acedida por administrador + funcionario
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'recent-activity', 'system-resume'],
                         'allow' => true,
                         'roles' => ['administrador', 'funcionario'],
                     ],
@@ -129,5 +129,18 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+
+    // render da page do recent Activity
+    public function actionRecentActivity()
+    {
+        return $this->render('recent-activity');
+    }
+
+    // render da page do System Resume
+    public function actionSystemResume ()
+    {
+        return $this->render('system-resume');
     }
 }

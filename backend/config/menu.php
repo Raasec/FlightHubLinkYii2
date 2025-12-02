@@ -10,48 +10,48 @@ return [
     ],
 
     // GESTÃO DE UTILIZADORES
-    ['label' => 'Gestão de Utilizadores', 'header' => true],
+    ['label' => 'User Management', 'header' => true],
 
     [
-        'label' => 'Utilizadores',
+        'label' => 'Users',
         'icon'  => 'fas fa-user',
         'url'   => ['/user/index'],   // UtilizadorController (a criar)
     ],
 
     
     [
-        'label' => 'Administradores',
+        'label' => 'Administrator',
         'icon'  => 'fas fa-user-shield',
         'url'   => ['/administrador/index'], // AdministradorController
         //'visible' => Yii::$app->user->can('administrador'),
         // opcao acima faz com que o administrador fique invisvel para os funcionarios , nao sei ponho ou nao.
     ],
     [
-        'label' => 'Funcionários',
+        'label' => 'Employees',
         'icon'  => 'fas fa-user-tie',
         'url'   => ['/funcionario/index'],   // FuncionarioController
     ],
     [
-        'label' => 'Passageiros',
+        'label' => 'Passengers',
         'icon'  => 'fas fa-user-friends',
         'url'   => ['/passageiro/index'],    // PassageiroController
     ],
 
     // OPERAÇÕES DE VOO
-    ['label' => 'Operações de Voo', 'header' => true],
+    ['label' => 'Flight Operations', 'header' => true],
 
     [
-        'label' => 'Companhias Aéreas',
+        'label' => 'Airlines',
         'icon'  => 'fas fa-building',
         'url'   => ['/companhia-aerea/index'], // CompanhiaAereaController
     ],
     [
-        'label' => 'Voos',
+        'label' => 'Flights',
         'icon'  => 'fas fa-plane-departure',
         'url'   => ['/voo/index'],           // VooController
     ],
     [
-        'label' => 'Bilhetes',
+        'label' => 'Tickets',
         'icon'  => 'fas fa-ticket-alt',
         'url'   => ['/bilhete/index'],       // BilheteController
     ],
@@ -62,29 +62,29 @@ return [
     ],
 
     // APOIO AO PASSAGEIRO
-    ['label' => 'Apoio ao Passageiro', 'header' => true],
+    ['label' => 'Passenger Support', 'header' => true],
 
     [
-        'label' => 'Pedidos de Assistência',
+        'label' => 'Assistance Requests',
         'icon'  => 'fas fa-hands-helping',
         'url'   => ['/pedido-assistencia/index'], // PedidoAssistenciaController
     ],
     [
-        'label' => 'Serviços de Aeroporto',
+        'label' => 'Airport Services',
         'icon'  => 'fas fa-concierge-bell',
         'url'   => ['/servico-aeroporto/index'],  // ServicoAeroportoController
     ],
 
     // COMUNICAÇÃO & QUALIDADE
-    ['label' => 'Comunicação', 'header' => true],
+    ['label' => 'Communication', 'header' => true],
 
     [
-        'label' => 'Notificações',
+        'label' => 'Notifications',
         'icon'  => 'fas fa-bell',
         'url'   => ['/notificacao/index'],       // NotificacaoController
     ],
     [
-        'label' => 'Incidentes',
+        'label' => 'Incidents',
         'icon'  => 'fas fa-exclamation-triangle',
         'url'   => ['/incidente/index'],        // IncidenteController
     ],
@@ -94,27 +94,4 @@ return [
         'url'   => ['/review/index'],           // ReviewController
     ],
 
-    // API (REST)
-    ['label' => 'API (REST)', 'header' => true],
-
-    [
-        'label' => 'API Voo',
-        'icon'  => 'fas fa-paper-plane',
-        'url'   => ['/api/voo/index'],          // módulo backend\modules\api
-    ],
-    [
-        'label' => 'API Bilhete',
-        'icon'  => 'fas fa-receipt',
-        'url'   => ['/api/bilhete/index'],
-    ],
-    [
-        'label' => 'API Notificação',
-        'icon'  => 'fas fa-broadcast-tower',
-        'url'   => ['/api/notificacao/index'],
-    ],
-    [
-        'label' => 'API Review',
-        'icon'  => 'fas fa-comment-dots',
-        'url'   => ['/api/review/index'],
-    ],
 ];
