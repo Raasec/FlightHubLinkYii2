@@ -32,13 +32,13 @@
     <div class="booking-content checkin-tab">
         <div class="checkin-container">
             <h1>Check-in Online</h1>
-            <h6>Faz o teu check-in e escolhe o teu lugar com antecedência</h6>
+            <h6>Check in and choose your seat in advance.</h6>
             
-            <p>Código de confirmação</p> 
+            <p>Confirmation code</p> 
             <input type="text" placeholder="Ex: ABC1234" maxlength="6">
-            <p>Nome do Passageiro</p> 
-            <input type="text" placeholder="Meu nome">
-            <button>Buscar</button>
+            <p>Passanger's Name</p> 
+            <input type="text" placeholder="My name">
+            <button>Search</button>
         </div>
     </div>
     

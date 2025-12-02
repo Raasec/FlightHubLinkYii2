@@ -67,8 +67,8 @@ AppAsset::register($this);
             <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                 <div class="navbar-nav ml-auto py-0">
                     <a href="<?= Yii::$app->homeUrl ?>" class="nav-item nav-link <?= Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index' ? 'active' : '' ?>">Voos</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>" class="nav-item nav-link">Serviços</a>
-                    <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Check-In Online</a>  
+                    <a href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>" class="nav-item nav-link">Services</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Online Check-In</a>  
                     <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Support</a>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="nav-item nav-link">Login</a>
@@ -117,11 +117,11 @@ AppAsset::register($this);
         <div class="col-lg-3 col-md-6 mb-3">
             <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Our Services</h5>
             <div class="d-flex flex-column justify-content-start">
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>All Services</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>KFC</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>McDonalds</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Burger King</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Wells</a>
+                <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>"><i class="fa fa-angle-right mr-1"></i>All Services</a>
+                <a class="text-white-50 mb-1 medium" href="https://www.kfc.pt/"><i class="fa fa-angle-right mr-1"></i>KFC</a>
+                <a class="text-white-50 mb-1 medium" href="https://www.mcdonalds.pt/"><i class="fa fa-angle-right mr-1"></i>McDonalds</a>
+                <a class="text-white-50 mb-1 medium" href="https://www.burgerking.pt/pt/"><i class="fa fa-angle-right mr-1"></i>Burger King</a>
+                <a class="text-white-50 mb-1 medium" href="https://wells.pt/"><i class="fa fa-angle-right mr-1"></i>Wells</a>
                 <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Pull&Bear</a>
                 <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Balvera</a>
             </div>
@@ -130,7 +130,7 @@ AppAsset::register($this);
         <div class="col-lg-3 col-md-6 mb-3">
             <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Useful Links</h5>
             <div class="d-flex flex-column justify-content-start">
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>About</a>
+                <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/about']) ?>"><i class="fa fa-angle-right mr-1"></i>About</a>
                 <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Destinations</a>
                 <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Current Flights</a>
                 <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Search Flight</a>

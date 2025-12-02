@@ -75,10 +75,8 @@
     <div class="container-fluid d-flex justify-content-center mt-5 pb-5">
         <div class="booking-wrapper shadow">
 
-            <!-- Tabs -->
             <div class="booking-tabs d-flex">
-                <button class="booking-tab active">Buscar voos</button>
-                <button class="booking-tab">Status voos</button>
+                <button class="booking-tab active">Search Flights</button>
             </div>
 
             <!-- Form -->
@@ -90,7 +88,7 @@
                     <div class="col-md-4 col-12">
                         <div class="booking-input">
                             <i class="fa fa-map-marker-alt"></i>
-                            <input type="text" placeholder="Origem">
+                            <input type="text" placeholder="Origin">
                         </div>
                     </div>
 
@@ -98,7 +96,7 @@
                     <div class="col-md-4 col-12">
                         <div class="booking-input">
                             <i class="fa fa-location-arrow"></i>
-                            <input type="text" placeholder="Destino">
+                            <input type="text" placeholder="Destination">
                         </div>
                     </div>
 
@@ -106,7 +104,7 @@
                     <div class="col-md-4 col-12">
                         <div class="booking-input">
                             <i class="fa fa-calendar"></i>
-                            <input type="text" placeholder="dd/mm/aaaa">
+                            <input type="text" placeholder="dd/mm/yyyy">
                         </div>
                     </div>
 
@@ -114,7 +112,7 @@
                     <div class="col-12">
                         <button class="booking-btn">
                             <i class="fa fa-search"></i>
-                            <span>Buscar voos</span>
+                            <span>Search flights</span>
                         </button>
                     </div>
 
@@ -132,8 +130,8 @@
 
             <!-- Tabs -->
             <div class="flight-tabs d-flex">
-                <button class="flight-tab active" data-type="partidas">Partidas</button>
-                <button class="flight-tab" data-type="chegadas">Chegadas</button>
+                <button class="flight-tab active" data-type="partidas">Departures</button>
+                <button class="flight-tab" data-type="chegadas">Arrivals</button>
             </div>
 
             <!-- Table -->
@@ -142,63 +140,28 @@
                 <table class="flight-table">
                     <thead>
                         <tr>
-                            <th>Voo</th>
-                            <th>Origem / Destino</th>
-                            <th>Horário</th>
+                            <th>Flight</th>
+                            <th>Origin</th>
+                            <th>Destination</th>
+                            <th>Leaves at</th>
                             <th>Status</th>
-                            <th>Portão</th>
+                            <th>Gate</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>TP123</td>
-                            <td>Lisboa</td>
-                            <td>12:45</td>
-                            <td><span class="status ontime">No horário</span></td>
-                            <td>A12</td>
-                        </tr>
+                        <!-- este foreach ta mal whatever n dei update porque vamos mudar a table --> 
+                        <?php foreach ($partidas as $voo): ?>
+                            <tr>
+                                <td><?= $voo->numero_voo ?></td>
+                                <td><?= $voo->origem ?></td>
+                                <td><?= $voo->destino ?></td>
+                                
+                                
 
-                        <tr>
-                            <td>FR9021</td>
-                            <td>Porto</td>
-                            <td>13:10</td>
-                            <td><span class="status delayed">Atrasado</span></td>
-                            <td>B07</td>
-                        </tr>
-
-                        <tr>
-                            <td>LH331</td>
-                            <td>Frankfurt</td>
-                            <td>14:00</td>
-                            <td><span class="status boarding">A embarcar</span></td>
-                            <td>C03</td>
-                        </tr>
-
-                        <tr>
-                            <td>TP134</td>
-                            <td>Kyiv</td>
-                            <td>21:00</td>
-                            <td><span class="status boarding">A embarcar</span></td>
-                            <td>C03</td>
-                        </tr>
-
-                        <tr>
-                            <td>LH331</td>
-                            <td>Frankfurt</td>
-                            <td>14:00</td>
-                            <td><span class="status boarding">A embarcar</span></td>
-                            <td>C03</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>LH331</td>
-                            <td>Frankfurt</td>
-                            <td>14:00</td>
-                            <td><span class="status boarding">A embarcar</span></td>
-                            <td>C03</td>
-                        </tr>
-                        
+                                <td><?= $voo->porta_embarque ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
 
                 </table>
@@ -215,8 +178,8 @@
     <div class="container-fluid py-5">
         <div class="container pt-5 pb-3">
             <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Tudo para uma viagem confórtavel</h6>
-                <h1>Serviços e Comodidades</h1>
+                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Everything for your comfort</h6>
+                <h1>Services and commodities</h1>
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
