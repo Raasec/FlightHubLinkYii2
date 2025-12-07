@@ -3,21 +3,20 @@
 namespace backend\modules\api\controllers;
 
 use Yii;
-use common\models\Voo;
-use common\models\VooSearch;
+use common\models\CompanhiaAerea;
+use common\models\CompanhiaAereaSearch;
 use yii\data\ActiveDataProvider;
 use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\ForbiddenHttpException;
 
-class VooController extends Controller
+class CompanhiaAereaController extends Controller
 {
 
     public function actionIndex()
     {
         $this->checkAccess('index'); // RBAC
 
-        $searchModel = new VooSearch();
+        $searchModel = new CompanhiaAereaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $dataProvider;
@@ -30,27 +29,19 @@ class VooController extends Controller
         return $this->findModel($id);
     }
 
-    public function actionPorOrigem($cidade)
-    {
-        $this->checkAccess('porOrigem'); // RBAC
-
-        $search = Voo::find()->where(['origem' => $cidade])->all();
-        return $search;
-    }
-
     protected function findModel($id)
     {
-        if (($model = Voo::findOne($id)) !== null) {
+        if (($model = CompanhiaAerea::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('Voo não encontrado.');
+        throw new NotFoundHttpException('Companhia aérea não encontrada.');
     }
 
     protected function checkAccess($action, $model = null, $params = [])
     {
         if (!Yii::$app->user->can('passageiro') && !Yii::$app->user->can('guest')) {
-            throw new ForbiddenHttpException('Não tem permissão para aceder a esta ação.');
+            throw new \yii\web\ForbiddenHttpException('Não tem permissão para aceder a esta ação.');
         }
     }
 }

@@ -38,7 +38,7 @@
             <input type="text" placeholder="Ex: ABC1234" maxlength="6">
             <p>Passanger's Name</p> 
             <input type="text" placeholder="My name">
-            <button>Search</button>
+            <button class="btn-primary">Search</button>
         </div>
     </div>
     

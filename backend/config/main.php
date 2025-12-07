@@ -65,38 +65,51 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            //'enableStrictParsing' => false,
-            /*'rules' => [
-                'class' => 'yii\rest\UrlRule',
-                'controller' => [
-                    'api/voo',
-                    'api/bilhete',
-                    'api/notificacao',
-                    'api/review'
-                ],*/
             'rules' => [
+                // AuthController (login)
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/auth',
+                    'pluralize' => false,
+                ],
+                // VooController
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/voo',
-                    'pluralize' => false
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET origem/{cidade}' => 'porOrigem',
+                    ],
+                    'tokens' => [
+                        '{cidade}' => '<cidade:[\w\s]+>',
+                    ],
                 ],
+                // CompanhiaAereaController
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/companhia-aerea',
+                    'pluralize' => false,
+                ],
+                // BilheteController 
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/bilhete',
-                    'pluralize' => false
+                    'pluralize' => false,
                 ],
+                // Outros controllers 
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/notificacao',
-                    'pluralize' => false
+                    'pluralize' => false,
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/review',
-                    'pluralize' => false
+                    'pluralize' => false,
                 ],
             ]
         ],
+
         'assetManager' => [
             'bundles' => [
                 'dmstr\web\AdminLteAsset' => [

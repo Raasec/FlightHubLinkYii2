@@ -11,8 +11,8 @@ class ModuleAPI extends Module
     public function init()
     {
         parent::init();
-
-        // Configurações específicas do módulo API podem ir aqui
+        
+        Yii::$app->user->enableSession = false; // obrigatório para APIs stateless
     }
 }
 
