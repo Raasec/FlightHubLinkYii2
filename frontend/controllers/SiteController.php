@@ -16,6 +16,8 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Voo; 
+use common\models\ServicoAeroporto;
+
 /**
  * Site controller
  */
@@ -75,13 +77,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // para a table de flights 
         $partidas = Voo::find()->all();
         $chegadas = Voo::find()->all();
+
+        // para o preview dos services
+        $servicos = ServicoAeroporto::find()->all();
 
         return $this->render('index', [
             'partidas' => $partidas,
             'chegadas' => $chegadas,
+            'servicos' => $servicos,
         ]);
+
     }
 
     /**

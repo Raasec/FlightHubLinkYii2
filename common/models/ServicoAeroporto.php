@@ -50,4 +50,37 @@ class ServicoAeroporto extends \yii\db\ActiveRecord
         ];
     }
 
+    // n sei se o formating esta bem feito eu roubei da net, testamos depois com o CRUD completo
+    public function getEstado()
+    {
+        if (!$this->horario_funcionamento) {
+            return "Unknown";
+        }
+
+        if (preg_match('/(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/', $this->horario_funcionamento, $m)) {
+            $agora = date("H:i");
+            return ($agora >= $m[1] && $agora <= $m[2]) ? "Open" : "Closed";
+        }
+
+        return "Unknown";
+    }
+
+    // isto so vai funcionar quando alguem fizer a migration que precisamos das images
+    public function getImagem()
+    {
+        $defaultUrl = Yii::getAlias("@imgUrl") . "/destination-1.jpg";
+
+        if (!$this->tipo) {
+            return $defaultUrl;
+        }
+
+        $slug = strtolower(str_replace(' ', '', $this->tipo));
+
+        $filePath = Yii::getAlias("@imgRoot/services/$slug.jpg");
+        $urlPath  = Yii::getAlias("@imgUrl") . "/services/$slug.jpg";
+
+        return file_exists($filePath) ? $urlPath : $defaultUrl;
+    }
+
+
 }
