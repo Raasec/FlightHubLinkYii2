@@ -74,10 +74,10 @@ class ServicoAeroporto extends \yii\db\ActiveRecord
             return $defaultUrl;
         }
 
-        $slug = strtolower(str_replace(' ', '', $this->tipo));
+        $filename = strtolower(str_replace(' ', '', $this->tipo));
 
-        $filePath = Yii::getAlias("@imgRoot/services/$slug.jpg");
-        $urlPath  = Yii::getAlias("@imgUrl") . "/services/$slug.jpg";
+        $filePath = Yii::getAlias("@imgRoot/services/$filename.jpg");
+        $urlPath  = Yii::getAlias("@imgUrl") . "/services/$filename.jpg";
 
         return file_exists($filePath) ? $urlPath : $defaultUrl;
     }
