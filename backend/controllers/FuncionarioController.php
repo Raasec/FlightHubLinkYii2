@@ -26,16 +26,40 @@ class FuncionarioController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        //Administradores podem tudo aceder a tudo
-                        'allow' => true,
-                        'roles' => ['administrador'],
-                    ],
+                        //alteração para roles novamente
 
+                        // Quem tiver permissao para ver o Funcionario tem acesso ao index / view
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['viewFuncionario'],
+                        
+                    ],
                     // Funcionarios so podem ver o proprio perfil
                     [
                         'allow' => true,
                         'actions' => ['view'],
-                        'roles' => ['funcionario'],
+                        'roles' => ['viewFuncionario', 'viewOwnFuncionario'],
+                    ],
+
+                    [
+                        // Permissoes para Criar
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createFuncionario'],
+                    ],
+
+                    [
+                        // Update permiss
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updateFuncionario'],
+                    ],
+
+                    [
+                        // Permissoes de Delete
+                        'allow' => true,
+                        'actions' => ['delete'],
+                        'roles' => ['deleteFuncionario'],
                     ],
                 ],
             ],
@@ -52,21 +76,28 @@ class FuncionarioController extends Controller
      * Lists all Funcionario models.
      * @return mixed
      */
+    // Listagem de Todos os Funcionarios
     public function actionIndex()
     {
         // Apenas administradores podem listar funcionários
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        if (!Yii::$app->user->can('viewFuncionario')) {
+            throw new \yii\web\ForbiddenHttpException('Acesso negado, Sem permissões para listar Funcionários');
         }
 
 
+        
         $searchModel = new FuncionarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        //var_dump(Yii::$app->user->identity->id);
+        //var_dump(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
+        //var_dump(Yii::$app->user->can('viewFuncionario'));
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        
     }
 
     /**
@@ -75,29 +106,34 @@ class FuncionarioController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+    // VER PERFIL
     public function actionView($id_funcionario)
     {
         $model = $this->findModel($id_funcionario);
 
         $user = Yii::$app->user->identity;
 
-        $isAdmin = Yii::$app->user->can('administrador');
-        $isFuncionario = Yii::$app->user->can('funcionario');
+        // Se o user pode ver todos os Funcionarios entao a permission deixa passar
+        if (Yii::$app->user->can('viewFuncionario')) {
+            return $this->render('view', [
+                'model' => $model,
+                'user' => $user,
+            ]);
 
-        // Alteração aqui do tipo_utilizador para $user->can para seguir as regras do RBAC
-        //  Se o utilizador for Funcionario entao ele so podera ver
-        if ($isFuncionario && !$isAdmin) {
-            if ($model->id_utilizador !== $user) {
-                throw new \yii\web\ForbiddenHttpException(
-                    'Não pode ver dados de outros funcionários.'
-                );
-            }
         }
+        else {
+           // Se nao deixou passar para ver todos os funcionarios
+            // Então vai ver se pode ver o próprio perfil (com a rule check)
+            if (Yii::$app->user->can('viewOwnFuncionario', ['model' => $model])) {
 
-        return $this->render('view', [
-            'model' => $model,
-            'user' => Yii::$app->user->identity, // isto envia para a view
-        ]);
+                return $this->render('view', [
+                    'model' => $model,
+                    'user' => $user,
+                ]);     
+            } 
+        }
+        throw new \yii\web\ForbiddenHttpException("Acesso negado.");
+
     }
 
     /**
@@ -105,10 +141,11 @@ class FuncionarioController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    //Criar um Funcionario
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        if (!Yii::$app->user->can('createFuncionario')) {
+            throw new \yii\web\ForbiddenHttpException('Denied Acess. You need to be Administrator to create Employees.');
         }
 
         $model = new Funcionario();
@@ -129,10 +166,11 @@ class FuncionarioController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+    // Atualizar Funcionario 
     public function actionUpdate($id_funcionario)
     {
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        if (!Yii::$app->user->can('updateFuncionario')) {
+            throw new \yii\web\ForbiddenHttpException('Acess Denied. The User needs to be Admin to update the Employee');
         }
 
         $model = $this->findModel($id_funcionario);
@@ -153,10 +191,11 @@ class FuncionarioController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+    // Deletar Funcionarios
     public function actionDelete($id_funcionario)
     {
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado, precisa ser Administrador para aceder.');
+        if (!Yii::$app->user->can('deleteFuncionario')) {
+            throw new \yii\web\ForbiddenHttpException('Acess Denied. The User needs to be Administrator to delete the Employee');
         }
 
         $this->findModel($id_funcionario)->delete();

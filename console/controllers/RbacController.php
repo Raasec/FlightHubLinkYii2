@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use Yii;
 use yii\console\Controller;
+use console\rbac\ViewOwnFuncionarioRule;
 
 class RbacController extends Controller
 {
@@ -50,7 +51,53 @@ class RbacController extends Controller
         $auth->addChild($manageUsers, $viewUser);
         $auth->addChild($manageUsers, $updateUser);
         $auth->addChild($manageUsers, $deleteUser);
+
         
+
+        //region ---- Permissions CRUD Funcionarios ----
+        // ------------------------------------------
+
+        $createFuncionario = $auth->createPermission('createFuncionario');
+        $createFuncionario->description = 'Criar funcionário';
+        $auth->add($createFuncionario);
+
+        $viewFuncionario = $auth->createPermission('viewFuncionario');
+        $viewFuncionario->description = 'Ver funcionário';
+        $auth->add($viewFuncionario);
+
+        $viewOwnFuncionario = $auth->createPermission('viewOwnFuncionario');
+        $viewOwnFuncionario->description = 'Ver o próprio perfil de funcionário';
+        $auth->add($viewOwnFuncionario);
+        // Rule (regras) para a confirmar na visualização se o perfil é o próprio
+        $rule = new ViewOwnFuncionarioRule();
+        $auth->add($rule);
+        $viewOwnFuncionario->ruleName =$rule->name;
+        $auth->update($viewOwnFuncionario->name, $viewOwnFuncionario);
+
+        $updateFuncionario = $auth->createPermission('updateFuncionario');
+        $updateFuncionario->description = 'Editar funcionário';
+        $auth->add($updateFuncionario);
+
+        $deleteFuncionario = $auth->createPermission('deleteFuncionario');
+        $deleteFuncionario->description = 'Eliminar funcionário';
+        $auth->add($deleteFuncionario);
+
+        // Group permission
+        $manageFuncionarios = $auth->createPermission('manageFuncionarios');
+        $manageFuncionarios->description = 'Gerir funcionários (CRUD)';
+        $auth->add($manageFuncionarios);
+
+        // Set inheritance
+        $auth->addChild($manageFuncionarios, $createFuncionario);
+        $auth->addChild($manageFuncionarios, $viewFuncionario);
+        $auth->addChild($manageFuncionarios, $updateFuncionario);
+        $auth->addChild($manageFuncionarios, $deleteFuncionario);
+
+        //endregion 
+        // ---- (...)
+        // END Permission CRUD Funcionarios
+        //-----------------------------------
+
         // Permissions para managing de Flights
         $createFlight = $auth->createPermission('createFlight');
         $createFlight->description = 'Criar voo';
@@ -318,9 +365,12 @@ class RbacController extends Controller
         $auth->addChild($funcionario, $manageIncidents);
         $auth->addChild($funcionario, $manageAirlines);
         $auth->addChild($funcionario, $manageServices);
+        $auth->addChild($funcionario, $viewOwnFuncionario);
 
         // admin: tudo do funcionario + gestao de utilizadores
         $auth->addChild($admin, $funcionario);
         $auth->addChild($admin, $manageUsers);
+        $auth->addChild($admin, $manageFuncionarios);
+
     }
 }

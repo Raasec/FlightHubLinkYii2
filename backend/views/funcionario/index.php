@@ -12,7 +12,9 @@ $this->title = 'Funcionarios';
 $this->params['breadcrumbs'][] = $this->title;
 
 // Agora usamos RBAC em vez de tipo-utilizador para se fazer a identifacao do utilizador
-$isAdmin = Yii::$app->user->can('administrador');
+$canUpdate = Yii::$app->user->can('updateFuncionario');
+$canDelete = Yii::$app->user->can('deleteFuncionario');
+
 
 ?>
 <div class="container-fluid">
@@ -61,22 +63,20 @@ $isAdmin = Yii::$app->user->can('administrador');
                             [
                                 'class' => 'yii\grid\ActionColumn',
 
-                                'template' => $isAdmin ? '{view} {update} {delete}' : '{view}',
+                                'template' => '{view}' 
+                                                . ($canUpdate ? ' {update}' : '') 
+                                                . ($canDelete ? ' {delete}' : ''),
 
                                 'urlCreator' => function ($action, $model, $key, $index) {
                                     return Url::to([$action, 'id_funcionario' => $model->id_funcionario]); },
 
                                 'visibleButtons' => [
                                     // butao que fica visivel
-                                    'update' => function ($url, $model, $key) use ($isAdmin) {
-                                        if ($isAdmin) {
-                                            return true;
-                                        }
-                                        // se o proprio f
-                                        return $model->id_utilizador == Yii::$app->user->id;
+                                    'update' => function ($url, $model, $key) use ($canUpdate) {
+                                        return $canUpdate;
                                     },
-                                    'delete' => function () use ($isAdmin) {
-                                        return $isAdmin;
+                                    'delete' => function () use ($canDelete) {
+                                        return $canDelete;
                                     },
                                 ],
                             ],
@@ -86,7 +86,7 @@ $isAdmin = Yii::$app->user->can('administrador');
                             'class' => 'yii\bootstrap4\LinkPager',
                         ]
                     ]); ?>
-
+                
 
                 </div>
                 <!--.card-body-->
