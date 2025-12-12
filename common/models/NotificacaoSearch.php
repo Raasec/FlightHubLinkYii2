@@ -18,7 +18,7 @@ class NotificacaoSearch extends Notificacao
     {
         return [
             [['id_notificacao', 'id_voo'], 'integer'],
-            [['tipo', 'mensagem', 'data_envio'], 'safe'],
+            [['type', 'message', 'sent_at'], 'safe'],
         ];
     }
 
@@ -60,11 +60,11 @@ class NotificacaoSearch extends Notificacao
         $query->andFilterWhere([
             'id_notificacao' => $this->id_notificacao,
             'id_voo' => $this->id_voo,
-            'data_envio' => $this->data_envio,
+            'sent_at' => $this->sent_at,
         ]);
 
-        $query->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'mensagem', $this->mensagem]);
+        $query->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'message', $this->message]);
 
         return $dataProvider;
     }

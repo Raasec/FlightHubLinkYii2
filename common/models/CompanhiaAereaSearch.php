@@ -18,7 +18,7 @@ class CompanhiaAereaSearch extends CompanhiaAerea
     {
         return [
             [['id_companhia'], 'integer'],
-            [['nome', 'codigo_iata', 'pais_origem'], 'safe'],
+            [['name', 'iata_code', 'country_origin', 'image'], 'safe'],
         ];
     }
 
@@ -61,9 +61,11 @@ class CompanhiaAereaSearch extends CompanhiaAerea
             'id_companhia' => $this->id_companhia,
         ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'codigo_iata', $this->codigo_iata])
-            ->andFilterWhere(['like', 'pais_origem', $this->pais_origem]);
+        $query->andFilterWhere(['id_companhia' => $this->id_companhia])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'iata_code', $this->iata_code])
+            ->andFilterWhere(['like', 'country_origin', $this->country_origin])
+            ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }

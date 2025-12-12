@@ -33,20 +33,9 @@ $user = $model->user; // relação com User
         </div>
     <?php endif; ?>
 
-    <!-- NIF -->
-    <?= $form->field($model, 'nif')->textInput(['maxlength' => true]) ?>
-
-    <!-- Telefone -->
-    <?= $form->field($model, 'telefone')->textInput(['maxlength' => true]) ?>
-
-    <!-- Nacionalidade -->
-    <?= $form->field($model, 'nacionalidade')->textInput(['maxlength' => true]) ?>
-
-    <!-- Data Nascimento com Calendario (DATE PICKER) -->
-    <?= $form->field($model, 'data_nascimento')->input('date') ?>
 
     <!-- Preferências -->
-    <?= $form->field($model, 'preferencias')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'preferences')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

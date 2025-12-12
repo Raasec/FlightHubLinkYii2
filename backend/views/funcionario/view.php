@@ -7,9 +7,9 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Funcionario */
 /** @var \common\models\User $user */
 
-$this->title = "Funcionário #".$model->id_funcionario;
+$this->title = "Employee #".$model->id_funcionario;
 
-$this->params['breadcrumbs'][] = ['label' => 'Funcionários', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Employees', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 \yii\web\YiiAsset::register($this);
@@ -60,13 +60,13 @@ $isOwner = $model->id_utilizador == $user->id;
                                 'label' => 'Email',
                                 'value' => $model->user->email
                             ],
-                            'departamento',
-                            'cargo',
+                            'department',
+                            'job_position',
                             [
-                                'attribute' => 'turno',
-                                'value' => $model->displayTurno(),
+                                'attribute' => 'shift',
+                                'value' => $model->getShiftLabel(),
                             ],
-                            'data_contratacao',
+                            'hire_date',
                         ],
                     ]) ?>
                 </div>

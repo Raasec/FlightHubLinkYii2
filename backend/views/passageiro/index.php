@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\PassageiroSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Passageiros';
+$this->title = 'Passengers';
 $this->params['breadcrumbs'][] = $this->title;
 
 $user = Yii::$app->user->identity;
@@ -40,6 +40,7 @@ $isFuncionario = Yii::$app->user->can('funcionario');
 
                             'id_utilizador',                            
                             [
+                                'attribute' => 'username',
                                 'label' => 'Username',
                                 'value' => function ($model) {
                                     return $model->user ? $model->user->username : '(n/d)';
@@ -47,20 +48,21 @@ $isFuncionario = Yii::$app->user->can('funcionario');
                             ],
                             'id_passageiro',
                             [
+                                'attribute' => 'email',
                                 'label' => 'Email',
                                 'value' => function ($model) {
                                     return $model->user ? $model->user->email : '(n/d)';
                                 }
                             ],
-                            'nif',
-                            'telefone',
-                            'nacionalidade',
-                            'data_nascimento',
-                            //'preferencias:ntext',
+                            [
+                                'attribute' => 'preferences',
+                                'label' => 'Preferences',
+                                'value' => fn($model) => $model->preferences ?: '(none)',
+                            ],
 
                             [
                                 'class' => '\yii\grid\ActionColumn',
-                                'header' => 'Ações',
+                                'header' => 'Actions',
 
                                 // Corrige o problema dos IDs
                                 'urlCreator' => function ($action, $model) {

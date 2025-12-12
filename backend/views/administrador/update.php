@@ -3,8 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\Administrador */
 
-$this->title = 'Update Administrador: ' . $model->id_admin;
-$this->params['breadcrumbs'][] = ['label' => 'Administradors', 'url' => ['index']];
+$this->title = 'Update Administrator: ' . $model->id_admin;
+$this->params['breadcrumbs'][] = ['label' => 'Administrator', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_admin, 'url' => ['view', 'id_admin' => $model->id_admin]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

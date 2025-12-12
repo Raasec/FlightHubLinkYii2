@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Bilhete */
 
-$this->title = $model->id_bilhete;
-$this->params['breadcrumbs'][] = ['label' => 'Bilhetes', 'url' => ['index']];
+$this->title = "Ticket #" . $model->id_bilhete;
+$this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -33,12 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_bilhete',
                             'id_passageiro',
                             'id_voo',
-                            'porta_embarque',
-                            'data_emissao',
-                            'preco',
-                            'classe',
-                            'assento',
-                            'estado',
+                            'gate',
+                            'issue_date',
+                            'price',
+                            'travel_class',
+                            'seat',
+                            'status',
                         ],
                     ]) ?>
                 </div>

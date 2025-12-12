@@ -10,8 +10,8 @@ use Yii;
  * @property int $id_checkin
  * @property int $id_bilhete
  * @property int|null $id_funcionario
- * @property string $data_checkin
- * @property string|null $metodo
+ * @property string $checkin_datetime
+ * @property string|null $method
  *
  * @property Bilhete $bilhete
  * @property Funcionario $funcionario
@@ -34,12 +34,13 @@ class Checkin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_funcionario', 'metodo'], 'default', 'value' => null],
-            [['id_bilhete', 'data_checkin'], 'required'],
+            [['id_bilhete', 'checkin_datetime'], 'required'],
             [['id_bilhete', 'id_funcionario'], 'integer'],
-            [['data_checkin'], 'safe'],
-            [['metodo'], 'string', 'max' => 50],
+            [['checkin_datetime'], 'safe'],
+            [['method'], 'string', 'max' => 50],
+
             [['id_bilhete'], 'unique'],
+            //FK
             [['id_bilhete'], 'exist', 'skipOnError' => true, 'targetClass' => Bilhete::class, 'targetAttribute' => ['id_bilhete' => 'id_bilhete']],
             [['id_funcionario'], 'exist', 'skipOnError' => true, 'targetClass' => Funcionario::class, 'targetAttribute' => ['id_funcionario' => 'id_funcionario']],
         ];
@@ -51,11 +52,11 @@ class Checkin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_checkin' => 'Id Checkin',
-            'id_bilhete' => 'Id Bilhete',
-            'id_funcionario' => 'Id Funcionario',
-            'data_checkin' => 'Data Checkin',
-            'metodo' => 'Metodo',
+            'id_checkin'       => 'Check-In ID',
+            'id_bilhete'       => 'Ticket ID',
+            'id_funcionario'   => 'Employee ID',
+            'checkin_datetime' => 'Check-In Date/Time',
+            'method'           => 'Method',
         ];
     }
 

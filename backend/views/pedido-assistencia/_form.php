@@ -16,13 +16,15 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id_funcionario_resolve')->textInput() ?>
 
-    <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'data_pedido')->textInput() ?>
+    <?= $form->field($model, 'request_date')->input('date') ?>
 
-    <?= $form->field($model, 'data_resolucao')->textInput() ?>
+    <?= $form->field($model, 'resolution_date')->input('date') ?>
 
-    <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

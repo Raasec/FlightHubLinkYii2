@@ -9,12 +9,14 @@ use Yii;
  *
  * @property int $id_funcionario
  * @property int $id_utilizador
- * @property string|null $departamento
- * @property string|null $cargo
- * @property string|null $turno
- * @property string|null $data_contratacao
+ * @property string|null $department
+ * @property string|null $job_position
+ * @property string|null $shift
+ * @property string|null $hire_date
+ * @property int|null $user_profile_id
  *
  * @property User $user
+ * @property UserProfile $userProfile  //new
  * @property Checkin[] $checkins
  * @property PedidoAssistencia[] $pedidoAssistencias
  * @property Voo[] $voos
@@ -25,9 +27,9 @@ class Funcionario extends \yii\db\ActiveRecord
     /**
      * ENUM field values
      */
-    const TURNO_DIA = 'dia';
-    const TURNO_TARDE = 'tarde';
-    const TURNO_NOITE = 'noite';
+    const SHIFT_DAY = 'day';
+    const SHIFT_AFTERNOON = 'afternoon';
+    const SHIFT_NIGHT = 'night';
 
     /**
      * {@inheritdoc}
@@ -44,14 +46,15 @@ class Funcionario extends \yii\db\ActiveRecord
     {
         return [
             [['id_utilizador'], 'required'],
-            [['id_utilizador'], 'integer'],
+            [['id_utilizador', 'user_profile_id'], 'integer'],
 
-            [['turno'], 'string'],
-            [['data_contratacao'], 'safe'],
+            [['hire_date'], 'safe'],
 
-            [['departamento', 'cargo'], 'string', 'max' => 100],
+            [['department', 'job_position'], 'string', 'max' => 100],
 
-            ['turno', 'in', 'range' => array_keys(self::optsTurno())],
+            [['shift'], 'string', 'max' => 20],
+
+            ['shift', 'in', 'range' => array_keys(self::shiftOptions())],
 
             // FK para user(id)
             [
@@ -60,6 +63,15 @@ class Funcionario extends \yii\db\ActiveRecord
                 'skipOnError' => true,
                 'targetClass' => User::class,
                 'targetAttribute' => ['id_utilizador' => 'id']
+            ],
+
+            // FK para UserProfile
+            [
+                ['user_profile_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => UserProfile::class,
+                'targetAttribute' => ['user_profile_id' => 'id']
             ],
         ];
     }
@@ -70,12 +82,13 @@ class Funcionario extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_funcionario' => 'ID Funcionário',
-            'id_utilizador' => 'ID Utilizador',
-            'departamento' => 'Departamento',
-            'cargo' => 'Cargo',
-            'turno' => 'Turno',
-            'data_contratacao' => 'Data Contratacao',
+            'id_funcionario'  => 'Employee ID',
+            'id_utilizador'   => 'User ID',
+            'department'      => 'Department',
+            'job_position'    => 'Job Position',
+            'shift'           => 'Shift',
+            'hire_date'       => 'Hire Date',
+            'user_profile_id' => 'User Profile',
         ];
     }
 
@@ -88,6 +101,12 @@ class Funcionario extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'id_utilizador']);
     }
 
+    // New Relação para o Perfil do Utilizador
+        public function getUserProfile()
+    {
+        return $this->hasOne(UserProfile::class, ['id' => 'user_profile_id']);
+    }
+    
     /**
      * Gets query for [[Checkins]].
      *
@@ -123,83 +142,84 @@ class Funcionario extends \yii\db\ActiveRecord
      * column turno ENUM value labels
      * @return string[]
      */
-    public static function optsTurno()
+    public static function shiftOptions()
     {
         return [
-            self::TURNO_DIA => 'dia',
-            self::TURNO_TARDE => 'tarde',
-            self::TURNO_NOITE => 'noite',
+            self::SHIFT_DAY => 'Day',
+            self::SHIFT_AFTERNOON => 'Afternoon',
+            self::SHIFT_NIGHT => 'Night',
         ];
     }
 
     /**
      * @return string
      */
+    public function getShiftLabel()
+    {
+        return self::shiftOptions()[$this->shift] ?? '(not assigned)';
+    }
+
+    /*
     public function displayTurno()
     {
         return $this->turno !== null && isset(self::optsTurno()[$this->turno])
         ? self::optsTurno()[$this->turno]
         : '(não definido)';
     }
+    */
 
     /**
      * @return bool
      */
-    public function isTurnoDia()
+    public function isShiftDay()
     {
-        return $this->turno === self::TURNO_DIA;
+        return $this->shift === self::SHIFT_DAY;
     }
 
-    public function setTurnoToDia()
+    public function setShiftDay()
     {
-        $this->turno = self::TURNO_DIA;
+        $this->shift = self::SHIFT_DAY;
     }
 
-    /**
-     * @return bool
-     */
-    public function isTurnoTarde()
+    public function isShiftAfternoon()
     {
-        return $this->turno === self::TURNO_TARDE;
+        return $this->shift === self::SHIFT_AFTERNOON;
     }
 
-    public function setTurnoToTarde()
+    public function setShiftAfternoon()
     {
-        $this->turno = self::TURNO_TARDE;
+        $this->shift = self::SHIFT_AFTERNOON;
     }
 
-    /**
-     * @return bool
-     */
-    public function isTurnoNoite()
+    public function isShiftNight()
     {
-        return $this->turno === self::TURNO_NOITE;
+        return $this->shift === self::SHIFT_NIGHT;
     }
 
-    public function setTurnoToNoite()
+    public function setShiftNight()
     {
-        $this->turno = self::TURNO_NOITE;
+        $this->shift = self::SHIFT_NIGHT;
     }
 
     public static function optsCargo()
     {
         return [
-            'responsavel_operacoes' => 'Responsável de Operações',
-            'gestor_atendimento' => 'Gestor de Atendimento',
-            'tecnico_pista' => 'Técnico de Pista',
-            'gestor_seguranca' => 'Gestor de Segurança',
-            'supervisor_turno' => 'Supervisor de Turno',
+            'operations_manager' => 'Operations Manager',
+            'customer_manager' => 'Customer Service Manager',
+            'track_technician' => 'Track Technician',
+            'security_manager' => 'Security Manager',
+            'shift_supervisor' => 'Shift Supervisor',
         ];
     }
 
     public static function optsDepartamento()
     {
         return [
-            'operacoes_voo' => 'Operações de Voo',
-            'atendimento_passageiro' => 'Atendimento ao Passageiro',
-            'servicos_tecnicos' => 'Serviços Técnicos',
-            'seguranca' => 'Segurança Aeroportuária',
-            'administracao' => 'Administração',
+            'flight_operations' => 'Flight Operations',
+            'passenger_service' => 'Passenger Assistance',
+            'technical_services' => 'Technical Services',
+            'security' => 'Airport Security',
+            'administration' => 'Administration',
         ];
     }
 

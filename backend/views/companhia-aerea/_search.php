@@ -18,11 +18,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_companhia') ?>
 
-    <?= $form->field($model, 'nome') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'codigo_iata') ?>
+    <?= $form->field($model, 'iata_code') ?>
 
-    <?= $form->field($model, 'pais_origem') ?>
+    <?= $form->field($model, 'country_origin') ?>
+
+    <?= $form->field($model, 'image') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

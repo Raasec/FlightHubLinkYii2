@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\IncidenteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Incidentes';
+$this->title = 'Incidents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Incidente', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Incident', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_incidente',
                             'id_notificacao',
                             'id_funcionario',
-                            'tipo',
-                            'descricao:ntext',
-                            //'data_registo',
+                            'type',
+                            'description:ntext',
+                            //'created_at',
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

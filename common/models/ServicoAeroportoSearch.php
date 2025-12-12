@@ -18,7 +18,7 @@ class ServicoAeroportoSearch extends ServicoAeroporto
     {
         return [
             [['id_servico'], 'integer'],
-            [['nome', 'tipo', 'localizacao', 'horario_funcionamento'], 'safe'],
+            [['name', 'type', 'location', 'opening_hours', 'image','url'], 'safe'],
         ];
     }
 
@@ -61,10 +61,13 @@ class ServicoAeroportoSearch extends ServicoAeroporto
             'id_servico' => $this->id_servico,
         ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'localizacao', $this->localizacao])
-            ->andFilterWhere(['like', 'horario_funcionamento', $this->horario_funcionamento]);
+        $query->andFilterWhere(['id_servico' => $this->id_servico])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'location', $this->location])
+            ->andFilterWhere(['like', 'opening_hours', $this->opening_hours])
+            ->andFilterWhere(['like', 'image', $this->image])
+            ->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
     }

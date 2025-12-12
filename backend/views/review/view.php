@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Review */
 
-$this->title = $model->id_review;
+$this->title = "Review #:" . $model->id_review;
 $this->params['breadcrumbs'][] = ['label' => 'Reviews', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_passageiro',
                             'id_voo',
                             'rating',
-                            'comentario:ntext',
-                            'data_review',
+                            'comment:ntext',
+                            'review_date',
                         ],
                     ]) ?>
                 </div>

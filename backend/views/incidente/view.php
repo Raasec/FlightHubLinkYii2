@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Incidente */
 
-$this->title = $model->id_incidente;
-$this->params['breadcrumbs'][] = ['label' => 'Incidentes', 'url' => ['index']];
+$this->title = "Incident #:" . $model->id_incidente;
+$this->params['breadcrumbs'][] = ['label' => 'Incidents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_incidente',
                             'id_notificacao',
                             'id_funcionario',
-                            'tipo',
-                            'descricao:ntext',
-                            'data_registo',
+                            'type',
+                            'description:ntext',
+                            'created_at',
                         ],
                     ]) ?>
                 </div>

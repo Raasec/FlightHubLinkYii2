@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\Funcionario */
 
-$this->title = 'Update Funcionario: ' . $model->id_funcionario;
+$this->title = 'Update Employee: ' . $model->id_funcionario;
 $this->params['breadcrumbs'][] = ['label' => 'Funcionarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_funcionario, 'url' => ['view', 'id_funcionario' => $model->id_funcionario]];
 $this->params['breadcrumbs'][] = 'Update';

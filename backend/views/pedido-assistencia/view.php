@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\PedidoAssistencia */
 
 $this->title = $model->id_pedido;
-$this->params['breadcrumbs'][] = ['label' => 'Pedido Assistencias', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Assistance Request', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -33,10 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_pedido',
                             'id_passageiro',
                             'id_funcionario_resolve',
-                            'tipo',
-                            'data_pedido',
-                            'data_resolucao',
-                            'estado',
+                            'type',
+                            'request_date',
+                            'resolution_date',
+                            'status',
+                            'description:ntext',
                         ],
                     ]) ?>
                 </div>

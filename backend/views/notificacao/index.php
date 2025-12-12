@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\NotificacaoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Notificacaos';
+$this->title = 'Notifications';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Notificacao', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Notification', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -32,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'id_notificacao',
                             'id_voo',
-                            'tipo',
-                            'mensagem:ntext',
-                            'data_envio',
+                            'type',
+                            'message:ntext',
+                            'sent_at',
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

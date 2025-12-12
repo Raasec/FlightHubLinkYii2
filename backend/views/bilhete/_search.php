@@ -22,17 +22,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_voo') ?>
 
-    <?= $form->field($model, 'porta_embarque') ?>
+    <?= $form->field($model, 'gate') ?>
 
-    <?= $form->field($model, 'data_emissao') ?>
+    <?= $form->field($model, 'issue_date') ?>
 
-    <?php // echo $form->field($model, 'preco') ?>
+    <?php // echo $form->field($model, 'price') ?>
 
-    <?php // echo $form->field($model, 'classe') ?>
+    <?php // echo $form->field($model, 'travel_class') ?>
 
-    <?php // echo $form->field($model, 'assento') ?>
+    <?php // echo $form->field($model, 'seat') ?>
 
-    <?php // echo $form->field($model, 'estado') ?>
+    <?php // echo $form->field($model, 'status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -9,7 +9,7 @@ class m251209_042943_add_imagem_to_servico_aeroporto extends Migration
      */
     public function safeUp()
     {
-
+        $this->addColumn('servico_aeroporto', 'imagem', $this->string()->after('horario_funcionamento'));
     }
 
     /**
@@ -17,9 +17,7 @@ class m251209_042943_add_imagem_to_servico_aeroporto extends Migration
      */
     public function safeDown()
     {
-        echo "m251209_042943_add_imagem_to_servico_aeroporto cannot be reverted.\n";
-
-        return false;
+        $this->dropColumn('servico_aeroporto', 'imagem');
     }
 
     /*

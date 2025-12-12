@@ -22,10 +22,10 @@ class PassageiroSearch extends Passageiro
     {
         return [
             // pesquisa com inteiro
-            [['id_passageiro', 'id_utilizador'], 'integer'],
+            [['id_passageiro', 'id_utilizador', 'user_profile_id'], 'integer'],
 
             // pesquisa com string
-            [['nif', 'telefone', 'nacionalidade', 'data_nascimento', 'preferencias'], 'safe'],
+            [['preferences'], 'safe'],
 
             // pesquisa com atributos vindos dio User
             [['username', 'email'], 'safe'],
@@ -83,13 +83,10 @@ class PassageiroSearch extends Passageiro
         $query->andFilterWhere([
             'id_passageiro' => $this->id_passageiro,
             'id_utilizador' => $this->id_utilizador,
-            'data_nascimento' => $this->data_nascimento,
+            'user_profile_id' => $this->user_profile_id,
         ]);
 
-        $query->andFilterWhere(['like', 'nif', $this->nif])
-            ->andFilterWhere(['like', 'telefone', $this->telefone])
-            ->andFilterWhere(['like', 'nacionalidade', $this->nacionalidade])
-            ->andFilterWhere(['like', 'preferencias', $this->preferencias]);
+        $query->andFilterWhere(['like', 'preferences', $this->preferences]);
 
 
         // Filtros da tabela user

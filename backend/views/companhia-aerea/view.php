@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\CompanhiaAerea */
 
 $this->title = $model->id_companhia;
-$this->params['breadcrumbs'][] = ['label' => 'Companhia Aereas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Airlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -31,9 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' => $model,
                         'attributes' => [
                             'id_companhia',
-                            'nome',
-                            'codigo_iata',
-                            'pais_origem',
+                            'name',
+                            'iata_code',
+                            'country_origin',
+                            [
+                                'attribute' => 'image',
+                                'label' => 'Logo',
+                                'format' => 'raw',
+                                'value' => function($model) {
+                                    if (!$model->image) return '(no image)';
+                                    return Html::img(
+                                        Yii::getAlias('@imgUrl') . '/airlines/' . $model->image,
+                                        ['width' => '100px']
+                                    );
+                                }
+                            ],
                         ],
                     ]) ?>
                 </div>

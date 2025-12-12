@@ -18,8 +18,8 @@ class BilheteSearch extends Bilhete
     {
         return [
             [['id_bilhete', 'id_passageiro', 'id_voo'], 'integer'],
-            [['porta_embarque', 'data_emissao', 'classe', 'assento', 'estado'], 'safe'],
-            [['preco'], 'number'],
+            [['gate', 'issue_date', 'travel_class', 'seat', 'status'], 'safe'],
+            [['price'], 'number'],
         ];
     }
 
@@ -62,14 +62,14 @@ class BilheteSearch extends Bilhete
             'id_bilhete' => $this->id_bilhete,
             'id_passageiro' => $this->id_passageiro,
             'id_voo' => $this->id_voo,
-            'data_emissao' => $this->data_emissao,
-            'preco' => $this->preco,
+            'issue_date' => $this->issue_date,
+            'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'porta_embarque', $this->porta_embarque])
-            ->andFilterWhere(['like', 'classe', $this->classe])
-            ->andFilterWhere(['like', 'assento', $this->assento])
-            ->andFilterWhere(['like', 'estado', $this->estado]);
+        $query->andFilterWhere(['like', 'gate', $this->gate])
+            ->andFilterWhere(['like', 'travel_class', $this->travel_class])
+            ->andFilterWhere(['like', 'seat', $this->seat])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

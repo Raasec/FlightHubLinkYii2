@@ -6,9 +6,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Passageiro */
 
-$this->title = "Passageiro #{$model->id_passageiro}";
+$this->title = "Passenger #{$model->id_passageiro}";
 
-$this->params['breadcrumbs'][] = ['label' => 'Passageiros', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Passengers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $isAdmin = Yii::$app->user->can('administrador');
@@ -51,11 +51,11 @@ $isFuncionario = Yii::$app->user->can('funcionario');
                                 'label' => 'Email',
                                 'value' => $model->user->email
                             ],
-                            'nif',
-                            'telefone',
-                            'nacionalidade',
-                            'data_nascimento',
-                            'preferencias:ntext',
+                            [
+                                'attribute' => 'preferences',
+                                'format' => 'ntext',
+                                'label' => 'Preferences',
+                            ],
                         ],
                     ]) ?>
                 </div>

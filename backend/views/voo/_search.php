@@ -22,19 +22,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'numero_voo') ?>
 
-    <?= $form->field($model, 'origem') ?>
+    <?= $form->field($model, 'origin') ?>
 
-    <?= $form->field($model, 'destino') ?>
+    <?= $form->field($model, 'destination') ?>
 
-    <?php // echo $form->field($model, 'data_registo') ?>
+    <?= $form->field($model, 'tipo_voo') ?>
 
-    <?php // echo $form->field($model, 'porta_embarque') ?>
+    <?php // echo $form->field($model, 'departure_date') ?>
 
-    <?php // echo $form->field($model, 'data_chegada') ?>
+    <?php // echo $form->field($model, 'arrival_date') ?>
+
+    <?php // echo $form->field($model, 'gate') ?>
 
     <?php // echo $form->field($model, 'id_funcionario_responsavel') ?>
 
-    <?php // echo $form->field($model, 'estado') ?>
+    <?php // echo $form->field($model, 'status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 
 $this->title = "Administrador #{$model->id_admin}";
 
-$this->params['breadcrumbs'][] = ['label' => 'Administradors', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Administrators', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -47,8 +47,8 @@ $isAdmin = Yii::$app->user->can('administrador');
                                 'label' => 'Email',
                                 'value' => $model->user->email
                             ],
-                            'nivel_acesso',
-                            'responsavel_area',
+                            'access_level',
+                            'area_responsible',
                         ],
                     ]) ?>
                 </div>

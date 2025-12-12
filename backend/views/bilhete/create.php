@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Bilhete */
 
-$this->title = 'Create Bilhete';
-$this->params['breadcrumbs'][] = ['label' => 'Bilhetes', 'url' => ['index']];
+$this->title = 'Create Ticket';
+$this->params['breadcrumbs'][] = ['label' => 'Ticket', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

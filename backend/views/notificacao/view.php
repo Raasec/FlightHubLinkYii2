@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Notificacao */
 
-$this->title = $model->id_notificacao;
-$this->params['breadcrumbs'][] = ['label' => 'Notificacaos', 'url' => ['index']];
+$this->title = "Notification #:" . $model->id_notificacao;
+$this->params['breadcrumbs'][] = ['label' => 'Notifications', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -32,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attributes' => [
                             'id_notificacao',
                             'id_voo',
-                            'tipo',
-                            'mensagem:ntext',
-                            'data_envio',
+                            'type',
+                            'message:ntext',
+                            'sent_at',
                         ],
                     ]) ?>
                 </div>

@@ -8,9 +8,10 @@ use Yii;
  * This is the model class for table "companhia_aerea".
  *
  * @property int $id_companhia
- * @property string $nome
- * @property string|null $codigo_iata
- * @property string|null $pais_origem
+ * @property string $name
+ * @property string|null $iata_code
+ * @property string|null $country_origin
+ * @property string|null $image
  *
  * @property Voo[] $voos
  */
@@ -32,11 +33,12 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo_iata', 'pais_origem'], 'default', 'value' => null],
-            [['nome'], 'required'],
-            [['nome'], 'string', 'max' => 100],
-            [['codigo_iata'], 'string', 'max' => 10],
-            [['pais_origem'], 'string', 'max' => 50],
+            [['iata_code', 'country_origin', 'image'], 'default', 'value' => null],
+            [['name'], 'required'],
+            [['name'], 'string', 'max' => 100],
+            [['iata_code'], 'string', 'max' => 10],
+            [['country_origin'], 'string', 'max' => 50],
+            [['image'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,10 +48,11 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_companhia' => 'Id Companhia',
-            'nome' => 'Nome',
-            'codigo_iata' => 'Codigo Iata',
-            'pais_origem' => 'Pais Origem',
+            'id_companhia' => 'Airline ID',
+            'name' => 'Name',
+            'iata_code' => 'Code IATA',
+            'country_origin' => 'Country of Origin',
+            'image' => 'Logo image',
         ];
     }
 
@@ -62,5 +65,12 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Voo::class, ['id_companhia' => 'id_companhia']);
     }
+    public function getImageUrl()
+    {
+        if (!$this->image) {
+            return Yii::getAlias("@imgUrl") . "/airlines/default.png";
+        }
 
+        return Yii::getAlias("@imgUrl") . "/airlines/" . $this->image;
+    }
 }

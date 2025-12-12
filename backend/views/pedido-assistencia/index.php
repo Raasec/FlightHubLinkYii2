@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\PedidoAssistenciaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Pedido Assistencias';
+$this->title = 'Assistance Requests';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Pedido Assistencia', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Assistance Request', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -33,10 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_pedido',
                             'id_passageiro',
                             'id_funcionario_resolve',
-                            'tipo',
-                            'data_pedido',
-                            //'data_resolucao',
-                            //'estado',
+                            'type',
+                            'request_date',
+                            //'resolution_date',
+                            'status',
+                            //'description'
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

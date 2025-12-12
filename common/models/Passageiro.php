@@ -9,13 +9,12 @@ use Yii;
  *
  * @property int $id_passageiro
  * @property int $id_utilizador
- * @property string|null $nif
- * @property string|null $telefone
- * @property string|null $nacionalidade
- * @property string|null $data_nascimento
- * @property string|null $preferencias
+ * @property int|null $user_profile_id
+ * @property string|null $preferences
+ * 
  *
  * @property User $user
+ * @property UserProfile $userProfile  //new
  * @property Bilhete[] $bilhetes
  * @property PedidoAssistencia[] $pedidoAssistencias
  * @property Review[] $reviews
@@ -38,17 +37,10 @@ class Passageiro extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nif', 'telefone', 'nacionalidade', 'data_nascimento', 'preferencias'], 'default', 'value' => null],
-
             [['id_utilizador'], 'required'],
-            [['id_utilizador'], 'integer'],
+            [['id_utilizador', 'user_profile_id'], 'integer'],
 
-            [['data_nascimento'], 'safe'],
-            [['preferencias'], 'string'],
-
-            [['nif'], 'string', 'max' => 15],
-            [['telefone'], 'string', 'max' => 20],
-            [['nacionalidade'], 'string', 'max' => 50],
+            [['preferences', 'string']],
 
             // FK para user(id)
             [
@@ -57,6 +49,15 @@ class Passageiro extends \yii\db\ActiveRecord
                 'skipOnError' => true,
                 'targetClass' => User::class,
                 'targetAttribute' => ['id_utilizador' => 'id']
+            ],
+
+            // FK para UserProfile
+            [
+                ['user_profile_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => UserProfile::class,
+                'targetAttribute' => ['user_profile_id' => 'id']
             ],
         ];
     }
@@ -67,13 +68,10 @@ class Passageiro extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_passageiro' => 'ID Passageiro',
-            'id_utilizador' => 'User',
-            'nif' => 'NIF',
-            'telefone' => 'Telefone',
-            'nacionalidade' => 'Nacionalidade',
-            'data_nascimento' => 'Data de Nascimento',
-            'preferencias' => 'Preferências',
+            'id_passageiro'   => 'Passenger ID',
+            'id_utilizador'   => 'User ID',
+            'user_profile_id' => 'User Profile',
+            'preferences'     => 'Preferences',
         ];
     }
 
@@ -83,6 +81,13 @@ class Passageiro extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'id_utilizador']);
     }
+
+    // New Relação para o Perfil do Utilizador
+        public function getUserProfile()
+    {
+        return $this->hasOne(UserProfile::class, ['id' => 'user_profile_id']);
+    }
+
     /**
      * Gets query for [[Bilhetes]].
      *

@@ -16,9 +16,9 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id_funcionario')->textInput() ?>
 
-    <?= $form->field($model, 'data_checkin')->textInput() ?>
+    <?= $form->field($model, 'checkin_datetime')->textInput() ?>
 
-    <?= $form->field($model, 'metodo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'method')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

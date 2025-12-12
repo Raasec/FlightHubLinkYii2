@@ -34,10 +34,10 @@ $user = $model->user; // relação User
     <?php endif; ?>
 
     <!-- Nivel de Acesso, um dropdown -->
-    <?= $form->field($model, 'nivel_acesso')->dropDownList(Administrador::optsNiveisAcesso(),['prompt' => 'Selecione o nível']) ?>
+    <?= $form->field($model, 'access_level')->dropDownList(Administrador::optsNiveisAcesso(),['prompt' => 'Select the Access level']) ?>
 
     <!-- Responsavel pela Area, outro dropdown -->
-    <?= $form->field($model, 'responsavel_area')->dropDownList(Administrador::optsResponsavelArea(),['prompt' => 'Selecione a área']) ?>
+    <?= $form->field($model, 'area_responsible')->dropDownList(Administrador::optsResponsavelArea(),['prompt' => 'Select the area for the admin']) ?>
 
 
     <div class="form-group">

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Notificacao */
 
-$this->title = 'Create Notificacao';
-$this->params['breadcrumbs'][] = ['label' => 'Notificacaos', 'url' => ['index']];
+$this->title = 'Create Notification';
+$this->params['breadcrumbs'][] = ['label' => 'Notifications', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

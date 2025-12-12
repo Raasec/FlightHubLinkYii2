@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\FuncionarioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Funcionarios';
+$this->title = 'Employees';
 $this->params['breadcrumbs'][] = $this->title;
 
 // Agora usamos RBAC em vez de tipo-utilizador para se fazer a identifacao do utilizador
@@ -55,9 +55,9 @@ $canDelete = Yii::$app->user->can('deleteFuncionario');
                                     return $model->user->email ?? '(sem email)';
                                 }
                             ],
-                            'departamento',
-                            'cargo',
-                            'turno',
+                            'department',
+                            'job_position',
+                            'shift',
                             //'data_contratacao',
 
                             [

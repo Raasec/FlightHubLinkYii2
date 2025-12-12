@@ -25,16 +25,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'username')->textInput() ?>
 
     <?= $form->field($model, 'email')->textInput() ?>
+    
      <!-- resto do atributos do passageiro --
-    <?= $form->field($model, 'nif') ?>
-
-    <?= $form->field($model, 'telefone') ?>
-
-    <?= $form->field($model, 'nacionalidade') ?>
-
-    <?php // echo $form->field($model, 'data_nascimento') ?>
-
-    <?php // echo $form->field($model, 'preferencias') ?>
+    <?= $form->field($model, 'preferences')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

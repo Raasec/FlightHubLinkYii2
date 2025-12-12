@@ -3,8 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\CompanhiaAerea */
 
-$this->title = 'Update Companhia Aerea: ' . $model->id_companhia;
-$this->params['breadcrumbs'][] = ['label' => 'Companhia Aereas', 'url' => ['index']];
+$this->title = 'Update Airline: ' . $model->id_companhia;
+$this->params['breadcrumbs'][] = ['label' => 'Airlines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_companhia, 'url' => ['view', 'id_companhia' => $model->id_companhia]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

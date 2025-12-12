@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\Bilhete */
 
-$this->title = 'Update Bilhete: ' . $model->id_bilhete;
+$this->title = 'Update Ticket: ' . $model->id_bilhete;
 $this->params['breadcrumbs'][] = ['label' => 'Bilhetes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_bilhete, 'url' => ['view', 'id_bilhete' => $model->id_bilhete]];
 $this->params['breadcrumbs'][] = 'Update';

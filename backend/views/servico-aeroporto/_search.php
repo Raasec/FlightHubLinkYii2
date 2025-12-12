@@ -18,13 +18,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_servico') ?>
 
-    <?= $form->field($model, 'nome') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'tipo') ?>
+    <?= $form->field($model, 'type') ?>
 
-    <?= $form->field($model, 'localizacao') ?>
+    <?= $form->field($model, 'location') ?>
 
-    <?= $form->field($model, 'horario_funcionamento') ?>
+    <?= $form->field($model, 'opening_hours') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

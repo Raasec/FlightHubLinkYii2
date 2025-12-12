@@ -3,8 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\Voo */
 
-$this->title = 'Update Voo: ' . $model->id_voo;
-$this->params['breadcrumbs'][] = ['label' => 'Voos', 'url' => ['index']];
+$this->title = 'Update Flight: ' . $model->id_voo;
+$this->params['breadcrumbs'][] = ['label' => 'Flights', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_voo, 'url' => ['view', 'id_voo' => $model->id_voo]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

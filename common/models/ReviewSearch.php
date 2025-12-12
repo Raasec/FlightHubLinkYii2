@@ -18,7 +18,7 @@ class ReviewSearch extends Review
     {
         return [
             [['id_review', 'id_passageiro', 'id_voo', 'rating'], 'integer'],
-            [['comentario', 'data_review'], 'safe'],
+            [['comment', 'review_date'], 'safe'],
         ];
     }
 
@@ -62,10 +62,10 @@ class ReviewSearch extends Review
             'id_passageiro' => $this->id_passageiro,
             'id_voo' => $this->id_voo,
             'rating' => $this->rating,
-            'data_review' => $this->data_review,
+            'review_date' => $this->review_date,
         ]);
 
-        $query->andFilterWhere(['like', 'comentario', $this->comentario]);
+        $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }

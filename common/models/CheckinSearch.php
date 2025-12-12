@@ -18,7 +18,7 @@ class CheckinSearch extends Checkin
     {
         return [
             [['id_checkin', 'id_bilhete', 'id_funcionario'], 'integer'],
-            [['data_checkin', 'metodo'], 'safe'],
+            [['checkin_datetime', 'method'], 'safe'],
         ];
     }
 
@@ -61,10 +61,10 @@ class CheckinSearch extends Checkin
             'id_checkin' => $this->id_checkin,
             'id_bilhete' => $this->id_bilhete,
             'id_funcionario' => $this->id_funcionario,
-            'data_checkin' => $this->data_checkin,
+            'checkin_datetime' => $this->checkin_datetime,
         ]);
 
-        $query->andFilterWhere(['like', 'metodo', $this->metodo]);
+        $query->andFilterWhere(['like', 'method', $this->method]);
 
         return $dataProvider;
     }

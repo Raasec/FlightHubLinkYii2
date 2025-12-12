@@ -16,11 +16,11 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id_voo')->textInput() ?>
 
-    <?= $form->field($model, 'rating')->textInput() ?>
+    <?= $form->field($model, 'rating')->input('number', ['min'=> 1, 'max' => 5]) ?>
 
-    <?= $form->field($model, 'comentario')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'data_review')->textInput() ?>
+    <?= $form->field($model, 'review_date')->input('date') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

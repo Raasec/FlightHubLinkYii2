@@ -18,7 +18,7 @@ class IncidenteSearch extends Incidente
     {
         return [
             [['id_incidente', 'id_notificacao', 'id_funcionario'], 'integer'],
-            [['tipo', 'descricao', 'data_registo'], 'safe'],
+            [['type', 'description', 'created_at'], 'safe'],
         ];
     }
 
@@ -61,11 +61,11 @@ class IncidenteSearch extends Incidente
             'id_incidente' => $this->id_incidente,
             'id_notificacao' => $this->id_notificacao,
             'id_funcionario' => $this->id_funcionario,
-            'data_registo' => $this->data_registo,
+            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'descricao', $this->descricao]);
+        $query->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

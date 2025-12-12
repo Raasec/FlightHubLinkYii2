@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\CompanhiaAereaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Companhia Aereas';
+$this->title = 'Airlines';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Companhia Aerea', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Airline', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -31,9 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 
                             'id_companhia',
-                            'nome',
-                            'codigo_iata',
-                            'pais_origem',
+                            'name',
+                            'iata_code',
+                            'country_origin',
+                            [
+                                'attribute' => 'image',
+                                'label' => 'Logo',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    if (!$model->image) return '(no image)';
+                                    return Html::img(
+                                        Yii::getAlias('@imgUrl') . '/airlines/' . $model->image,
+                                        ['width' => '60px']
+                                    );
+                                }
+                            ],                            
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

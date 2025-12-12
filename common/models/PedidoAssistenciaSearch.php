@@ -18,7 +18,8 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
     {
         return [
             [['id_pedido', 'id_passageiro', 'id_funcionario_resolve'], 'integer'],
-            [['tipo', 'data_pedido', 'data_resolucao', 'estado'], 'safe'],
+
+            [['type', 'description', 'request_date', 'resolution_date', 'status'], 'safe'],
         ];
     }
 
@@ -61,12 +62,13 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
             'id_pedido' => $this->id_pedido,
             'id_passageiro' => $this->id_passageiro,
             'id_funcionario_resolve' => $this->id_funcionario_resolve,
-            'data_pedido' => $this->data_pedido,
-            'data_resolucao' => $this->data_resolucao,
+            'request_date' => $this->request_date,
+            'resolution_date' => $this->resolution_date,
         ]);
 
-        $query->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'estado', $this->estado]);
+        $query->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'status', $this->status])
+            ->andFilterWhere(['like', 'description', $this->description]); //new
 
         return $dataProvider;
     }

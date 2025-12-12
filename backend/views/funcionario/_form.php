@@ -19,34 +19,36 @@ $user = $model->user; // relaçao User para dados
     <?= $form->field($model, 'id_utilizador')->textInput(['readonly' => true ]) ?>
 
     <!-- Mostra NOME do User, sendo este nao editavel -->
-    <?= $form->field($model, 'nome')
-        ->textInput(['readonly' => true, 'value' => $user->nome ?? '(sem nome)'])
-        ->label('Nome do Utilizador'); ?>
+    <div class="form-group">
+        <label><strong>Username</strong></label>
+        <input class="form-control" value="<?= $user->username ?>" readonly>
+    </div>
 
     <!-- Mostra EMAIL do User, sendo este nao editavel mate -->
-    <?= $form->field($model, 'email')
-        ->textInput(['readonly' => true, 'value' => $user->email ?? '(sem email)'])
-        ->label('Email'); ?>
+    <div class="form-group">
+        <label><strong>Email</strong></label>
+        <input class="form-control" value="<?= $user->email ?>" readonly>
+    </div>
 
     <!-- Departamentos -->
-    <?= $form->field($model, 'departamento')->dropDownList(
+    <?= $form->field($model, 'department')->dropDownList(
         Funcionario::optsDepartamento(),
-        ['prompt' => 'Selecione um departamento']
+        ['prompt' => 'Choose a Department']
         ) 
     ?>
 
     <!-- Cargo -->
-    <?= $form->field($model, 'cargo')->dropDownList(
+    <?= $form->field($model, 'job_position')->dropDownList(
         Funcionario::optsCargo(),
-        ['prompt' => 'Selecione o cargo']
+        ['prompt' => 'Choose a position']
         )
     ?>
 
     <!-- Turno -->
-    <?= $form->field($model, 'turno')->dropDownList( Funcionario::optsTurno(), ['prompt' => '']) ?>
+    <?= $form->field($model, 'shift')->dropDownList( Funcionario::shiftOptions(), ['prompt' => '']) ?>
 
     <!-- Data de contratacao - read only too :) *-* -->
-    <?= $form->field($model, 'data_contratacao')->textInput(['readonly'=> true]) ?>
+    <?= $form->field($model, 'hire_date')->textInput(['readonly'=> true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

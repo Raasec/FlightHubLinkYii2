@@ -16,17 +16,17 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id_voo')->textInput() ?>
 
-    <?= $form->field($model, 'porta_embarque')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gate')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'data_emissao')->textInput() ?>
+    <?= $form->field($model, 'issue_date')->input('date') ?>
 
-    <?= $form->field($model, 'preco')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'price')->textInput() ?>
 
-    <?= $form->field($model, 'classe')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'travel_class')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'assento')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'seat')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

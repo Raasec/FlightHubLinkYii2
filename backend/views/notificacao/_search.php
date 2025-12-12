@@ -20,11 +20,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_voo') ?>
 
-    <?= $form->field($model, 'tipo') ?>
+    <?= $form->field($model, 'type') ?>
 
-    <?= $form->field($model, 'mensagem') ?>
+    <?= $form->field($model, 'message') ?>
 
-    <?= $form->field($model, 'data_envio') ?>
+    <?= $form->field($model, 'sent_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

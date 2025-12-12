@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_checkin',
                             'id_bilhete',
                             'id_funcionario',
-                            'data_checkin',
-                            'metodo',
+                            'checkin_datetime',
+                            'method',
                         ],
                     ]) ?>
                 </div>

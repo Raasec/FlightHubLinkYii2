@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ServicoAeroportoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Servico Aeroportos';
+$this->title = 'Airport Services';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Servico Aeroporto', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Airport Service', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -31,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ['class' => 'yii\grid\SerialColumn'],
 
                             'id_servico',
-                            'nome',
-                            'tipo',
-                            'localizacao',
-                            'horario_funcionamento',
+                            'name',
+                            'type',
+                            'location',
+                            'opening_hours',
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

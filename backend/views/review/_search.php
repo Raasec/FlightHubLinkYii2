@@ -24,9 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rating') ?>
 
-    <?= $form->field($model, 'comentario') ?>
+    <?= $form->field($model, 'comment') ?>
 
-    <?php // echo $form->field($model, 'data_review') ?>
+    <?php // echo $form->field($model, 'review_date') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

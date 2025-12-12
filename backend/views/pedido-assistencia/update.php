@@ -3,8 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\PedidoAssistencia */
 
-$this->title = 'Update Pedido Assistencia: ' . $model->id_pedido;
-$this->params['breadcrumbs'][] = ['label' => 'Pedido Assistencias', 'url' => ['index']];
+$this->title = 'Update Request Assistance: ' . $model->id_pedido;
+$this->params['breadcrumbs'][] = ['label' => 'Request Assistance', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id_pedido, 'url' => ['view', 'id_pedido' => $model->id_pedido]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

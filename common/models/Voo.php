@@ -10,13 +10,14 @@ use Yii;
  * @property int $id_voo
  * @property int|null $id_companhia
  * @property string|null $numero_voo
- * @property string|null $origem
- * @property string|null $destino
- * @property string|null $data_registo
- * @property string|null $porta_embarque
- * @property string|null $data_chegada
+ * @property string|null $origin
+ * @property string|null $destination
+ * @property string|null $tipo_voo
+ * @property string|null $departure_date
+ * @property string|null $gate
+ * @property string|null $arrival_date
  * @property int|null $id_funcionario_responsavel
- * @property string|null $estado
+ * @property string|null $status
  *
  * @property Bilhete[] $bilhetes
  * @property CompanhiaAerea $companhia
@@ -42,11 +43,20 @@ class Voo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_companhia', 'numero_voo', 'origem', 'destino', 'data_registo', 'porta_embarque', 'data_chegada', 'id_funcionario_responsavel', 'estado'], 'default', 'value' => null],
+            [['id_companhia', 'numero_voo', 'origin', 'destination', 'departure_date', 'gate', 'arrival_date', 'id_funcionario_responsavel', 'status', 'tipo_voo'], 'default', 'value' => null],
+
             [['id_companhia', 'id_funcionario_responsavel'], 'integer'],
-            [['data_registo', 'data_chegada'], 'safe'],
-            [['numero_voo', 'origem', 'destino', 'porta_embarque', 'estado'], 'string', 'max' => 50],
+
+            [['departure_date', 'arrival_date'], 'safe'],
+
+            [['numero_voo', 'origin', 'destination', 'gate', 'status'], 'string', 'max' => 50],
+
+            //adicionar tbm o tipo de voo (departure/arrival)
+            [['tipo_voo'], 'in', 'range' => ['departure', 'arrival']],
+
+            //FK
             [['id_companhia'], 'exist', 'skipOnError' => true, 'targetClass' => CompanhiaAerea::class, 'targetAttribute' => ['id_companhia' => 'id_companhia']],
+
             [['id_funcionario_responsavel'], 'exist', 'skipOnError' => true, 'targetClass' => Funcionario::class, 'targetAttribute' => ['id_funcionario_responsavel' => 'id_funcionario']],
         ];
     }
@@ -57,16 +67,17 @@ class Voo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_voo' => 'Id Voo',
-            'id_companhia' => 'Id Companhia',
-            'numero_voo' => 'Numero Voo',
-            'origem' => 'Origem',
-            'destino' => 'Destino',
-            'data_registo' => 'Data Registo',
-            'porta_embarque' => 'Porta Embarque',
-            'data_chegada' => 'Data Chegada',
-            'id_funcionario_responsavel' => 'Id Funcionario Responsavel',
-            'estado' => 'Estado',
+            'id_voo'                    => 'Flight ID',
+            'id_companhia'              => 'Airline ID',
+            'numero_voo'                => 'Flight Number',
+            'origin'                    => 'Origin',
+            'destination'               => 'Destination',
+            'tipo_voo'                  => 'Flight Type',
+            'departure_date'            => 'Departure Date',
+            'gate'                      => 'Gate',
+            'arrival_date'              => 'Arrival Date',
+            'id_funcionario_responsavel'=> 'Responsible Employee',
+            'status'                    => 'Status',
         ];
     }
 

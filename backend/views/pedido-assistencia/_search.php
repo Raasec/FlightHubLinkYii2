@@ -22,13 +22,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_funcionario_resolve') ?>
 
-    <?= $form->field($model, 'tipo') ?>
+    <?= $form->field($model, 'type') ?>
 
-    <?= $form->field($model, 'data_pedido') ?>
+    <?= $form->field($model, 'request_date') ?>
 
-    <?php // echo $form->field($model, 'data_resolucao') ?>
+    <?php // echo $form->field($model, 'resolution_date') ?>
 
-    <?php // echo $form->field($model, 'estado') ?>
+    <?php // echo $form->field($model, 'status') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

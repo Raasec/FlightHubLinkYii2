@@ -36,11 +36,13 @@ $isAdmin = Yii::$app->user->can('administrador');
         <?= $form->field($model, 'email')->textInput() ?>
 
         <!-- resto do atributos do funcionario -->
-        <?= $form->field($model, 'departamento') ?>
+        <?= $form->field($model, 'department') ?>
 
-        <?= $form->field($model, 'cargo') ?>
+        <?= $form->field($model, 'job_position') ?>
 
-        <?= $form->field($model, 'turno') ?>
+        <?= $form->field($model, 'shift') ?>
+
+        <?php // $form->field($model, 'hire_date') ?>
 
         <?php endif ?>
 

@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel common\models\AdministradorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Administradors';
+$this->title = 'Administrators';
 $this->params['breadcrumbs'][] = $this->title;
 
 $isAdmin = Yii::$app->user->can('administrador');
@@ -37,7 +37,10 @@ $isAdmin = Yii::$app->user->can('administrador');
                             ['class' => 'yii\grid\SerialColumn'],
 
                             'id_admin',
-                            'id_utilizador',
+                            [
+                                'attribute' => 'id_utilizador',
+                                'label'     => 'User ID',
+                            ],
                             [
                                 'attribute' => 'username',
                                 'label' => 'Username',
@@ -52,13 +55,20 @@ $isAdmin = Yii::$app->user->can('administrador');
                                     return $model->user ? $model->user->email : '(n/a)';
                                 }
                             ],
-                            'nivel_acesso',
-                            'responsavel_area',
+                            [
+                                'attribute' => 'access_level',
+                                'label'     => 'Access Level',
+                            ],
+                            [
+                                'attribute' => 'area_responsible',
+                                'label'     => 'Responsible Area',
+                            ],
+
 
                             [
                                 'class' => 'yii\grid\ActionColumn',
 
-                                'header' => 'Ações',
+                                'header' => 'Actions',
                                 /* O Yii envia isto no link:    /administrador/view?id=1   
                                 e estamos à espera disto no controller     /administrador/view?id_admin=1   
                                 entao definiu-se um UrlCreator para cada um dos Roles: Administrador, Funcionario e Passageiro

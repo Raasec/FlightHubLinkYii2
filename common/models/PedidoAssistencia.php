@@ -10,10 +10,11 @@ use Yii;
  * @property int $id_pedido
  * @property int $id_passageiro
  * @property int|null $id_funcionario_resolve
- * @property string|null $tipo
- * @property string $data_pedido
- * @property string|null $data_resolucao
- * @property string|null $estado
+ * @property string|null $type
+ * @property string $request_date
+ * @property string|null $resolution_date
+ * @property string|null $status
+ * @property string|null $description
  *
  * @property Funcionario $funcionarioResolve
  * @property Passageiro $passageiro
@@ -36,12 +37,21 @@ class PedidoAssistencia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_funcionario_resolve', 'tipo', 'data_resolucao', 'estado'], 'default', 'value' => null],
-            [['id_passageiro', 'data_pedido'], 'required'],
+            [['id_funcionario_resolve', 'type', 'resolution_date', 'status', 'description'], 'default', 'value' => null],
+
+            [['id_passageiro', 'request_date'], 'required'],
+
             [['id_passageiro', 'id_funcionario_resolve'], 'integer'],
-            [['data_pedido', 'data_resolucao'], 'safe'],
-            [['tipo'], 'string', 'max' => 100],
-            [['estado'], 'string', 'max' => 50],
+
+            [['request_date', 'resolution_date'], 'safe'],
+
+            // new field -> descricao TEXT not null
+            [['description'], 'string'],
+
+            [['type'], 'string', 'max' => 100],
+            [['status'], 'string', 'max' => 50],
+
+            //FK
             [['id_funcionario_resolve'], 'exist', 'skipOnError' => true, 'targetClass' => Funcionario::class, 'targetAttribute' => ['id_funcionario_resolve' => 'id_funcionario']],
             [['id_passageiro'], 'exist', 'skipOnError' => true, 'targetClass' => Passageiro::class, 'targetAttribute' => ['id_passageiro' => 'id_passageiro']],
         ];
@@ -53,13 +63,14 @@ class PedidoAssistencia extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_pedido' => 'Id Pedido',
-            'id_passageiro' => 'Id Passageiro',
-            'id_funcionario_resolve' => 'Id Funcionario Resolve',
-            'tipo' => 'Tipo',
-            'data_pedido' => 'Data Pedido',
-            'data_resolucao' => 'Data Resolucao',
-            'estado' => 'Estado',
+            'id_pedido'                 => 'Request ID',
+            'id_passageiro'             => 'Passenger ID',
+            'id_funcionario_resolve'    => 'Handled By (Employee)',
+            'type'                      => 'Type of Request',
+            'description'               => 'Problem Description', //new
+            'request_date'              => 'Request Date',
+            'resolution_date'           => 'Resolution Date',
+            'status'                    => 'Status',
         ];
     }
 

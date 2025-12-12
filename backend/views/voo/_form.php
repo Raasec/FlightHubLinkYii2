@@ -16,19 +16,25 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'numero_voo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'origem')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'origin')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'destino')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'destination')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'data_registo')->textInput() ?>
+    <?= $form->field($model, 'tipo_voo')->dropDownList([
+            'departure' => 'Departure',
+            'arrival'   => 'Arrival'
+        ], ['prompt' => 'Select flight type']) 
+    ?>
 
-    <?= $form->field($model, 'porta_embarque')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'departure_date')->input('date') ?>
 
-    <?= $form->field($model, 'data_chegada')->textInput() ?>
+    <?= $form->field($model, 'gate')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'arrival_date')->input('date') ?>
 
     <?= $form->field($model, 'id_funcionario_responsavel')->textInput() ?>
 
-    <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

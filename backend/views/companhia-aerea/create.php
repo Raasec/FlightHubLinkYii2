@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\CompanhiaAerea */
 
-$this->title = 'Create Companhia Aerea';
+$this->title = 'Create Airline';
 $this->params['breadcrumbs'][] = ['label' => 'Companhia Aereas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -23,6 +23,7 @@ class m251209_042138_update_voo_table extends Migration
     public function safeDown()
     {
         $this->renameColumn('voo', 'data_partida', 'data_registo');
+        
         $this->dropColumn('voo', 'tipo_voo');
     }
 

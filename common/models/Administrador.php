@@ -9,10 +9,12 @@ use Yii;
  *
  * @property int $id_admin
  * @property int $id_utilizador
- * @property string|null $nivel_acesso
- * @property string|null $responsavel_area
+ * @property string|null $access_level
+ * @property string|null $area_responsible
+ * @property int|null $user_profile_id
  *
  * @property User $user
+ * @property UserProfile $userProfile  //new
  */
 class Administrador extends \yii\db\ActiveRecord
 {
@@ -23,21 +25,21 @@ class Administrador extends \yii\db\ActiveRecord
     public static function optsNiveisAcesso()
     {
         return [
-            'super_admin' => 'Super Administrador',
-            'admin_sistema' => 'Administrador de Sistema',
-            'admin_operacional' => 'Administrador Operacional',
+            'superadmin'        => 'Super Administrator',
+            'system_admin'      => 'System Administrator',
+            'operations_admin'  => 'Operational Administrator',
         ];
     }
 
     public static function optsResponsavelArea()
     {
         return [
-            'operacoes' => 'Operações de Voo',
-            'seguranca' => 'Segurança Aeroportuária',
-            'suporte' => 'Suporte ao Cliente',
-            'logistica' => 'Logística e Equipamentos',
-            'financas' => 'Finanças / Contabilidade',
-            'recursos_humanos' => 'Recursos Humanos',
+            'flight_operations'     => 'Flight Operations',
+            'security'              => 'Security',
+            'Customer_support'      => 'Customer Support',
+            'logistic'              => 'Logistics',
+            'finances'              => 'Finance',
+            'human_resources'       => 'Human Resources',
         ];
     }
 
@@ -57,17 +59,27 @@ class Administrador extends \yii\db\ActiveRecord
     {
         return [
             [['id_utilizador'], 'required'],
-            [['id_utilizador'], 'integer'],
+            [['id_utilizador', 'user_profile_id'], 'integer'],
 
-            [['nivel_acesso'], 'string', 'max' => 50],
-            [['responsavel_area'], 'string', 'max' => 100],
+            [['access_level'], 'string', 'max' => 50],
+            [['area_responsible'], 'string', 'max' => 100],
 
+            // FK para user(id)
             [
                 ['id_utilizador'],
                 'exist',
                 'skipOnError' => true,
                 'targetClass' => User::class,
                 'targetAttribute' => ['id_utilizador' => 'id'],
+            ],
+
+            // FK para UserProfile
+            [
+                ['user_profile_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => UserProfile::class,
+                'targetAttribute' => ['user_profile_id' => 'id']
             ],
         ];
     }
@@ -78,10 +90,11 @@ class Administrador extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_admin' => 'ID Administrador',
-            'id_utilizador' => 'ID Utilizador',
-            'nivel_acesso' => 'Nivel Acesso',
-            'responsavel_area' => 'Responsavel Area',
+            'id_admin'         => 'Administrator ID',
+            'id_utilizador'    => 'User ID',
+            'access_level'     => 'Access Level',
+            'area_responsible' => 'Area Responsible',
+            'user_profile_id'  => 'User Profile',
         ];
     }
 
@@ -93,6 +106,12 @@ class Administrador extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'id_utilizador']);
+    }
+
+    // New Relação para o Perfil do Utilizador
+        public function getUserProfile()
+    {
+        return $this->hasOne(UserProfile::class, ['id' => 'user_profile_id']);
     }
 
 }

@@ -45,6 +45,11 @@ class BilheteController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewTicket')) 
+        {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to view tickets.");
+        }
+
         $searchModel = new BilheteSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +67,12 @@ class BilheteController extends Controller
      */
     public function actionView($id_bilhete)
     {
+        if (!Yii::$app->user->can('viewTicket')) 
+        {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to view this ticket.");
+        }
+
+
         return $this->render('view', [
             'model' => $this->findModel($id_bilhete),
         ]);
@@ -74,17 +85,21 @@ class BilheteController extends Controller
      */
     public function actionCreate()
     {
-        if(Yii::$app->user->can('createBilhete')){
-            $model = new Bilhete();
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
-            }
-
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if(Yii::$app->user->can('createTicket'))
+        {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to create tickets.");
         }
+
+        $model = new Bilhete();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+        
     }
 
     /**
@@ -96,6 +111,11 @@ class BilheteController extends Controller
      */
     public function actionUpdate($id_bilhete)
     {
+        if (!Yii::$app->user->can('updateTicket'))
+        {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to update tickets.");
+        }
+
         $model = $this->findModel($id_bilhete);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -116,6 +136,11 @@ class BilheteController extends Controller
      */
     public function actionDelete($id_bilhete)
     {
+        if (!Yii::$app->user->can('deleteTicket')) 
+        {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to delete tickets.");
+        }
+
         $this->findModel($id_bilhete)->delete();
 
         return $this->redirect(['index']);

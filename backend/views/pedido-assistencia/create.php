@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\PedidoAssistencia */
 
-$this->title = 'Create Pedido Assistencia';
+$this->title = 'Create Assistance Request';
 $this->params['breadcrumbs'][] = ['label' => 'Pedido Assistencias', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

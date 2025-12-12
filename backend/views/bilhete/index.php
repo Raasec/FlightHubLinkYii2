@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -7,7 +9,8 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\BilheteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Bilhetes';
+
+$this->title = 'Tickets';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid">
@@ -17,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Bilhete', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('Create Ticket', ['create'], ['class' => 'btn btn-success']) ?>
                         </div>
                     </div>
 
@@ -33,12 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_bilhete',
                             'id_passageiro',
                             'id_voo',
-                            'porta_embarque',
-                            'data_emissao',
-                            //'preco',
-                            //'classe',
-                            //'assento',
-                            //'estado',
+                            'gate',
+                            'issue_date',
+                            //'price',
+                            'travel_class',
+                            //'seat',
+                            'status',
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

@@ -30,9 +30,9 @@ $user = Yii::$app->user->identity;
         <?= $form->field($model, 'email') ?>
 
         <!-- resto do atributos do Administrador -->
-        <?= $form->field($model, 'nivel_acesso') ?>
+        <?= $form->field($model, 'access_level') ?>
 
-        <?= $form->field($model, 'responsavel_area') ?>
+        <?= $form->field($model, 'area_responsible') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

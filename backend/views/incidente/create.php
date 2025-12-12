@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Incidente */
 
-$this->title = 'Create Incidente';
-$this->params['breadcrumbs'][] = ['label' => 'Incidentes', 'url' => ['index']];
+$this->title = 'Create Incident';
+$this->params['breadcrumbs'][] = ['label' => 'Incidents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

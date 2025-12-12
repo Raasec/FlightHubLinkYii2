@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id_passageiro',
                             'id_voo',
                             'rating',
-                            'comentario:ntext',
-                            //'data_review',
+                            'comment:ntext',
+                            //'review_date',
 
                             ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
                         ],

@@ -11,8 +11,8 @@ use Yii;
  * @property int $id_passageiro
  * @property int $id_voo
  * @property int|null $rating
- * @property string|null $comentario
- * @property string|null $data_review
+ * @property string|null $comment
+ * @property string|null $review_date
  *
  * @property Passageiro $passageiro
  * @property Voo $voo
@@ -35,11 +35,17 @@ class Review extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rating', 'comentario', 'data_review'], 'default', 'value' => null],
+            [['rating', 'comment', 'review_date'], 'default', 'value' => null],
+
             [['id_passageiro', 'id_voo'], 'required'],
+
             [['id_passageiro', 'id_voo', 'rating'], 'integer'],
-            [['comentario'], 'string'],
-            [['data_review'], 'safe'],
+
+            [['comment'], 'string'],
+
+            [['review_date'], 'safe'],
+
+            //FK
             [['id_passageiro'], 'exist', 'skipOnError' => true, 'targetClass' => Passageiro::class, 'targetAttribute' => ['id_passageiro' => 'id_passageiro']],
             [['id_voo'], 'exist', 'skipOnError' => true, 'targetClass' => Voo::class, 'targetAttribute' => ['id_voo' => 'id_voo']],
         ];
@@ -51,12 +57,12 @@ class Review extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_review' => 'Id Review',
-            'id_passageiro' => 'Id Passageiro',
-            'id_voo' => 'Id Voo',
-            'rating' => 'Rating',
-            'comentario' => 'Comentario',
-            'data_review' => 'Data Review',
+            'id_review'     => 'Review ID',
+            'id_passageiro' => 'Passenger',
+            'id_voo'        => 'Flight',
+            'rating'        => 'Rating',
+            'comment'       => 'Comment',
+            'review_date'   => 'Review Date',
         ];
     }
 

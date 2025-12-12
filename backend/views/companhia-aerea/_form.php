@@ -12,11 +12,14 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'codigo_iata')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'iata_code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'pais_origem')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'country_origin')->textInput(['maxlength' => true]) ?>
+
+    <!-- NEW: Image filename -->
+    <?= $form->field($model, 'image')->textInput(['maxlength' => true])->label('Image Filename') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

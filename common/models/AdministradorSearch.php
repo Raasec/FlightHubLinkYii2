@@ -25,7 +25,7 @@ class AdministradorSearch extends Administrador
             [['id_admin', 'id_utilizador'], 'integer'],
 
             // pesquisa com string
-            [['nivel_acesso', 'responsavel_area'], 'safe'],
+            [['access_level', 'area_responsible'], 'safe'],
 
             // pesquisa com atributos vindos dio User
             [['username','email'],'safe'],
@@ -89,8 +89,8 @@ class AdministradorSearch extends Administrador
             'id_utilizador' => $this->id_utilizador,
         ]);
 
-        $query->andFilterWhere(['like', 'nivel_acesso', $this->nivel_acesso])
-            ->andFilterWhere(['like', 'responsavel_area', $this->responsavel_area]);
+        $query->andFilterWhere(['like', 'access_level', $this->access_level])
+            ->andFilterWhere(['like', 'area_responsible', $this->area_responsible]);
 
 
         //Campos da Tabela user

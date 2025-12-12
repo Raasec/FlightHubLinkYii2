@@ -25,7 +25,7 @@ class FuncionarioSearch extends Funcionario
             [['id_funcionario', 'id_utilizador'], 'integer'],
 
             // pesquisa com string
-            [['departamento', 'cargo', 'turno', 'data_contratacao'], 'safe'],
+            [['department', 'job_position', 'shift', 'hire_date'], 'safe'],
 
             // pesquisa com atributos do User
             [['username','email'],'safe'],
@@ -88,12 +88,12 @@ class FuncionarioSearch extends Funcionario
         $query->andFilterWhere([
             'id_funcionario' => $this->id_funcionario,
             'id_utilizador' => $this->id_utilizador,
-            'data_contratacao' => $this->data_contratacao,
+            'hire_date' => $this->hire_date,
         ]);
 
-        $query->andFilterWhere(['like', 'departamento', $this->departamento])
-            ->andFilterWhere(['like', 'cargo', $this->cargo])
-            ->andFilterWhere(['like', 'turno', $this->turno]);
+        $query->andFilterWhere(['like', 'department', $this->department])
+            ->andFilterWhere(['like', 'job_position', $this->job_position])
+            ->andFilterWhere(['like', 'shift', $this->shift]);
 
 
         //Filtros adicionais para username, nome e email

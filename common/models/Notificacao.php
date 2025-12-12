@@ -9,9 +9,9 @@ use Yii;
  *
  * @property int $id_notificacao
  * @property int $id_voo
- * @property string|null $tipo
- * @property string|null $mensagem
- * @property string|null $data_envio
+ * @property string|null $type
+ * @property string|null $message
+ * @property string|null $sent_at
  *
  * @property Incidente[] $incidentes
  * @property Voo $voo
@@ -34,12 +34,13 @@ class Notificacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tipo', 'mensagem', 'data_envio'], 'default', 'value' => null],
+            [['type', 'message', 'sent_at'], 'default', 'value' => null],
             [['id_voo'], 'required'],
             [['id_voo'], 'integer'],
-            [['mensagem'], 'string'],
-            [['data_envio'], 'safe'],
-            [['tipo'], 'string', 'max' => 50],
+            [['message'], 'string'],
+            [['sent_at'], 'safe'],
+            [['type'], 'string', 'max' => 50],
+            //FK
             [['id_voo'], 'exist', 'skipOnError' => true, 'targetClass' => Voo::class, 'targetAttribute' => ['id_voo' => 'id_voo']],
         ];
     }
@@ -50,11 +51,11 @@ class Notificacao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_notificacao' => 'Id Notificacao',
-            'id_voo' => 'Id Voo',
-            'tipo' => 'Tipo',
-            'mensagem' => 'Mensagem',
-            'data_envio' => 'Data Envio',
+            'id_notificacao' => 'Notification ID',
+            'id_voo'         => 'Flight ID',
+            'type'           => 'Type',
+            'message'        => 'Message',
+            'sent_at'        => 'Sent At',
         ];
     }
 

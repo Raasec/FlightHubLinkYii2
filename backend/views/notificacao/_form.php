@@ -14,11 +14,11 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id_voo')->textInput() ?>
 
-    <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mensagem')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'data_envio')->textInput() ?>
+    <?= $form->field($model, 'sent_at')->input('datetime-local') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

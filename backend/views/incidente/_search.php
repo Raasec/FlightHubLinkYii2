@@ -22,11 +22,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_funcionario') ?>
 
-    <?= $form->field($model, 'tipo') ?>
+    <?= $form->field($model, 'type') ?>
 
-    <?= $form->field($model, 'descricao') ?>
+    <?= $form->field($model, 'description') ?>
 
-    <?php // echo $form->field($model, 'data_registo') ?>
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
