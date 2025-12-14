@@ -11,9 +11,15 @@ class ModuleAPI extends Module
     public function init()
     {
         parent::init();
-        
-        Yii::$app->user->enableSession = false; // obrigatório para APIs stateless
-    }
-}
 
-?>
+        \Yii::$app->set('user', [
+            'class' => '\yii\web\User',
+            'identityClass' => 'common\models\User',
+            'enableSession' => false, // API SIM
+            'loginUrl' => null,
+        ]);
+
+        \Yii::$app->request->enableCsrfValidation = false;
+    }
+
+}

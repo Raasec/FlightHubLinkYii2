@@ -68,6 +68,7 @@ AppAsset::register($this);
                 <div class="navbar-nav ml-auto py-0">
                     <a href="<?= Yii::$app->homeUrl ?>" class="nav-item nav-link <?= Yii::$app->controller->id == 'site' && Yii::$app->controller->action->id == 'index' ? 'active' : '' ?>">Voos</a>
                     <a href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>" class="nav-item nav-link">Services</a>
+                    <a href="<?= \yii\helpers\Url::to(['/site/ticket-purchase']) ?>" class="nav-item nav-link">Buy tickets</a>
                     <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Online Check-In</a>  
                     <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Support</a>
                     <?php if (Yii::$app->user->isGuest): ?>

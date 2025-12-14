@@ -41,7 +41,7 @@
                         <div class="p-3" style="max-width: 900px;">
                             <h4 class="text-white text-uppercase mb-md-3">Travel and Discover</h4>
                             <h1 class="display-3 text-white mb-md-4">Welcome to FlightHubLink</h1>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
+                            <a href="<?= \yii\helpers\Url::to(['/site/ticket-purchase']) ?>" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
     <!-- Carousel End -->
 
 
-    <!-- Booking Start -->
+    <!-- Search Flight Start -->
     <div class="container-fluid d-flex justify-content-center mt-5 pb-5">
         <div class="booking-wrapper shadow">
 
@@ -82,46 +82,50 @@
             <!-- Form -->
             <div class="booking-content">
 
-                <div class="row g-3">
+                <form method="get" action="<?= \yii\helpers\Url::to(['site/search-flight']) ?>">
 
-                    <!-- Origem -->
-                    <div class="col-md-4 col-12">
-                        <div class="booking-input">
-                            <i class="fa fa-map-marker-alt"></i>
-                            <input type="text" placeholder="Origin">
+                    <div class="row g-3">
+
+                        <!-- Origem -->
+                        <div class="col-md-4 col-12">
+                            <div class="booking-input">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <input type="text" name="origin" placeholder="Origin" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Destino -->
-                    <div class="col-md-4 col-12">
-                        <div class="booking-input">
-                            <i class="fa fa-location-arrow"></i>
-                            <input type="text" placeholder="Destination">
+                        <!-- Destino -->
+                        <div class="col-md-4 col-12">
+                            <div class="booking-input">
+                                <i class="fa fa-location-arrow"></i>
+                                <input type="text" name="destination" placeholder="Destination" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Data -->
-                    <div class="col-md-4 col-12">
-                        <div class="booking-input">
-                            <i class="fa fa-calendar"></i>
-                            <input type="text" placeholder="dd/mm/yyyy">
+                        <!-- Data -->
+                        <div class="col-md-4 col-12">
+                            <div class="booking-input">
+                                <i class="fa fa-calendar"></i>
+                                <input type="text" name="date" placeholder="dd/mm/yyyy" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Botão -->
-                    <div class="col-12">
-                        <button class="booking-btn">
-                            <i class="fa fa-search"></i>
-                            <span>Search flights</span>
-                        </button>
-                    </div>
+                        <!-- Botão -->
+                        <div class="col-12">
+                            <button type="submit" class="booking-btn">
+                                <i class="fa fa-search"></i>
+                                <span>Search flights</span>
+                            </button>
+                        </div>
 
-                </div>
+                    </div>
+                </form>
             </div>
 
         </div>
     </div>
-    <!-- Booking End -->
+    <!-- search End -->
+
 
 
     <!-- Flight Table Start -->

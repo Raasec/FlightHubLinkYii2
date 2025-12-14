@@ -17,6 +17,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Voo; 
 use common\models\ServicoAeroporto;
+use common\models\CompanhiaAerea; 
 
 /**
  * Site controller
@@ -89,10 +90,44 @@ class SiteController extends Controller
             'chegadas' => $chegadas,
             'servicos' => $servicos,
         ]);
-
     }
 
-    /**
+    public function actionSearchFlight()
+    {
+        $origin = Yii::$app->request->get('origin');
+        $destination = Yii::$app->request->get('destination');
+        $date = Yii::$app->request->get('date');
+
+        $query = Voo::find();
+
+        if ($origin) {
+            $query->andWhere(['like', 'origem', $origin]);
+        }
+
+        if ($destination) {
+            $query->andWhere(['like', 'destino', $destination]);
+        }
+
+        if ($date) {
+            // converte dd/mm/yyyy → yyyy-mm-dd
+            $parts = explode('/', $date);
+            if (count($parts) === 3) {
+                $dateSQL = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
+                $query->andWhere(['DATE(data_registo)' => $dateSQL]);
+            }
+        }
+
+        $flights = $query->all();
+
+        return $this->render('search-results', [
+            'flights' => $flights,
+            'origin' => $origin,
+            'destination' => $destination,
+            'date' => $date
+        ]);
+    }
+
+        /**
      * Logs in a user.
      *
      * @return mixed
@@ -166,9 +201,53 @@ class SiteController extends Controller
         return $this->render('checkin');
     }
 
-    public function actionServicos()
+    public function actionTicketPurchase()
     {
-        return $this->render('servicos');
+        $request = Yii::$app->request;
+
+        $query = Voo::find()
+            ->with('companhia')
+            ->where(['status' => 'ativo']);
+
+        // filtros
+        if ($origin = $request->get('origin')) {
+            $query->andWhere(['like', 'origin', $origin]);
+        }
+
+        if ($destination = $request->get('destination')) {
+            $query->andWhere(['like', 'destination', $destination]);
+        }
+
+        if ($idCompanhia = $request->get('id_companhia')) {
+            $query->andWhere(['id_companhia' => $idCompanhia]);
+        }
+
+        if ($tipoVoo = $request->get('tipo_voo')) {
+            $query->andWhere(['tipo_voo' => $tipoVoo]);
+        }
+
+        if ($date = $request->get('departure_date')) {
+            $query->andWhere(['departure_date' => $date]);
+        }
+
+        $voos = $query->all();
+
+        $companhias = CompanhiaAerea::find()->all();
+
+        return $this->render('ticketPurchase', [
+            'voos' => $voos,
+            'companhias' => $companhias,
+        ]);
+    }
+
+
+    public function actionServicos()
+    {     
+        $servicos = \common\models\ServicoAeroporto::find()->all();
+
+        return $this->render('servicos', [
+            'servicos' => $servicos
+        ]);
     }
 
     /**
@@ -281,4 +360,5 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
 }

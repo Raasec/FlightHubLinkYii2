@@ -101,3 +101,40 @@ a.desc:after {
 {
     text-decoration: none;
 }
+
+.ticket-page {
+    font-family: 'Poppins', sans-serif;
+}
+
+.filter-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,.05);
+}
+
+.flight-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.06);
+}
+
+.flight-card .time {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.flight-card .price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e5bff;
+}
+
+@media (max-width: 576px) {
+    .flight-card {
+        text-align: center;
+    }
+
+    .flight-card .text-right {
+        text-align: center !important;
+    }
+}

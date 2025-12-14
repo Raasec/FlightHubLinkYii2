@@ -373,4 +373,5 @@ class RbacController extends Controller
         $auth->addChild($admin, $manageFuncionarios);
 
     }
+    
 }
