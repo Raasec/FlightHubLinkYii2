@@ -168,23 +168,46 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+
+    //mudei isto para fazer sentido com os tickets de
     public function actionContact()
     {
-        $model = new ContactForm();
+        $model = new \frontend\models\TicketForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+            if (Yii::$app->user->isGuest) {
+                Yii::$app->session->setFlash('error', 'Tem de estar autenticado para enviar um pedido.');
+                return $this->redirect(['site/login']);
             }
 
-            return $this->refresh();
+            $userId = Yii::$app->user->id;
+            $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+
+            if (!$passageiro) {
+                // Auto-fix: Create profile if missing
+                $passageiro = new \common\models\Passageiro();
+                $passageiro->id_utilizador = $userId;
+                if (!$passageiro->save()) {
+                     Yii::$app->session->setFlash('error', 'Erro ao criar perfil de passageiro.');
+                     return $this->refresh();
+                }
+            }
+
+            // Usa o método save do TicketForm
+            if ($model->save($passageiro->id_passageiro)) {
+                Yii::$app->session->setFlash('success', 'Pedido de assistência criado com sucesso!');
+                return $this->refresh();
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao criar pedido de assistência.');
+            }
         }
 
         return $this->render('contact', [
             'model' => $model,
         ]);
     }
+
+
 
     /**
      * Displays about page.

@@ -140,7 +140,7 @@ use yii\helpers\Url;
                             <small><?= Html::encode($voo->origin) ?></small>
                         </div>
 
-                        <!-- DURAÇÃO (PLACEHOLDER) -->
+                        <!-- DURAÇÃO (PLACEHOLDER)  muda aki-->
                         <div class="col-4 col-md-3 text-center">
                             <small class="text-muted">—</small>
                             <div class="duration">Direct Flight</div>

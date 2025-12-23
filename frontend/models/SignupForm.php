@@ -62,10 +62,14 @@ class SignupForm extends Model
 
             // ATRIBUI ROLE DEFAULT 'passageiro' via RBAC
             $auth = Yii::$app->authManager;
-            $passageiro = $auth->getRole('passageiro');
             if ($passageiro) {
                 $auth->assign($passageiro, $user->id);
-            } 
+            }
+
+            // CRIAR PERFIL DE PASSAGEIRO
+            $novoPassageiro = new \common\models\Passageiro();
+            $novoPassageiro->id_utilizador = $user->id;
+            $novoPassageiro->save(); 
 
             return true;
         }

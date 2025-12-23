@@ -19,19 +19,20 @@ return [
     'layout' => 'main',
     'as access' => [
         'class' => yii\filters\AccessControl::class,
-        'ruleConfig' => [
-            'class' => yii\filters\AccessRule::class,
+        'except' => [
+            'site/login',
+            'site/error',
+            'site/logout',
+            'api/*',
         ],
-
-        // Páginas que nao requer permissoes
-        'except' => ['site/login', 'site/error', 'site/logout'], // permitir login
         'rules' => [
             [
                 'allow' => true,
-                'roles' => ['administrador','funcionario'],   // só ADMIN pode aceder  <- FILHO DA PUTA ROMAN U MISS TYPED IT AND BECAUSE OF THAT I HAD TO CHECK EVERYSINGLE THING NONSTOP AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                'roles' => ['administrador', 'funcionario'],
             ],
         ],
     ],
+
 
     'components' => [
         'request' => [
@@ -70,48 +71,43 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                // AuthController (login)
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/auth',
-                    'pluralize' => false,
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/auth',
+                'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/voo',
+                'pluralize' => false,
+                'extraPatterns' => [
+                    'GET origem/{cidade}' => 'porOrigem',
                 ],
-                // VooController
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/voo',
-                    'pluralize' => false,
-                    'extraPatterns' => [
-                        'GET origem/{cidade}' => 'porOrigem',
-                    ],
-                    'tokens' => [
-                        '{cidade}' => '<cidade:[\w\s]+>',
-                    ],
+                'tokens' => [
+                    '{cidade}' => '<cidade:[^\/]+>',
                 ],
-                // CompanhiaAereaController
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/companhia-aerea',
-                    'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/bilhete',
+                'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/review',
+                'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/user-profile',
+                'pluralize' => false,
+                'extraPatterns' => [
+                    'GET me' => 'me',
+                    'PUT update' => 'update',
                 ],
-                // BilheteController 
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/bilhete',
-                    'pluralize' => false,
-                ],
-                // Outros controllers 
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/notificacao',
-                    'pluralize' => false,
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/review',
-                    'pluralize' => false,
-                ],
-            ]
+            ],
+        ]
+
         ],
 
         'assetManager' => [

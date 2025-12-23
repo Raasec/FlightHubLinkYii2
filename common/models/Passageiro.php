@@ -40,7 +40,7 @@ class Passageiro extends \yii\db\ActiveRecord
             [['id_utilizador'], 'required'],
             [['id_utilizador', 'user_profile_id'], 'integer'],
 
-            [['preferences', 'string']],
+            [['preferences'], 'string'],
 
             // FK para user(id)
             [
