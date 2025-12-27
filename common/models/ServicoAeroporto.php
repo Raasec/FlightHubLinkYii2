@@ -73,24 +73,7 @@ class ServicoAeroporto extends \yii\db\ActiveRecord
 
 
 
-    // isto so vai funcionar quando alguem fizer a migration que precisamos das images
 
-    /*public function getImagem()
-    {
-        $defaultUrl = Yii::getAlias("@imgUrl") . "/destination-1.jpg";
-
-        if (!$this->tipo) {
-            return $defaultUrl;
-        }
-
-        $filename = strtolower(str_replace(' ', '', $this->tipo));
-
-        $filePath = Yii::getAlias("@imgRoot/services/$filename.jpg");
-        $urlPath  = Yii::getAlias("@imgUrl") . "/services/$filename.jpg";
-
-        return file_exists($filePath) ? $urlPath : $defaultUrl;
-    }
-    */
 
     public function getImagemUrl()
     {

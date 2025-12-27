@@ -45,23 +45,24 @@
                 <?php foreach ($servicos as $servico): ?>
 
                     <?php
-                        $img = $servico->getImagem();
+                        $img = $servico->getImagemUrl();
                         $estado = $servico->getEstado();
                     ?>
+
 
                     <div class="col-lg-4 col-md-6 mb-4">
 
                         <div class="destination-item position-relative overflow-hidden mb-2 service-item"
-                            data-name="<?= $servico->nome ?>"
-                            data-type="<?= $servico->tipo ?>"
-                            data-location="<?= $servico->localizacao ?>"
-                            data-hours="<?= $servico->horario_funcionamento ?>"
+                            data-name="<?= $servico->name ?>"
+                            data-type="<?= $servico->type ?>"
+                            data-location="<?= $servico->location ?>"
+                            data-hours="<?= $servico->opening_hours ?>"
                             data-status="<?= $estado ?>"
                             data-image="<?= $img ?>">
 
                             <img class="img-fluid" src="<?= $img ?>" alt="">
                             <a class="destination-overlay text-white text-decoration-none" href="#">
-                                <h5 class="text-white"><?= $servico->nome ?></h5>
+                                <h5 class="text-white"><?= $servico->name ?></h5>
                                 <span><?= $estado ?></span>
                             </a>
 

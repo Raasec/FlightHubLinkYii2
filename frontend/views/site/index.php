@@ -189,9 +189,9 @@
                 <?php foreach ($servicos as $servico): ?>
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="destination-item position-relative overflow-hidden mb-2">
-                            <img class="img-fluid" src="<?= $servico->imagem ?>" alt="">
+                            <img class="img-fluid" src="<?= $servico->getImagemUrl() ?>" alt="">
                             <a class="destination-overlay text-white text-decoration-none" href="">
-                                <h5 class="text-white"><?= $servico->nome ?></h5>
+                                <h5 class="text-white"><?= $servico->name ?></h5>
                                 <span><?= $servico->estado ?></span>
                             </a>
                         </div>

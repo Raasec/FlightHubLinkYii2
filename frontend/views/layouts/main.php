@@ -119,12 +119,12 @@ AppAsset::register($this);
             <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Our Services</h5>
             <div class="d-flex flex-column justify-content-start">
                 <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>"><i class="fa fa-angle-right mr-1"></i>All Services</a>
-                <a class="text-white-50 mb-1 medium" href="https://www.kfc.pt/"><i class="fa fa-angle-right mr-1"></i>KFC</a>
-                <a class="text-white-50 mb-1 medium" href="https://www.mcdonalds.pt/"><i class="fa fa-angle-right mr-1"></i>McDonalds</a>
-                <a class="text-white-50 mb-1 medium" href="https://www.burgerking.pt/pt/"><i class="fa fa-angle-right mr-1"></i>Burger King</a>
-                <a class="text-white-50 mb-1 medium" href="https://wells.pt/"><i class="fa fa-angle-right mr-1"></i>Wells</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Pull&Bear</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Balvera</a>
+                <?php
+                $footerServices = \common\models\ServicoAeroporto::find()->limit(6)->all();
+                foreach ($footerServices as $service): 
+                ?>
+                    <a class="text-white-50 mb-1 medium" href="<?= $service->url ?>" target="_blank"><i class="fa fa-angle-right mr-1"></i><?= $service->name ?></a>
+                <?php endforeach; ?>
             </div>
         </div>
 
