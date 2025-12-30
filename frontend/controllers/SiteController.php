@@ -221,7 +221,84 @@ class SiteController extends Controller
 
     public function actionCheckin()
     {
-        return $this->render('checkin');
+        $error = null;
+        if (Yii::$app->request->isPost) {
+            $reference = Yii::$app->request->post('reference');
+            $name = Yii::$app->request->post('name');
+
+            if (!$reference || !$name) {
+                $error = 'Por favor, preencha todos os campos.';
+            } else {
+                // Find Ticket
+                $bilhete = \common\models\Bilhete::findOne(['id_bilhete' => $reference]);
+
+                if (!$bilhete) {
+                    $error = 'Bilhete não encontrado.';
+                } else {
+                    // Check Name
+                    $passageiro = $bilhete->passageiro;
+                    if (!$passageiro || !$passageiro->userProfile) { // Assuming relations exist
+                         $error = 'Dados do passageiro não encontrados.';
+                    } else {
+                         // Case insensitive comparison
+                         $dbName = $passageiro->userProfile->full_name;
+                         if (strcasecmp(trim($dbName), trim($name)) !== 0) {
+                             $error = 'Nome do passageiro não corresponde ao bilhete.';
+                         } else {
+                             // Check if already checked in
+                             if ($bilhete->checkin) {
+                                 // Already checked in, redirect to boarding pass
+                                 return $this->redirect(['boarding-pass', 'id' => $bilhete->id_bilhete]);
+                             }
+
+                             // Proceed to confirmation
+                             return $this->render('checkin-confirm', [
+                                 'bilhete' => $bilhete,
+                                 'passengerName' => $dbName
+                             ]);
+                         }
+                    }
+                }
+            }
+        }
+
+        return $this->render('checkin', [
+            'error' => $error
+        ]);
+    }
+
+    public function actionConfirmCheckin()
+    {
+        if (Yii::$app->request->isPost) {
+            $id_bilhete = Yii::$app->request->post('id_bilhete');
+            $bilhete = \common\models\Bilhete::findOne($id_bilhete);
+
+            if ($bilhete && !$bilhete->checkin) {
+                $checkin = new \common\models\Checkin();
+                $checkin->id_bilhete = $bilhete->id_bilhete;
+                $checkin->checkin_datetime = date('Y-m-d H:i:s');
+                $checkin->method = 'Online';
+                
+                if ($checkin->save()) {
+                    return $this->redirect(['boarding-pass', 'id' => $bilhete->id_bilhete]);
+                } else {
+                    Yii::$app->session->setFlash('error', 'Erro ao processar check-in.');
+                }
+            }
+        }
+        return $this->redirect(['checkin']);
+    }
+
+    public function actionBoardingPass($id)
+    {
+        $bilhete = \common\models\Bilhete::findOne($id);
+        if (!$bilhete || !$bilhete->checkin) {
+            return $this->redirect(['checkin']);
+        }
+
+        return $this->render('boarding-pass', [
+            'bilhete' => $bilhete
+        ]);
     }
 
     public function actionTicketPurchase()

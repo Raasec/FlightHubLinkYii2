@@ -71,18 +71,12 @@ class ServicoAeroporto extends \yii\db\ActiveRecord
     }
 
 
-
-
-
-
     public function getImagemUrl()
     {
-        // If no image in DB, fallback
-        if (!$this->image) {
-            return Yii::getAlias("@imgUrl") . "/services/default.jpg";
-        }
-
-        return Yii::getAlias("@imgUrl") . "/services/" . $this->image;
+        // fallback, n temos default.jpg devo meter um default.jpg depois
+        $imgName = $this->image ? $this->image : 'default.jpg';
+        
+        return Yii::getAlias("@web") . "/img/services/" . $imgName;
     }
 
 }

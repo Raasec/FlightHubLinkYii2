@@ -34,11 +34,21 @@
             <h1>Check-in Online</h1>
             <h6>Check in and choose your seat in advance.</h6>
             
-            <p>Confirmation code</p> 
-            <input type="text" placeholder="Ex: ABC1234" maxlength="6">
-            <p>Passanger's Name</p> 
-            <input type="text" placeholder="My name">
-            <button class="btn-primary">Search</button>
+            <?php if (isset($error) && $error): ?>
+                <div class="alert alert-danger">
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
+
+            <?= \yii\helpers\Html::beginForm(['site/checkin'], 'post') ?>
+                <p>Ticket ID</p> 
+                <input type="text" name="reference" placeholder="Ex: 12345" class="form-control mb-3" required>
+                
+                <p>Passanger's Name</p> 
+                <input type="text" name="name" placeholder="Full Name used in booking" class="form-control mb-3" required>
+                
+                <button type="submit" class="btn-primary" style="border:none; padding: 10px 20px; cursor: pointer;">Search</button>
+            <?= \yii\helpers\Html::endForm() ?>
         </div>
     </div>
     
