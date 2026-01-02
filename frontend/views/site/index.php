@@ -90,7 +90,7 @@
                         <div class="col-md-4 col-12">
                             <div class="booking-input">
                                 <i class="fa fa-map-marker-alt"></i>
-                                <input type="text" name="origin" placeholder="Origin" required>
+                                <input type="text" name="origin" placeholder="Origin">
                             </div>
                         </div>
 
@@ -98,7 +98,7 @@
                         <div class="col-md-4 col-12">
                             <div class="booking-input">
                                 <i class="fa fa-location-arrow"></i>
-                                <input type="text" name="destination" placeholder="Destination" required>
+                                <input type="text" name="destination" placeholder="Destination">
                             </div>
                         </div>
 
@@ -106,7 +106,7 @@
                         <div class="col-md-4 col-12">
                             <div class="booking-input">
                                 <i class="fa fa-calendar"></i>
-                                <input type="text" name="date" placeholder="dd/mm/yyyy" required>
+                                <input type="text" name="date" placeholder="dd/mm/yyyy">
                             </div>
                         </div>
 

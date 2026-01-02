@@ -18,7 +18,7 @@ $this->title = 'Dashboard';
     <div class="col-lg-3 col-6">
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>0</h3> <!-- depois ligamos à BD -->
+                <h3><?= $totalVoos ?></h3> <!-- depois ligamos à BD -->
                 <p>Voos</p>
             </div>
             <div class="icon">
@@ -34,7 +34,7 @@ $this->title = 'Dashboard';
     <div class="col-lg-3 col-6">
         <div class="small-box bg-success">
             <div class="inner">
-                <h3>0</h3>
+                <h3><?= $totalBilhetes ?></h3>
                 <p>Bilhetes</p>
             </div>
             <div class="icon">
@@ -50,7 +50,7 @@ $this->title = 'Dashboard';
     <div class="col-lg-3 col-6">
         <div class="small-box bg-warning">
             <div class="inner">
-                <h3>0</h3>
+                <h3><?= $totalNotificacoes ?></h3>
                 <p>Notificações</p>
             </div>
             <div class="icon">
@@ -66,7 +66,7 @@ $this->title = 'Dashboard';
     <div class="col-lg-3 col-6">
         <div class="small-box bg-danger">
             <div class="inner">
-                <h3>0</h3>
+                <h3><?= $totalPedidos ?></h3>
                 <p>Pedidos de assistência</p>
             </div>
             <div class="icon">
@@ -152,87 +152,27 @@ $this->title = 'Dashboard';
                   </tr>
                   </thead>
                   <tbody>
-
+                  <?php foreach ($recentDepartures as $voo): ?>
                   <tr>
                     <td>
-                        TP 123
+                        <?= \yii\helpers\Html::encode($voo->numero_voo) ?>
                     </td>
                     <td>
-                        Lisboa
+                        <?= \yii\helpers\Html::encode($voo->destination) ?>
                     </td>
                     <td>
-                        12:45
+                        <?= Yii::$app->formatter->asDatetime($voo->departure_date, 'php:H:i') ?>
                     </td>
                     <td>
-                        <span class="status ontime">No horário</span></td>
+                        <span class="status"><?= \yii\helpers\Html::encode($voo->status) ?></span>
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
+                      <a href="<?= \yii\helpers\Url::to(['/voo/view', 'id_voo' => $voo->id_voo]) ?>" class="text-muted">
                         <i class="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
-
-                  <tr>
-                    <td>
-                        FR9021
-                    </td>
-                    <td>
-                        Porto
-                    </td>
-                    <td>
-                        13:10
-                    </td>
-                    <td>
-                        <span class="status delayed">Atrasado</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                        LH331
-                    </td>
-                    <td>
-                        Frankfurt
-                    </td>
-                    <td>
-                        14:00
-                    </td>
-                    <td>
-                        <span class="status boarding">A embarcar</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                        RN891
-                        <span class="badge bg-danger">NEW</span>
-                    </td>
-                    <td>
-                        Barcelona
-                    </td>
-                    <td>
-                        14:20
-                    </td>
-                    <td>
-                        <span class="status delayed">Atrasado</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
+                  <?php endforeach; ?>
                   </tbody>
                 </table>
 
@@ -270,87 +210,27 @@ $this->title = 'Dashboard';
                   </tr>
                   </thead>
                   <tbody>
-
+                  <?php foreach ($recentArrivals as $voo): ?>
                   <tr>
                     <td>
-                        TP 123
+                        <?= \yii\helpers\Html::encode($voo->numero_voo) ?>
                     </td>
                     <td>
-                        Lisboa
+                        <?= \yii\helpers\Html::encode($voo->origin) ?>
                     </td>
                     <td>
-                        12:45
+                        <?= Yii::$app->formatter->asDatetime($voo->arrival_date, 'php:H:i') ?>
                     </td>
                     <td>
-                        <span class="status ontime">No horário</span></td>
+                        <span class="status"><?= \yii\helpers\Html::encode($voo->status) ?></span>
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
+                      <a href="<?= \yii\helpers\Url::to(['/voo/view', 'id_voo' => $voo->id_voo]) ?>" class="text-muted">
                         <i class="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
-
-                  <tr>
-                    <td>
-                        FR9021
-                    </td>
-                    <td>
-                        Porto
-                    </td>
-                    <td>
-                        13:10
-                    </td>
-                    <td>
-                        <span class="status delayed">Atrasado</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                        LH331
-                    </td>
-                    <td>
-                        Frankfurt
-                    </td>
-                    <td>
-                        14:00
-                    </td>
-                    <td>
-                        <span class="status boarding">A embarcar</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                        RN891
-                        <span class="badge bg-danger">NEW</span>
-                    </td>
-                    <td>
-                        Barcelona
-                    </td>
-                    <td>
-                        14:20
-                    </td>
-                    <td>
-                        <span class="status delayed">Atrasado</span>
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
+                  <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>

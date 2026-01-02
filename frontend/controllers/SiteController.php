@@ -108,18 +108,29 @@ class SiteController extends Controller
         $destination = Yii::$app->request->get('destination');
         $date = Yii::$app->request->get('date');
 
-        $query = Voo::find()
-            ->andWhere(['like', 'origin', $origin])
-            ->andWhere(['like', 'destination', $destination]);
+        $query = Voo::find();
 
-        if ($date) {
+        if (!empty($origin)) {
+            $query->andFilterWhere(['like', 'origin', $origin]);
+        }
+        
+        if (!empty($destination)) {
+            $query->andFilterWhere(['like', 'destination', $destination]);
+        }
+
+        if (!empty($date)) {
             $parts = explode('/', $date);
             if (count($parts) === 3) {
+                // Assuming database stores Y-m-d
                 $dateSQL = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
-                $query->andWhere(['departure_date' => $dateSQL]);
+                $query->andFilterWhere(['like', 'departure_date', $dateSQL]);
             }
         }
 
+        // Se nenhum criterio for passado, opcionalmente podemos retornar nada ou tudo.
+        // Assumindo q se o user clicar search vazio quer ver tudo ou erro.
+        // Mas como os inputs nao sao required, vamos assumir q mostra tudo se vazio.
+        
         $flights = $query->all();
 
         return $this->render('searchFlight', [

@@ -73,7 +73,34 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        // 1. Counts for Top Gadgets
+        $totalVoos = \common\models\Voo::find()->count();
+        $totalBilhetes = \common\models\Bilhete::find()->count();
+        $totalNotificacoes = \common\models\Notificacao::find()->count(); // Ou filtrar por lidas/não lidas se quiser
+        $totalPedidos = \common\models\PedidoAssistencia::find()->count();
+
+        // 2. Recent Departures (limit 5)
+        $recentDepartures = \common\models\Voo::find()
+            ->where(['tipo_voo' => 'departure'])
+            ->orderBy(['departure_date' => SORT_DESC]) // Mais recentes primeiro
+            ->limit(5)
+            ->all();
+
+        // 3. Recent Arrivals (limit 5)
+        $recentArrivals = \common\models\Voo::find()
+            ->where(['tipo_voo' => 'arrival'])
+            ->orderBy(['arrival_date' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        return $this->render('index', [
+            'totalVoos' => $totalVoos,
+            'totalBilhetes' => $totalBilhetes,
+            'totalNotificacoes' => $totalNotificacoes,
+            'totalPedidos' => $totalPedidos,
+            'recentDepartures' => $recentDepartures,
+            'recentArrivals' => $recentArrivals,
+        ]);
     }
 
     /**
