@@ -68,9 +68,9 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
     public function getImageUrl()
     {
         if (!$this->image) {
-            return Yii::getAlias("@imgUrl") . "/airlines/default.png";
+            return Yii::getAlias("@web") . "/img/airlines/default.png";
         }
 
-        return Yii::getAlias("@imgUrl") . "/airlines/" . $this->image;
+        return Yii::getAlias("@web") . "/img/airlines/" . $this->image;
     }
 }

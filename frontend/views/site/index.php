@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+/* @var $this yii\web\View */
+/* @var $partidas common\models\Voo[] */
+/* @var $chegadas common\models\Voo[] */
+/* @var $servicos common\models\ServicoAeroporto[] */
 
+use yii\helpers\Url;
+use yii\helpers\Html;
 
-<head>
-    <meta charset="utf-8">
-    <title>FlightHubLink</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-</head>
-
-
-<body>
+$this->title = 'FlightHubLink';
+?>
     
     <!-- Carousel Start -->
     <div class="container-fluid p-0">
@@ -200,33 +199,7 @@
 
             </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const tabs = document.querySelectorAll('.flight-tab');
-                    const bodies = {
-                        'partidas': document.getElementById('partidas-body'),
-                        'chegadas': document.getElementById('chegadas-body')
-                    };
 
-                    tabs.forEach(tab => {
-                        tab.addEventListener('click', function() {
-                            // Remove active class from all tabs
-                            tabs.forEach(t => t.classList.remove('active'));
-                            // Add active class to clicked tab
-                            this.classList.add('active');
-
-                            // Hide all bodies
-                            Object.values(bodies).forEach(body => body.style.display = 'none');
-                            
-                            // Show selected body
-                            const type = this.getAttribute('data-type');
-                            if (bodies[type]) {
-                                bodies[type].style.display = 'table-row-group';
-                            }
-                        });
-                    });
-                });
-            </script>
 
         </div>
     </div>
@@ -264,9 +237,42 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
+    <!-- Flight Details Modal -->
+    <div class="modal fade" id="flightModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title text-white">Flight Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center d-flex align-items-center justify-content-center border-right">
+                            <img id="modal-airline-image" src="" alt="Airline Logo" class="img-fluid" style="max-height: 100px;">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-2">
+                                <div class="col-6"><strong>Origin:</strong> <span id="modal-flight-origin"></span></div>
+                                <div class="col-6"><strong>Destination:</strong> <span id="modal-flight-destination"></span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6"><strong>Date/Time:</strong> <span id="modal-flight-date"></span></div>
+                                <div class="col-6"><strong>Gate:</strong> <span id="modal-flight-gate"></span></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12"><strong>Status:</strong> <span id="modal-flight-status" class="badge bg-info"></span></div>
+                            </div>
+                            <div class="text-right">
+                                <a href="<?= Url::to(['/site/ticket-purchase']) ?>" class="btn btn-success">Buy Ticket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/tempusdominus/js/moment.min.js"></script>
@@ -278,9 +284,4 @@
     <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
-    <script src="<?= Yii::getAlias('@web') ?>/js/main.js"></script>
-
-
-</body>
-
-</html>
+    <!-- <script src="<?= Yii::getAlias('@web') ?>/js/main.js"></script> -->
