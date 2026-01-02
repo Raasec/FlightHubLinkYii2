@@ -235,7 +235,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="destination-item position-relative overflow-hidden mb-2">
                             <img class="img-fluid" src="<?= $servico->getImagemUrl() ?>" alt="">
-                            <a class="destination-overlay text-white text-decoration-none" href="">
+                            <a class="destination-overlay text-white text-decoration-none" href="<?= $servico->url ?>" target="_blank">
                                 <h5 class="text-white"><?= $servico->name ?></h5>
                                 <span><?= $servico->estado ?></span>
                             </a>

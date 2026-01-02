@@ -7,6 +7,13 @@ use yii\helpers\Html;
 
 $this->title = 'Confirm Check-in';
 ?>
+
+<head>
+    <meta charset="utf-8">
+    <title>FlightHubLink</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+
 <div class="container-fluid page-header">
     <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
