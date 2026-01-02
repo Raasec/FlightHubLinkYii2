@@ -8,8 +8,10 @@ use yii\web\BadRequestHttpException;
 
 class AuthController extends Controller
 {
+
     public function actionLogin()
     {
+        
         $params = Yii::$app->request->bodyParams;
 
         if (!isset($params['username']) || !isset($params['password'])) {

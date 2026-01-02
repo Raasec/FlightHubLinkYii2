@@ -158,12 +158,11 @@
                         <?php foreach ($partidas as $voo): ?>
                             <tr>
                                 <td><?= $voo->numero_voo ?></td>
-                                <td><?= $voo->origem ?></td>
-                                <td><?= $voo->destino ?></td>
-                                
-                                
-
-                                <td><?= $voo->porta_embarque ?></td>
+                                <td><?= $voo->origin ?></td>
+                                <td><?= $voo->destination ?></td>
+                                <td><?= $voo->departure_date ?></td>
+                                <td><?= $voo->status ?></td>
+                                <td><?= $voo->gate ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

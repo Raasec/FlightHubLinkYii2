@@ -32,7 +32,12 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'arrival_date')->input('date') ?>
 
-    <?= $form->field($model, 'id_funcionario_responsavel')->textInput() ?>
+    <?php
+    $funcionarios = \common\models\Funcionario::find()->joinWith('user')->all();
+    $funcionarioList = \yii\helpers\ArrayHelper::map($funcionarios, 'id_funcionario', 'user.username');
+    ?>
+
+    <?= $form->field($model, 'id_funcionario_responsavel')->dropDownList($funcionarioList, ['prompt' => 'Select Responsible Employee']) ?>
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
