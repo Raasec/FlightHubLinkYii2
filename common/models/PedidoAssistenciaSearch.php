@@ -18,8 +18,7 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
     {
         return [
             [['id_pedido', 'id_passageiro', 'id_funcionario_resolve'], 'integer'],
-
-            [['type', 'description', 'request_date', 'resolution_date', 'status'], 'safe'],
+            [['type', 'request_date', 'resolution_date', 'status', 'description', 'response'], 'safe'],
         ];
     }
 
@@ -36,10 +35,11 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
      * Creates data provider instance with search query applied
      *
      * @param array $params
+     * @param string|null $formName Form name to be used into `->load()` method.
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $formName = null)
     {
         $query = PedidoAssistencia::find();
 
@@ -49,7 +49,7 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
             'query' => $query,
         ]);
 
-        $this->load($params);
+        $this->load($params, $formName);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -68,7 +68,8 @@ class PedidoAssistenciaSearch extends PedidoAssistencia
 
         $query->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'description', $this->description]); //new
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'response', $this->response]);
 
         return $dataProvider;
     }

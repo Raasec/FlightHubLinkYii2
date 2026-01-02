@@ -2,13 +2,11 @@
 
 namespace backend\controllers;
 
-use Yii;
 use common\models\PedidoAssistencia;
 use common\models\PedidoAssistenciaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
  * PedidoAssistenciaController implements the CRUD actions for PedidoAssistencia model.
@@ -16,37 +14,44 @@ use yii\filters\AccessControl;
 class PedidoAssistenciaController extends Controller
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
+     */
+    /**
+     * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['administrador','funcionario'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['administrador', 'funcionario'],
+                        ],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
      * Lists all PedidoAssistencia models.
-     * @return mixed
+     *
+     * @return string
      */
     public function actionIndex()
     {
         $searchModel = new PedidoAssistenciaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -57,7 +62,7 @@ class PedidoAssistenciaController extends Controller
     /**
      * Displays a single PedidoAssistencia model.
      * @param int $id_pedido Id Pedido
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id_pedido)
@@ -70,14 +75,18 @@ class PedidoAssistenciaController extends Controller
     /**
      * Creates a new PedidoAssistencia model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
         $model = new PedidoAssistencia();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_pedido' => $model->id_pedido]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id_pedido' => $model->id_pedido]);
+            }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -89,15 +98,32 @@ class PedidoAssistenciaController extends Controller
      * Updates an existing PedidoAssistencia model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id_pedido Id Pedido
-     * @return mixed
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id_pedido)
     {
         $model = $this->findModel($id_pedido);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_pedido' => $model->id_pedido]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            
+            // Auto-set resolution metadata
+            if ($model->status === 'resolved' || !empty($model->response)) {
+                if (empty($model->resolution_date)) {
+                    $model->resolution_date = date('Y-m-d H:i:s');
+                }
+                
+                // Get the funcionario ID linked to this user
+                $userId = \Yii::$app->user->id;
+                $funcionario = \common\models\Funcionario::findOne(['id_utilizador' => $userId]);
+                if ($funcionario) {
+                    $model->id_funcionario_resolve = $funcionario->id_funcionario;
+                }
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id_pedido' => $model->id_pedido]);
+            }
         }
 
         return $this->render('update', [
@@ -109,7 +135,7 @@ class PedidoAssistenciaController extends Controller
      * Deletes an existing PedidoAssistencia model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id_pedido Id Pedido
-     * @return mixed
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id_pedido)
@@ -128,7 +154,7 @@ class PedidoAssistenciaController extends Controller
      */
     protected function findModel($id_pedido)
     {
-        if (($model = PedidoAssistencia::findOne($id_pedido)) !== null) {
+        if (($model = PedidoAssistencia::findOne(['id_pedido' => $id_pedido])) !== null) {
             return $model;
         }
 

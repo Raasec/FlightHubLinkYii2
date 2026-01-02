@@ -1,5 +1,5 @@
-main > .container, main > .container-fluid
-{
+main>.container,
+main>.container-fluid {
     padding: 70px 15px 20px;
 }
 
@@ -9,7 +9,8 @@ main > .container, main > .container-fluid
     height: 60px;
 }
 
-.footer > .container, .footer > .container-fluid {
+.footer>.container,
+.footer>.container-fluid {
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -20,7 +21,8 @@ main > .container, main > .container-fluid
 }
 
 /* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
+a.asc:after,
+a.desc:after {
     content: '';
     left: 3px;
     display: inline-block;
@@ -66,27 +68,27 @@ a.desc:after {
 }
 
 /* align the logout "link" (button in form) of the navbar */
-.navbar form > button.logout {
+.navbar form>button.logout {
     padding-top: 7px;
     color: rgba(255, 255, 255, 0.5);
 }
 
 @media(max-width:767px) {
-    .navbar form > button.logout {
-        display:block;
+    .navbar form>button.logout {
+        display: block;
         text-align: left;
         width: 100%;
         padding: 10px 0;
     }
 }
 
-.navbar form > button.logout:focus,
-.navbar form > button.logout:hover {
+.navbar form>button.logout:focus,
+.navbar form>button.logout:hover {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.75);
 }
 
-.navbar form > button.logout:focus {
+.navbar form>button.logout:focus {
     outline: none;
 }
 
@@ -97,8 +99,7 @@ a.desc:after {
     padding: .75rem 1rem;
 }
 
-.breadcrumb-item > a
-{
+.breadcrumb-item>a {
     text-decoration: none;
 }
 
@@ -109,13 +110,13 @@ a.desc:after {
 .filter-box {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
 }
 
 .flight-card {
     background: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,.06);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .06);
 }
 
 .flight-card .time {
@@ -137,4 +138,63 @@ a.desc:after {
     .flight-card .text-right {
         text-align: center !important;
     }
+}
+
+.site-contact {
+    display: block !important;
+    min-height: auto !important;
+    padding-top: 2rem !important;
+}
+
+.site-search-results .hero-header {
+    background: linear-gradient(rgba(30, 91, 255, 0.8), rgba(30, 91, 255, 0.8)), url('../img/carousel-1.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.site-search-results .flight-path-line,
+.site-ticket-purchase .flight-path-line {
+    height: 2px;
+    background: #dee2e6;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.site-search-results .flight-path-line::before,
+.site-search-results .flight-path-line::after,
+.site-ticket-purchase .flight-path-line::before,
+.site-ticket-purchase .flight-path-line::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #dee2e6;
+    border-radius: 50%;
+}
+
+.site-search-results .flight-path-line::before {
+    left: 0;
+}
+
+.site-search-results .flight-path-line::after {
+    right: 0;
+}
+
+.site-search-results .hover-shadow:hover,
+.site-ticket-purchase .hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 2rem rgba(0, 0, 0, .15) !important;
+}
+
+.site-search-results .transition,
+.site-ticket-purchase .transition {
+    transition: all 0.3s ease-in-out;
+}
+
+.site-search-results .bg-primary-subtle,
+.site-ticket-purchase .bg-primary-subtle {
+    background-color: #e7f0ff;
 }

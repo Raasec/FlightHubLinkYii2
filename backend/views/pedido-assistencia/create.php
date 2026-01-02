@@ -2,26 +2,19 @@
 
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\PedidoAssistencia */
+/** @var yii\web\View $this */
+/** @var common\models\PedidoAssistencia $model */
 
-$this->title = 'Create Assistance Request';
+$this->title = 'Create Pedido Assistencia';
 $this->params['breadcrumbs'][] = ['label' => 'Pedido Assistencias', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="pedido-assistencia-create">
 
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <?=$this->render('_form', [
-                        'model' => $model
-                    ]) ?>
-                </div>
-            </div>
-        </div>
-        <!--.card-body-->
-    </div>
-    <!--.card-->
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
 </div>

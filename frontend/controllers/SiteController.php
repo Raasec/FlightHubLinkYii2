@@ -200,6 +200,18 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new \frontend\models\TicketForm();
+        $tickets = [];
+
+        if (!Yii::$app->user->isGuest) {
+            $userId = Yii::$app->user->id;
+            $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+            if ($passageiro) {
+                $tickets = \common\models\PedidoAssistencia::find()
+                    ->where(['id_passageiro' => $passageiro->id_passageiro])
+                    ->orderBy(['request_date' => SORT_DESC])
+                    ->all();
+            }
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (Yii::$app->user->isGuest) {
@@ -231,6 +243,7 @@ class SiteController extends Controller
 
         return $this->render('contact', [
             'model' => $model,
+            'tickets' => $tickets,
         ]);
     }
 

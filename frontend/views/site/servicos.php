@@ -10,7 +10,7 @@
 <body>
     <div class="container-fluid page-header">
         <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 285px">
                 <h3 class="display-4 text-white text-uppercase">Our Services</h3>
             </div>
         </div>

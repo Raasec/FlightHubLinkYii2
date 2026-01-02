@@ -34,7 +34,7 @@ class TicketForm extends Model
         $ticket->id_passageiro = $id_passageiro;
         $ticket->type = $this->type;
         $ticket->description = $this->description;
-        $ticket->request_date = date('Y-m-d'); // se queres datetime, usa 'Y-m-d H:i:s'
+        $ticket->request_date = date('Y-m-d H:i:s'); // agora com datetime de precisão
         $ticket->status = 'open'; // status inicial
 
         if (!$ticket->save()) {

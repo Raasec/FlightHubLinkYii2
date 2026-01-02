@@ -3,13 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model common\models\PedidoAssistenciaSearch */
-/* @var $form yii\widgets\ActiveForm */
+/** @var yii\web\View $this */
+/** @var common\models\PedidoAssistenciaSearch $model */
+/** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="row mt-2">
-    <div class="col-md-12">
+<div class="pedido-assistencia-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -30,6 +29,10 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'status') ?>
 
+    <?php // echo $form->field($model, 'description') ?>
+
+    <?php // echo $form->field($model, 'response') ?>
+
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
@@ -37,6 +40,4 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
-    </div>
-    <!--.col-md-12-->
 </div>

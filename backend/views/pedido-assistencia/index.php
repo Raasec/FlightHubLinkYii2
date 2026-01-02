@@ -1,59 +1,51 @@
 <?php
 
+use common\models\PedidoAssistencia;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\PedidoAssistenciaSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/** @var yii\web\View $this */
+/** @var common\models\PedidoAssistenciaSearch $searchModel */
+/** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Assistance Requests';
+$this->title = 'Pedido Assistencias';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <?= Html::a('Create Assistance Request', ['create'], ['class' => 'btn btn-success']) ?>
-                        </div>
-                    </div>
+<div class="pedido-assistencia-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Create Pedido Assistencia', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id_pedido',
+            'id_passageiro',
+            'id_funcionario_resolve',
+            'type',
+            'request_date',
+            //'resolution_date',
+            //'status',
+            //'description:ntext',
+            //'response:ntext',
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, PedidoAssistencia $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id_pedido' => $model->id_pedido]);
+                 }
+            ],
+        ],
+    ]); ?>
 
 
-                    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-
-                            'id_pedido',
-                            'id_passageiro',
-                            'id_funcionario_resolve',
-                            'type',
-                            'request_date',
-                            //'resolution_date',
-                            'status',
-                            //'description'
-
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
-                        ],
-                        'summaryOptions' => ['class' => 'summary mb-2'],
-                        'pager' => [
-                            'class' => 'yii\bootstrap4\LinkPager',
-                        ]
-                    ]); ?>
-
-
-                </div>
-                <!--.card-body-->
-            </div>
-            <!--.card-->
-        </div>
-        <!--.col-md-12-->
-    </div>
-    <!--.row-->
 </div>
