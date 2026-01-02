@@ -32,7 +32,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -40,7 +40,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -89,8 +89,21 @@ class SiteController extends Controller
     public function actionIndex()
     {
         // para a table de flights 
-        $partidas = Voo::find()->where(['tipo_voo' => 'departure'])->all();
-        $chegadas = Voo::find()->where(['tipo_voo' => 'arrival'])->all();
+        // Partidas: mostrar futuras (ou recentes?) - assumindo default (todos) ou filtrar passados tb?
+        // User request specifcally mentioned "once the flight lands".
+        // Let's filter departures that have already departed too, for consistency, or just keep as is if not requested?
+        // "once the flight lands... shouldn't be shown".
+        // I'll filter both for > NOW to be clean.
+        
+        $partidas = Voo::find()
+            ->where(['tipo_voo' => 'departure'])
+            ->andWhere(['>', 'departure_date', new \yii\db\Expression('NOW()')])
+            ->all();
+
+        $chegadas = Voo::find()
+            ->where(['tipo_voo' => 'arrival'])
+            ->andWhere(['>', 'arrival_date', new \yii\db\Expression('NOW()')])
+            ->all();
 
         // para o preview dos services
         $servicos = ServicoAeroporto::find()->all();
@@ -243,7 +256,7 @@ class SiteController extends Controller
             if (!$reference || !$name) {
                 $error = 'Por favor, preencha todos os campos.';
             } else {
-                // Find Ticket
+                // encontra o ticket
                 $bilhete = \common\models\Bilhete::findOne(['id_bilhete' => $reference]);
 
                 if (!$bilhete) {
@@ -258,24 +271,24 @@ class SiteController extends Controller
                          Yii::error('CHECKIN DEBUG: Passageiro UserProfile relation: ' . print_r($passageiro->userProfile ? $passageiro->userProfile->attributes : 'NULL', true), 'debug');
                     }
 
-                    if (!$passageiro || !$passageiro->userProfile) { // Assuming relations exist
+                    if (!$passageiro || !$passageiro->userProfile) { 
                          $error = 'Dados do passageiro não encontrados.';
                          Yii::error('CHECKIN DEBUG: Passageiro or UserProfile missing.', 'debug');
                     } else {
-                         // Case insensitive comparison
+                         // case insensitive comparação
                          $dbName = $passageiro->userProfile->full_name;
                          Yii::error("CHECKIN DEBUG: Comparing DB '$dbName' with Input '$name'", 'debug');
                          
                          if (strcasecmp(trim($dbName), trim($name)) !== 0) {
                              $error = 'Nome do passageiro não corresponde ao bilhete.';
                          } else {
-                             // Check if already checked in
+                             // ve se ja tem checkin
                              if ($bilhete->checkin) {
-                                 // Already checked in, redirect to boarding pass
+                                 // se ja vai para o boarding pass
                                  return $this->redirect(['boarding-pass', 'id' => $bilhete->id_bilhete]);
                              }
 
-                             // Proceed to confirmation
+                             // vai a confirmarion
                              return $this->render('checkinConfirm', [
                                  'bilhete' => $bilhete,
                                  'passengerName' => $dbName
@@ -330,7 +343,8 @@ class SiteController extends Controller
         $request = Yii::$app->request;
 
         $query = Voo::find()
-            ->with('companhia');
+            ->with('companhia')
+            ->andWhere(['>', 'departure_date', new \yii\db\Expression('DATE_ADD(NOW(), INTERVAL 2 HOUR)')]);
 
 
         // filtros
@@ -504,6 +518,15 @@ class SiteController extends Controller
         $voo = Voo::findOne($id_voo);
         if (!$voo) {
             Yii::$app->session->setFlash('error', 'Flight not found.');
+            return $this->redirect(['site/ticket-purchase']);
+        }
+
+        // Check availability (2 hours before departure)
+        $departureTimestamp = strtotime($voo->departure_date);
+        $minTimestamp = time() + (2 * 3600); // Now + 2 hours
+        
+        if ($departureTimestamp < $minTimestamp) {
+            Yii::$app->session->setFlash('error', 'Purchase closed. Tickets must be bought at least 2 hours before departure.');
             return $this->redirect(['site/ticket-purchase']);
         }
 

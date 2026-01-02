@@ -41,7 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'id_funcionario_responsavel',
                             //'status',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id_voo' => $model->id_voo]);
+                                }
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [

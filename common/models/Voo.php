@@ -131,4 +131,17 @@ class Voo extends \yii\db\ActiveRecord
         return $this->hasMany(Review::class, ['id_voo' => 'id_voo']);
     }
 
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->departure_date) {
+                $this->departure_date = str_replace('T', ' ', $this->departure_date);
+            }
+            if ($this->arrival_date) {
+                $this->arrival_date = str_replace('T', ' ', $this->arrival_date);
+            }
+            return true;
+        }
+        return false;
+    }
 }

@@ -26,11 +26,11 @@ use yii\bootstrap4\ActiveForm;
         ], ['prompt' => 'Select flight type']) 
     ?>
 
-    <?= $form->field($model, 'departure_date')->input('date') ?>
+    <?= $form->field($model, 'departure_date')->input('datetime-local') ?>
 
     <?= $form->field($model, 'gate')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'arrival_date')->input('date') ?>
+    <?= $form->field($model, 'arrival_date')->input('datetime-local') ?>
 
     <?php
     $funcionarios = \common\models\Funcionario::find()->joinWith('user')->all();

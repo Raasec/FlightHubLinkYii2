@@ -1,33 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="utf-8">
-    <title>TRAVELER - Free Travel Website Template</title>
+    <title>FlightHubLink</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-     <link href="<?= Yii::getAlias('@web') ?>/img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/css/style.css">
-
-
-    <link href="css/style.css" rel="stylesheet">
 </head>
+
 
 <body>
     
@@ -36,7 +16,7 @@
         <div id="header-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="img/carousel-1.jpg" alt="Image">
+                    <img class="w-100" src="<?= Yii::getAlias('@web') ?>/img/carousel-1.jpg" alt="Image">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h4 class="text-white text-uppercase mb-md-3">Travel and Discover</h4>
@@ -46,7 +26,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="img/carousel-2.jpg" alt="Image">
+                    <img class="w-100" src="<?= Yii::getAlias('@web') ?>/img/carousel-2.jpg" alt="Image">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <h4 class="text-white text-uppercase mb-md-3">Tours & Travel</h4>
@@ -150,6 +130,7 @@
                             <th>Leaves at</th>
                             <th>Status</th>
                             <th>Gate</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
 
@@ -159,9 +140,24 @@
                                 <td><?= $voo->numero_voo ?></td>
                                 <td><?= $voo->origin ?></td>
                                 <td><?= $voo->destination ?></td>
-                                <td><?= $voo->departure_date ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($voo->departure_date)) ?></td>
                                 <td><?= $voo->status ?></td>
                                 <td><?= $voo->gate ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#flightModal"
+                                        data-flight="<?= $voo->numero_voo ?>"
+                                        data-origin="<?= $voo->origin ?>"
+                                        data-destination="<?= $voo->destination ?>"
+                                        data-date="<?= date('d/m/Y H:i', strtotime($voo->departure_date)) ?>"
+                                        data-status="<?= $voo->status ?>"
+                                        data-gate="<?= $voo->gate ?>"
+                                        data-airline="<?= $voo->companhia ? $voo->companhia->name : 'N/A' ?>"
+                                        data-airline-image="<?= $voo->companhia ? $voo->companhia->getImageUrl() : '' ?>">
+                                        Inspect
+                                    </button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (empty($partidas)): ?>
@@ -175,9 +171,24 @@
                                 <td><?= $voo->numero_voo ?></td>
                                 <td><?= $voo->origin ?></td>
                                 <td><?= $voo->destination ?></td>
-                                <td><?= $voo->arrival_date ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($voo->arrival_date)) ?></td>
                                 <td><?= $voo->status ?></td>
                                 <td><?= $voo->gate ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#flightModal"
+                                        data-flight="<?= $voo->numero_voo ?>"
+                                        data-origin="<?= $voo->origin ?>"
+                                        data-destination="<?= $voo->destination ?>"
+                                        data-date="<?= date('d/m/Y H:i', strtotime($voo->arrival_date)) ?>"
+                                        data-status="<?= $voo->status ?>"
+                                        data-gate="<?= $voo->gate ?>"
+                                        data-airline="<?= $voo->companhia ? $voo->companhia->name : 'N/A' ?>"
+                                        data-airline-image="<?= $voo->companhia ? $voo->companhia->getImageUrl() : '' ?>">
+                                        Inspect
+                                    </button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (empty($chegadas)): ?>

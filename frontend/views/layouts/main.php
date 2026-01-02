@@ -132,9 +132,9 @@ AppAsset::register($this);
             <h5 class="text-white text-uppercase mb-2" style="letter-spacing: 3px;">Useful Links</h5>
             <div class="d-flex flex-column justify-content-start">
                 <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/about']) ?>"><i class="fa fa-angle-right mr-1"></i>About</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Destinations</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Current Flights</a>
-                <a class="text-white-50 mb-1 medium" href="#"><i class="fa fa-angle-right mr-1"></i>Search Flight</a>
+                <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/index']) ?>"><i class="fa fa-angle-right mr-1"></i>Destinations</a>
+                <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/index']) ?>"><i class="fa fa-angle-right mr-1"></i>Current Flights</a>
+                <a class="text-white-50 mb-1 medium" href="<?= \yii\helpers\Url::to(['/site/search-flight']) ?>"><i class="fa fa-angle-right mr-1"></i>All Active Flights</a>
             </div>
         </div>
 
