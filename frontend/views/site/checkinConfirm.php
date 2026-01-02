@@ -38,14 +38,14 @@ $this->title = 'Confirm Check-in';
                         <div class="flight-details border-top pt-4">
                             <div class="row align-items-center">
                                 <div class="col-md-5 text-center">
-                                    <h3><?= Html::encode($bilhete->voo->origem) ?></h3>
+                                    <h3><?= Html::encode($bilhete->voo->origin) ?></h3>
                                     <small>Origin</small>
                                 </div>
                                 <div class="col-md-2 text-center text-primary">
                                     <i class="fa fa-plane fa-2x"></i>
                                 </div>
                                 <div class="col-md-5 text-center">
-                                    <h3><?= Html::encode($bilhete->voo->destino) ?></h3>
+                                    <h3><?= Html::encode($bilhete->voo->destination) ?></h3>
                                     <small>Destination</small>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@ $this->title = 'Confirm Check-in';
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Date</strong><br>
-                                    <?= Yii::$app->formatter->asDate($bilhete->voo->data_registo) // Using data_registo as placeholder for flight date if no departure_date ?>
+                                    <?= Yii::$app->formatter->asDate($bilhete->voo->departure_date) // Using departure_date ?>
                                 </div>
                                 <div class="col-md-4">
                                     <strong>Seat</strong><br>

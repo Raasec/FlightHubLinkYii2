@@ -51,7 +51,7 @@
                         <div class="p-3" style="max-width: 900px;">
                             <h4 class="text-white text-uppercase mb-md-3">Tours & Travel</h4>
                             <h1 class="display-3 text-white mb-md-4">Discover Amazing Places With Us</h1>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
+                            <a href="<?= \yii\helpers\Url::to(['/site/ticket-purchase']) ?>" class="btn btn-primary py-md-3 px-md-5 mt-2">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -153,8 +153,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <!-- este foreach ta mal whatever n dei update porque vamos mudar a table --> 
+                    <tbody id="partidas-body">
                         <?php foreach ($partidas as $voo): ?>
                             <tr>
                                 <td><?= $voo->numero_voo ?></td>
@@ -165,11 +164,58 @@
                                 <td><?= $voo->gate ?></td>
                             </tr>
                         <?php endforeach; ?>
+                        <?php if (empty($partidas)): ?>
+                            <tr><td colspan="6" class="text-center">No departures found</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+
+                    <tbody id="chegadas-body" style="display: none;">
+                        <?php foreach ($chegadas as $voo): ?>
+                            <tr>
+                                <td><?= $voo->numero_voo ?></td>
+                                <td><?= $voo->origin ?></td>
+                                <td><?= $voo->destination ?></td>
+                                <td><?= $voo->arrival_date ?></td>
+                                <td><?= $voo->status ?></td>
+                                <td><?= $voo->gate ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php if (empty($chegadas)): ?>
+                            <tr><td colspan="6" class="text-center">No arrivals found</td></tr>
+                        <?php endif; ?>
                     </tbody>
 
                 </table>
 
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const tabs = document.querySelectorAll('.flight-tab');
+                    const bodies = {
+                        'partidas': document.getElementById('partidas-body'),
+                        'chegadas': document.getElementById('chegadas-body')
+                    };
+
+                    tabs.forEach(tab => {
+                        tab.addEventListener('click', function() {
+                            // Remove active class from all tabs
+                            tabs.forEach(t => t.classList.remove('active'));
+                            // Add active class to clicked tab
+                            this.classList.add('active');
+
+                            // Hide all bodies
+                            Object.values(bodies).forEach(body => body.style.display = 'none');
+                            
+                            // Show selected body
+                            const type = this.getAttribute('data-type');
+                            if (bodies[type]) {
+                                bodies[type].style.display = 'table-row-group';
+                            }
+                        });
+                    });
+                });
+            </script>
 
         </div>
     </div>

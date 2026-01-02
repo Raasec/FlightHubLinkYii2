@@ -135,7 +135,7 @@ use yii\helpers\Url;
                                 <?= Html::encode($voo->companhia->nome ?? 'Airline') ?>
                             </small>
                             <div class="time">
-                                <?= date('H:i', strtotime($voo->departure_date)) ?>
+                                <?= date('d/m/Y', strtotime($voo->departure_date)) ?>
                             </div>
                             <small><?= Html::encode($voo->origin) ?></small>
                         </div>
@@ -149,7 +149,7 @@ use yii\helpers\Url;
                         <!-- DESTINO -->
                         <div class="col-4 col-md-3 text-right">
                             <div class="time">
-                                <?= date('H:i', strtotime($voo->arrival_date)) ?>
+                                <?= date('d/m/Y', strtotime($voo->arrival_date)) ?>
                             </div>
                             <small><?= Html::encode($voo->destination) ?></small>
                         </div>
@@ -159,7 +159,7 @@ use yii\helpers\Url;
                             <div class="price">300€</div>
 
                             <?= Html::beginForm(
-                                Url::to(['site/ticket-purchase']),
+                                Url::to(['site/buy-ticket']),
                                 'post'
                             ) ?>
                                 <?= Html::hiddenInput('id_voo', $voo->id_voo) ?>

@@ -58,6 +58,16 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+    public function beforeAction($action)
+    {
+        Yii::error("DEBUG: action id is " . $action->id, 'debug');
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function actions()
     {
         return [
@@ -79,8 +89,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         // para a table de flights 
-        $partidas = Voo::find()->all();
-        $chegadas = Voo::find()->all();
+        $partidas = Voo::find()->where(['tipo_voo' => 'departure'])->all();
+        $chegadas = Voo::find()->where(['tipo_voo' => 'arrival'])->all();
 
         // para o preview dos services
         $servicos = ServicoAeroporto::find()->all();
@@ -98,32 +108,25 @@ class SiteController extends Controller
         $destination = Yii::$app->request->get('destination');
         $date = Yii::$app->request->get('date');
 
-        $query = Voo::find();
-
-        if ($origin) {
-            $query->andWhere(['like', 'origem', $origin]);
-        }
-
-        if ($destination) {
-            $query->andWhere(['like', 'destino', $destination]);
-        }
+        $query = Voo::find()
+            ->andWhere(['like', 'origin', $origin])
+            ->andWhere(['like', 'destination', $destination]);
 
         if ($date) {
-            // converte dd/mm/yyyy → yyyy-mm-dd
             $parts = explode('/', $date);
             if (count($parts) === 3) {
                 $dateSQL = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
-                $query->andWhere(['DATE(data_registo)' => $dateSQL]);
+                $query->andWhere(['departure_date' => $dateSQL]);
             }
         }
 
         $flights = $query->all();
 
-        return $this->render('search-results', [
+        return $this->render('searchFlight', [
             'flights' => $flights,
             'origin' => $origin,
             'destination' => $destination,
-            'date' => $date
+            'date' => $date,
         ]);
     }
 
@@ -234,14 +237,24 @@ class SiteController extends Controller
 
                 if (!$bilhete) {
                     $error = 'Bilhete não encontrado.';
+                    Yii::error('CHECKIN DEBUG: Bilhete not found for reference ' . $reference, 'debug');
                 } else {
                     // Check Name
                     $passageiro = $bilhete->passageiro;
+                    Yii::error('CHECKIN DEBUG: Bilhete found. Passageiro data: ' . print_r($passageiro ? $passageiro->attributes : 'NULL', true), 'debug');
+                    
+                    if ($passageiro) {
+                         Yii::error('CHECKIN DEBUG: Passageiro UserProfile relation: ' . print_r($passageiro->userProfile ? $passageiro->userProfile->attributes : 'NULL', true), 'debug');
+                    }
+
                     if (!$passageiro || !$passageiro->userProfile) { // Assuming relations exist
                          $error = 'Dados do passageiro não encontrados.';
+                         Yii::error('CHECKIN DEBUG: Passageiro or UserProfile missing.', 'debug');
                     } else {
                          // Case insensitive comparison
                          $dbName = $passageiro->userProfile->full_name;
+                         Yii::error("CHECKIN DEBUG: Comparing DB '$dbName' with Input '$name'", 'debug');
+                         
                          if (strcasecmp(trim($dbName), trim($name)) !== 0) {
                              $error = 'Nome do passageiro não corresponde ao bilhete.';
                          } else {
@@ -252,7 +265,7 @@ class SiteController extends Controller
                              }
 
                              // Proceed to confirmation
-                             return $this->render('checkin-confirm', [
+                             return $this->render('checkinConfirm', [
                                  'bilhete' => $bilhete,
                                  'passengerName' => $dbName
                              ]);
@@ -296,7 +309,7 @@ class SiteController extends Controller
             return $this->redirect(['checkin']);
         }
 
-        return $this->render('boarding-pass', [
+        return $this->render('boardingPass', [
             'bilhete' => $bilhete
         ]);
     }
@@ -306,8 +319,8 @@ class SiteController extends Controller
         $request = Yii::$app->request;
 
         $query = Voo::find()
-            ->with('companhia')
-            ->where(['status' => 'ativo']);
+            ->with('companhia');
+
 
         // filtros
         if ($origin = $request->get('origin')) {
@@ -459,6 +472,78 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+    /**
+     * compra um ticket para logged user
+     */
+    public function actionBuyTicket()
+    {
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->session->setFlash('error', 'You must be logged in to purchase a ticket.');
+            return $this->redirect(['site/login']);
+        }
+
+        $id_voo = Yii::$app->request->post('id_voo');
+        if (!$id_voo) {
+            Yii::$app->session->setFlash('error', 'Invalid flight.');
+            return $this->redirect(['site/ticket-purchase']);
+        }
+
+        $voo = Voo::findOne($id_voo);
+        if (!$voo) {
+            Yii::$app->session->setFlash('error', 'Flight not found.');
+            return $this->redirect(['site/ticket-purchase']);
+        }
+
+        $userId = Yii::$app->user->id;
+
+        // userprofile tem de existir
+        $userProfile = \common\models\UserProfile::findOne(['user_id' => $userId]);
+        if (!$userProfile) {
+            $user = \common\models\User::findOne($userId);
+            $userProfile = new \common\models\UserProfile();
+            $userProfile->user_id = $userId;
+            $userProfile->role_type = 'passageiro'; // role type
+            $userProfile->full_name = $user->username; // default name do username
+
+            if (!$userProfile->save()) {
+                Yii::$app->session->setFlash('error', 'Failed to create User Profile.');
+                return $this->redirect(['site/ticket-purchase']);
+            }
+        }
+
+        // tem de ter passageiro linked ao user
+        $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+        if (!$passageiro) {
+            $passageiro = new \common\models\Passageiro();
+            $passageiro->id_utilizador = $userId;
+            $passageiro->user_profile_id = $userProfile->id;
+            $passageiro->save();
+        } elseif (empty($passageiro->user_profile_id)) {
+            // fix passageiro sem profile user id
+            $passageiro->user_profile_id = $userProfile->id;
+            $passageiro->save();
+        }
+
+        // criaçao do ticket
+        $bilhete = new \common\models\Bilhete();
+        $bilhete->id_passageiro = $passageiro->id_passageiro;
+        $bilhete->id_voo = $voo->id_voo;
+        $bilhete->issue_date = date('Y-m-d H:i:s');
+        $bilhete->price = 300.00; // hardocded por falta de logica de purchase/pricing
+        $bilhete->travel_class = 'Economy';
+        $bilhete->seat = 'Auto';
+        $bilhete->status = 'Paid';
+        $bilhete->gate = $voo->gate; // copia o gate do voo
+
+        if ($bilhete->save()) {
+            Yii::$app->session->setFlash('success', 'Ticket purchased successfully! Ticket ID: ' . $bilhete->id_bilhete);
+        } else {
+            Yii::$app->session->setFlash('error', 'Failed to purchase ticket.');
+        }
+
+        return $this->redirect(['site/ticket-purchase']);
     }
 
 }

@@ -6,6 +6,34 @@ use yii\helpers\Html;
 
 $this->title = 'Boarding Pass';
 ?>
+
+    <head>
+        <meta charset="utf-8">
+        <title>TRAVELER - Free Travel Website Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Free HTML Templates" name="keywords">
+        <meta content="Free HTML Templates" name="description">
+
+        <!-- Favicon -->
+        <link href="<?= Yii::getAlias('@web') ?>/img/favicon.ico" rel="icon">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link rel="stylesheet" href="<?= Yii::getAlias('@web') ?>/css/style.css">
+    
+    </head>
+
+    
 <div class="container-fluid page-header">
     <div class="container">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
@@ -39,15 +67,15 @@ $this->title = 'Boarding Pass';
                                 
                                 <div class="row mb-4">
                                     <div class="col-sm-5">
-                                        <h2 class="display-4 mb-0"><?= Html::encode(substr($bilhete->voo->origem, 0, 3)) ?></h2>
-                                        <small class="text-uppercase"><?= Html::encode($bilhete->voo->origem) ?></small>
+                                        <h2 class="display-4 mb-0"><?= Html::encode(substr($bilhete->voo->origin, 0, 3)) ?></h2>
+                                        <small class="text-uppercase"><?= Html::encode($bilhete->voo->origin) ?></small>
                                     </div>
                                     <div class="col-sm-2 text-center align-self-center">
                                         <i class="fa fa-plane fa-2x text-muted"></i>
                                     </div>
                                     <div class="col-sm-5 text-right">
-                                        <h2 class="display-4 mb-0"><?= Html::encode(substr($bilhete->voo->destino, 0, 3)) ?></h2>
-                                        <small class="text-uppercase"><?= Html::encode($bilhete->voo->destino) ?></small>
+                                        <h2 class="display-4 mb-0"><?= Html::encode(substr($bilhete->voo->destination, 0, 3)) ?></h2>
+                                        <small class="text-uppercase"><?= Html::encode($bilhete->voo->destination) ?></small>
                                     </div>
                                 </div>
 
@@ -62,7 +90,7 @@ $this->title = 'Boarding Pass';
                                     </div>
                                     <div class="col-sm-4">
                                         <small class="text-muted text-uppercase">Date</small>
-                                        <h6 class="font-weight-bold"><?= Yii::$app->formatter->asDate($bilhete->voo->data_registo) ?></h6>
+                                        <h6 class="font-weight-bold"><?= Yii::$app->formatter->asDate($bilhete->voo->departure_date) ?></h6>
                                     </div>
                                 </div>
                             </div>
