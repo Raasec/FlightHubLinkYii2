@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\PedidoAssistencia;
 use common\models\PedidoAssistenciaSearch;
 use yii\web\Controller;
@@ -21,7 +22,6 @@ class PedidoAssistenciaController extends Controller
      */
     public function behaviors()
     {
-<<<<<<< Updated upstream
         return array_merge(
             parent::behaviors(),
             [
@@ -32,16 +32,6 @@ class PedidoAssistenciaController extends Controller
                             'allow' => true,
                             'roles' => ['administrador', 'funcionario'],
                         ],
-=======
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['administrador','funcionario'],
->>>>>>> Stashed changes
                     ],
                 ],
                 'verbs' => [
@@ -68,13 +58,16 @@ class PedidoAssistenciaController extends Controller
         }
 
         $searchModel = new PedidoAssistenciaSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(
+            Yii::$app->request->queryParams
+        );
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single PedidoAssistencia model.

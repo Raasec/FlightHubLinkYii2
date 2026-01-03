@@ -60,8 +60,14 @@ class UserProfile extends \yii\db\ActiveRecord
             [['date_of_birth'], 'safe'],
             [['image', 'full_name', 'address'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
-            [['nif', 'postal_code'], 'string', 'max' => 15],
+            [['phone'], 'match', 'pattern' => '/^\+?[0-9 ]+$/', 'message' => 'Phone number can only contain digits, spaces and an optional leading "+".'],
+            [['nif'], 'string', 'max' => 9, 'min' => 9],
+            [['nif'], 'match', 'pattern' => '/^[0-9]{9}$/', 'message' => 'NIF must be exactly 9 digits.'],
+            [['postal_code'], 'string', 'max' => 8, 'min' => 8],
+            [['postal_code'], 'match', 'pattern' => '/^[0-9]{4}-[0-9]{3}$/', 'message' => 'Postal code must be in the format 0000-000.'],
             [['nationality', 'country'], 'string', 'max' => 50],
+            ['country', 'in', 'range' => array_keys(self::optsCountry())],
+            ['nationality', 'in', 'range' => array_keys(self::optsNationality())],
             ['gender', 'in', 'range' => array_keys(self::optsGender())],
             ['role_type', 'in', 'range' => array_keys(self::optsRoleType())],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -276,6 +282,39 @@ class UserProfile extends \yii\db\ActiveRecord
             'female_15746374.png',
             'female_34214563.png',
             
+        ];
+    }
+
+    public static function optsCountry()
+    {
+        return [
+            'Portugal' => 'Portugal',
+            'Spain' => 'Spain',
+            'France' => 'France',
+            'United Kingdom' => 'United Kingdom',
+            'Germany' => 'Germany',
+            'Italy' => 'Italy',
+            'Brazil' => 'Brazil',
+            'USA' => 'USA',
+            'Canada' => 'Canada',
+            'Other' => 'Other',
+        ];
+    }
+    
+    // talvez usar uma public API para obter os países???? Não me parece viavel por limites de requests
+    public static function optsNationality()
+    {
+        return [
+            'Portuguese' => 'Portuguese',
+            'Spanish' => 'Spanish',
+            'French' => 'French',
+            'British' => 'British',
+            'German' => 'German',
+            'Italian' => 'Italian',
+            'Brazilian' => 'Brazilian',
+            'American' => 'American',
+            'Canadian' => 'Canadian',
+            'Other' => 'Other',
         ];
     }
 

@@ -70,6 +70,9 @@ AppAsset::register($this);
                     <a href="<?= \yii\helpers\Url::to(['/site/servicos']) ?>" class="nav-item nav-link">Services</a>
                     <a href="<?= \yii\helpers\Url::to(['/site/ticket-purchase']) ?>" class="nav-item nav-link">Buy tickets</a>
                     <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Online Check-In</a>  
+                    <?php if (!Yii::$app->user->isGuest): ?>
+                        <a href="<?= \yii\helpers\Url::to(['/site/profile']) ?>" class="nav-item nav-link <?= Yii::$app->controller->action->id == 'profile' ? 'active' : '' ?>">My Profile</a>
+                    <?php endif; ?>
                     <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Support</a>
                     <?php if (Yii::$app->user->isGuest): ?>
                         <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="nav-item nav-link">Login</a>

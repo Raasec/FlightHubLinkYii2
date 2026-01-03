@@ -32,7 +32,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass'],
+                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -40,7 +40,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass'],
+                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -276,37 +276,44 @@ class SiteController extends Controller
                     $error = 'Bilhete não encontrado.';
                     Yii::error('CHECKIN DEBUG: Bilhete not found for reference ' . $reference, 'debug');
                 } else {
-                    // Check Name
-                    $passageiro = $bilhete->passageiro;
-                    Yii::error('CHECKIN DEBUG: Bilhete found. Passageiro data: ' . print_r($passageiro ? $passageiro->attributes : 'NULL', true), 'debug');
-                    
-                    if ($passageiro) {
-                         Yii::error('CHECKIN DEBUG: Passageiro UserProfile relation: ' . print_r($passageiro->userProfile ? $passageiro->userProfile->attributes : 'NULL', true), 'debug');
-                    }
-
-                    if (!$passageiro || !$passageiro->userProfile) { 
-                         $error = 'Dados do passageiro não encontrados.';
-                         Yii::error('CHECKIN DEBUG: Passageiro or UserProfile missing.', 'debug');
+                    // Ownership Check
+                    $userId = Yii::$app->user->id;
+                    if ($bilhete->passageiro->id_utilizador !== $userId) {
+                        $error = 'Este bilhete não pertence à sua conta.';
+                        Yii::error("CHECKIN SECURITY: User $userId tried to check in ticket " . $bilhete->id_bilhete . " which belongs to user " . $bilhete->passageiro->id_utilizador, 'security');
                     } else {
-                         // case insensitive comparação
-                         $dbName = $passageiro->userProfile->full_name;
-                         Yii::error("CHECKIN DEBUG: Comparing DB '$dbName' with Input '$name'", 'debug');
-                         
-                         if (strcasecmp(trim($dbName), trim($name)) !== 0) {
-                             $error = 'Nome do passageiro não corresponde ao bilhete.';
-                         } else {
-                             // ve se ja tem checkin
-                             if ($bilhete->checkin) {
-                                 // se ja vai para o boarding pass
-                                 return $this->redirect(['boarding-pass', 'id' => $bilhete->id_bilhete]);
-                             }
+                        // Check Name
+                        $passageiro = $bilhete->passageiro;
+                        Yii::error('CHECKIN DEBUG: Bilhete found. Passageiro data: ' . print_r($passageiro ? $passageiro->attributes : 'NULL', true), 'debug');
+                        
+                        if ($passageiro) {
+                             Yii::error('CHECKIN DEBUG: Passageiro UserProfile relation: ' . print_r($passageiro->userProfile ? $passageiro->userProfile->attributes : 'NULL', true), 'debug');
+                        }
 
-                             // vai a confirmarion
-                             return $this->render('checkinConfirm', [
-                                 'bilhete' => $bilhete,
-                                 'passengerName' => $dbName
-                             ]);
-                         }
+                        if (!$passageiro || !$passageiro->userProfile) { 
+                             $error = 'Dados do passageiro não encontrados.';
+                             Yii::error('CHECKIN DEBUG: Passageiro or UserProfile missing.', 'debug');
+                        } else {
+                             // case insensitive comparação
+                             $dbName = $passageiro->userProfile->full_name;
+                             Yii::error("CHECKIN DEBUG: Comparing DB '$dbName' with Input '$name'", 'debug');
+                             
+                             if (strcasecmp(trim($dbName), trim($name)) !== 0) {
+                                 $error = 'Nome do passageiro não corresponde ao bilhete.';
+                             } else {
+                                 // ve se ja tem checkin
+                                 if ($bilhete->checkin) {
+                                     // se ja vai para o boarding pass
+                                     return $this->redirect(['boarding-pass', 'id' => $bilhete->id_bilhete]);
+                                 }
+
+                                 // vai a confirmarion
+                                 return $this->render('checkinConfirm', [
+                                     'bilhete' => $bilhete,
+                                     'passengerName' => $dbName
+                                 ]);
+                             }
+                        }
                     }
                 }
             }
@@ -324,6 +331,12 @@ class SiteController extends Controller
             $bilhete = \common\models\Bilhete::findOne($id_bilhete);
 
             if ($bilhete && !$bilhete->checkin) {
+                // Ownership Check
+                $userId = Yii::$app->user->id;
+                if ($bilhete->passageiro->id_utilizador !== $userId) {
+                    throw new \yii\web\ForbiddenHttpException('Não tem permissão para realizar o check-in deste bilhete.');
+                }
+
                 $checkin = new \common\models\Checkin();
                 $checkin->id_bilhete = $bilhete->id_bilhete;
                 $checkin->checkin_datetime = date('Y-m-d H:i:s');
@@ -344,6 +357,12 @@ class SiteController extends Controller
         $bilhete = \common\models\Bilhete::findOne($id);
         if (!$bilhete || !$bilhete->checkin) {
             return $this->redirect(['checkin']);
+        }
+
+        // Ownership Check
+        $userId = Yii::$app->user->id;
+        if ($bilhete->passageiro->id_utilizador !== $userId) {
+            throw new \yii\web\ForbiddenHttpException('Não tem permissão para visualizar este cartão de embarque.');
         }
 
         return $this->render('boardingPass', [
@@ -398,6 +417,61 @@ class SiteController extends Controller
 
         return $this->render('servicos', [
             'servicos' => $servicos
+        ]);
+    }
+
+    public function actionProfile()
+    {
+        // Pega o ID do bacano que tá logado
+        $userId = Yii::$app->user->id;
+        
+        $profile = \common\models\UserProfile::findOne(['user_id' => $userId]);
+
+        if (!$profile) {
+            // autofix se o profile ta missing (nao deve acontecer para novos users pelo flow do signup mas ajuda velhos)
+            $user = \common\models\User::findOne($userId);
+            $profile = new \common\models\UserProfile();
+            $profile->user_id = $userId;
+            $profile->role_type = 'passageiro';
+            $profile->full_name = $user->username;
+            $profile->save();
+        }
+
+        // vai buscar os bilhetes do passageiro 
+        $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+        $tickets = [];
+        
+        if ($passageiro) {
+            $tickets = \common\models\Bilhete::find()
+                ->where(['id_passageiro' => $passageiro->id_passageiro])
+                ->with(['voo', 'checkin']) // nao tirem isto, fica lento (vi no stackoverflow, só confia)
+                ->orderBy(['issue_date' => SORT_DESC])
+                ->all();
+        }
+
+        return $this->render('profile', [
+            'profile' => $profile,
+            'tickets' => $tickets
+        ]);
+    }
+
+    public function actionUpdateProfile()
+    {
+        $userId = Yii::$app->user->id;
+        $profile = \common\models\UserProfile::findOne(['user_id' => $userId]);
+
+        if (!$profile) {
+            //deve ser handled pelo profile view mas so para segurança 
+            return $this->redirect(['profile']);
+        }
+
+        if ($profile->load(Yii::$app->request->post()) && $profile->save()) {
+            Yii::$app->session->setFlash('success', 'Profile updated successfully.');
+            return $this->redirect(['profile']);
+        }
+
+        return $this->render('updateProfile', [
+            'profile' => $profile
         ]);
     }
 
@@ -517,11 +591,6 @@ class SiteController extends Controller
      */
     public function actionBuyTicket()
     {
-        if (Yii::$app->user->isGuest) {
-            Yii::$app->session->setFlash('error', 'You must be logged in to purchase a ticket.');
-            return $this->redirect(['site/login']);
-        }
-
         $id_voo = Yii::$app->request->post('id_voo');
         if (!$id_voo) {
             Yii::$app->session->setFlash('error', 'Invalid flight.');
