@@ -11,14 +11,16 @@ use common\models\UserProfile;
  */
 class UserProfileSearch extends UserProfile
 {
+    public $username;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'user_id'], 'integer'],
-            [['image', 'full_name', 'gender', 'date_of_birth', 'phone', 'nif', 'nationality', 'country', 'address', 'postal_code', 'role_type'], 'safe'],
+            [['id'], 'integer'],
+            [['full_name', 'gender', 'role_type', 'username'], 'safe'],
         ];
     }
 
@@ -41,7 +43,8 @@ class UserProfileSearch extends UserProfile
      */
     public function search($params, $formName = null)
     {
-        $query = UserProfile::find();
+        $query = UserProfile::find()
+                ->joinWith(['user']); // necessário para fazer search no username
 
         // add conditions that should always apply here
 
@@ -59,21 +62,13 @@ class UserProfileSearch extends UserProfile
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'date_of_birth' => $this->date_of_birth,
+            'user_profile.id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'full_name', $this->full_name])
-            ->andFilterWhere(['like', 'gender', $this->gender])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'nif', $this->nif])
-            ->andFilterWhere(['like', 'nationality', $this->nationality])
-            ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'postal_code', $this->postal_code])
-            ->andFilterWhere(['like', 'role_type', $this->role_type]);
+        $query->andFilterWhere(['like', 'user_profile.full_name', $this->full_name])
+            ->andFilterWhere(['user_profile.gender' => $this->gender])
+            ->andFilterWhere(['user_profile.role_type' => $this->role_type])
+            ->andFilterWhere(['like', 'user.username', $this->username]);
 
         return $dataProvider;
     }

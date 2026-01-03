@@ -11,29 +11,75 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'User Profiles';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'] = [];
 ?>
 <div class="user-profile-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User Profile', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <h1 class="page-title"><?= Html::encode($this->title) ?></h1>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'tableOptions' => ['class' => 'table table-hover'],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'image',
+            //ID
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'width:70px'],
+            ],
+
+            //Avatar / image
+            [
+                'label' => 'Avatar',
+                'format' => 'raw',
+                'value' => function (UserProfile $model) {
+                    return Html::img(
+                    $model->imageUrl,
+                    [
+                            'style' => 'width:40px;height:40px;border-radius:50%;object-fit:cover;',
+                            'alt'   => 'Avatar',
+                        ]
+                    );
+                },
+                'filter' => false,
+                'headerOptions' => ['style' => 'width:80px'],
+            ],
+
+            // Username ()
+            [
+                'label' => 'Username',
+                'attribute' => 'username',
+                'value' => fn(UserProfile $model) => $model->user->username ?? '-',
+            ],
+
+            // FUll name
             'full_name',
-            'gender',
+
+            //Gender
+            [
+                'attribute' => 'gender',
+                'value' => fn(UserProfile $model) => $model->gender ? ucfirst($model->gender) : '-',
+                'filter' => [
+                    'male' => 'Male',
+                    'female' => 'Female',
+                    'other' => 'Other',
+                ],
+            ],
+
+            //Role
+            [
+                'attribute' => 'role_type',
+                'value' => fn(UserProfile $model) => ucfirst($model->role_type),
+                'filter' => [
+                    'administrador' => 'Administrador',
+                    'funcionario'   => 'Funcionario',
+                    'passageiro'    => 'Passageiro',
+                ],
+            ],
+
             //'date_of_birth',
             //'phone',
             //'nif',
@@ -42,10 +88,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'address',
             //'postal_code',
             //'role_type',
+
+            // Actions
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, UserProfile $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                'template' => '{view} {update}',
+                'urlCreator' => function ($action, UserProfile $model) {
+                    return Url::to([$action, 'id' => $model->id]);
                  }
             ],
         ],

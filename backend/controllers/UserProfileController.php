@@ -2,42 +2,71 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\UserProfile;
 use common\models\UserProfileSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * UserProfileController implements the CRUD actions for UserProfile model.
  */
 class UserProfileController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return array_merge(parent::behaviors(), [
+
+            // RBAC ACCESS CONTROL
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+
+                    // administrador tem acesso total
+                    [
+                        'allow' => true,
+                        'roles' => ['manageUserProfiles'],
+                    ],
+
+                    // Ffuncionario so pode ver o próprio perfil
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['viewOwnUserProfile'],
+                    ],
+
+                    // Ffuncionario so pode editar o próprio perfil
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updateOwnUserProfile'],
                     ],
                 ],
-            ]
-        );
+            ],
+
+            // HTTP verbs
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ]);
     }
 
     /**
      * Lists all UserProfile models.
-     *
-     * @return string
+     * Apenas ADMIN
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('manageUserProfiles')) {
+            throw new ForbiddenHttpException();
+        }
+
         $searchModel = new UserProfileSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -49,49 +78,61 @@ class UserProfileController extends Controller
 
     /**
      * Displays a single UserProfile model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
+     * ADMIN ou FUNCIONARIO (apenas o próprio)
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+        $model = $this->findModel($id);
 
-    /**
-     * Creates a new UserProfile model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new UserProfile();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if (
+            !Yii::$app->user->can('viewOwnUserProfile', ['model' => $model]) &&
+            !Yii::$app->user->can('manageUserProfiles')
+        ) {
+            throw new ForbiddenHttpException();
         }
 
-        return $this->render('create', [
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
 
     /**
+     * Creates a new UserProfile model.
+     * Apenas ADMIN
+     */
+    public function actionCreate()
+    {
+        /*
+        if (!Yii::$app->user->can('manageUserProfiles')) {
+            throw new ForbiddenHttpException();
+        }
+
+        $model = new UserProfile();
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+        */
+    }
+
+    /**
      * Updates an existing UserProfile model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * ADMIN ou FUNCIONARIO (apenas o próprio)
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        if (
+            !Yii::$app->user->can('updateOwnUserProfile', ['model' => $model]) &&
+            !Yii::$app->user->can('manageUserProfiles')
+        ) {
+            throw new ForbiddenHttpException();
+        }
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -104,24 +145,20 @@ class UserProfileController extends Controller
 
     /**
      * Deletes an existing UserProfile model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * Apenas ADMIN
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (!Yii::$app->user->can('manageUserProfiles')) {
+            throw new ForbiddenHttpException();
+        }
 
+        $this->findModel($id)->delete();
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the UserProfile model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return UserProfile the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * Finds the UserProfile model.
      */
     protected function findModel($id)
     {

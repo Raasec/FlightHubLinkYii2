@@ -41,7 +41,8 @@ class UserSearch extends User
      */
     public function search($params, $formName = null)
     {
-        $query = User::find();
+        $query = User::find()
+            -> where (['!=', 'status', User::STATUS_INACTIVE]);
 
         // add conditions that should always apply here
 

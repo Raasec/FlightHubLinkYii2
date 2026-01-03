@@ -23,6 +23,7 @@ class CompanhiaAereaController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,12 @@ class CompanhiaAereaController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewAirline')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view airlines.'
+            );
+        }
+
         $searchModel = new CompanhiaAereaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +69,12 @@ class CompanhiaAereaController extends Controller
      */
     public function actionView($id_companhia)
     {
+        if (!Yii::$app->user->can('viewAirline')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this airline.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_companhia),
         ]);
@@ -74,6 +87,12 @@ class CompanhiaAereaController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createAirline')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create airlines.'
+            );
+        }
+
         $model = new CompanhiaAerea();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +113,12 @@ class CompanhiaAereaController extends Controller
      */
     public function actionUpdate($id_companhia)
     {
+        if (!Yii::$app->user->can('updateAirline')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update airlines.'
+            );
+        }
+
         $model = $this->findModel($id_companhia);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +139,12 @@ class CompanhiaAereaController extends Controller
      */
     public function actionDelete($id_companhia)
     {
+        if (!Yii::$app->user->can('deleteAirline')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete airlines.'
+            );
+        }
+
         $this->findModel($id_companhia)->delete();
 
         return $this->redirect(['index']);
@@ -128,6 +159,7 @@ class CompanhiaAereaController extends Controller
      */
     protected function findModel($id_companhia)
     {
+        
         if (($model = CompanhiaAerea::findOne($id_companhia)) !== null) {
             return $model;
         }

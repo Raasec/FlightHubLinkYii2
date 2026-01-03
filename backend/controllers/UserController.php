@@ -53,8 +53,12 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewUser')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to list users.');
+        }
+
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -70,9 +74,14 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        if (!Yii::$app->user->can('viewUser')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to view users.');
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+
     }
 
     /**
@@ -82,24 +91,11 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
-
-        /*
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if (!Yii::$app->user->can('createUser')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to create users.');
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-
-        */
-
-
+        $model = new User();
         $model ->scenario ='create';
 
         if ($model->load(Yii::$app->request->post())){
@@ -146,25 +142,12 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        /*
 
-        $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (!Yii::$app->user->can('updateUser')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to update users.');
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-
-        */
-
-
-
         $model = $this -> findModel ($id);  // Carregar o modelo
-
-        
         $auth = Yii::$app->authManager;        // 1º carregamos o componente RBAC
 
         // Role atual do utilizador
@@ -221,7 +204,47 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (!Yii::$app->user->can('deleteUser')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to delete users.');
+        }
+
+        $model = $this->findModel($id);
+
+        // Prevents deleting yourself
+        if ($model->id == Yii::$app->user->id) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You cannot delete your own user account.'
+            );
+        }
+
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($model->id);
+
+        // Prevents desactivating the last administrator
+        if (isset($roles['administrador'])) {
+            $activeAdmins = Administrador::find()
+                ->innerJoin('user', 'user.id = administrador.id_utilizador')
+                ->where(['user.status' => User::STATUS_ACTIVE])
+                ->count();
+
+            if ($activeAdmins <= 1) {
+                throw new \yii\web\ForbiddenHttpException(
+                    'The system must have at least one active administrator.'
+                );
+            }
+        }
+
+        // Deactivate user instead of deleting it. Status user = 10 -> Status user = 9
+        $model->status = User::STATUS_INACTIVE;
+        $model->save(false);
+
+        // Remove RBAC role
+        $auth->revokeAll($model->id);
+
+        // delete role specific model profile (delete in the other table)
+        Funcionario::deleteAll(['id_utilizador' => $model->id]);
+        Passageiro::deleteAll(['id_utilizador' => $model->id]);
+        Administrador::deleteAll(['id_utilizador' => $model->id]);
 
         return $this->redirect(['index']);
     }

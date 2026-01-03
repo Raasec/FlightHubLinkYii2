@@ -23,6 +23,7 @@ class NotificacaoController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,12 @@ class NotificacaoController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewNotification')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view notifications.'
+            );
+        }
+
         $searchModel = new NotificacaoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +69,12 @@ class NotificacaoController extends Controller
      */
     public function actionView($id_notificacao)
     {
+        if (!Yii::$app->user->can('viewNotification')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this notification.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_notificacao),
         ]);
@@ -74,6 +87,12 @@ class NotificacaoController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createNotification')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create notifications.'
+            );
+        }
+
         $model = new Notificacao();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +113,12 @@ class NotificacaoController extends Controller
      */
     public function actionUpdate($id_notificacao)
     {
+        if (!Yii::$app->user->can('updateNotification')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update notifications.'
+            );
+        }
+
         $model = $this->findModel($id_notificacao);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +139,12 @@ class NotificacaoController extends Controller
      */
     public function actionDelete($id_notificacao)
     {
+        if (!Yii::$app->user->can('deleteNotification')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete notifications.'
+            );
+        }
+
         $this->findModel($id_notificacao)->delete();
 
         return $this->redirect(['index']);
@@ -134,4 +165,18 @@ class NotificacaoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    //TODO
+    
+    /*
+    public function actionSend($id_notificacao)
+    {
+        if (!Yii::$app->user->can('sendNotification')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to send notifications.');
+        }
+
+        // send logic
+    }
+    */
+
 }

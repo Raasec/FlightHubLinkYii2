@@ -50,8 +50,8 @@ class AdministradorController extends Controller
     public function actionIndex()
     {
 
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        if (!Yii::$app->user->can('viewAdministrador')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to list administrators.');
         }
 
         $searchModel = new AdministradorSearch();
@@ -71,8 +71,8 @@ class AdministradorController extends Controller
      */
     public function actionView($id_admin)
     {
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        if (!Yii::$app->user->can('viewAdministrador')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to list administrators.');
         }
 
         return $this->render('view', [
@@ -87,9 +87,10 @@ class AdministradorController extends Controller
      */
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        if (!Yii::$app->user->can('createAdministrador')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to create administrators.');
         }
+
 
         $model = new Administrador();
 
@@ -112,8 +113,8 @@ class AdministradorController extends Controller
     public function actionUpdate($id_admin)
     {
 
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        if (!Yii::$app->user->can('updateAdministrador')) {
+        throw new \yii\web\ForbiddenHttpException('No permission to update administrators.');
         }
 
         $model = $this->findModel($id_admin);
@@ -137,11 +138,29 @@ class AdministradorController extends Controller
     public function actionDelete($id_admin)
     {
 
-        if (!Yii::$app->user->can('administrador')) {
-            throw new \yii\web\ForbiddenHttpException('Acesso negado.');
+        if (!Yii::$app->user->can('deleteAdministrador')) {
+            throw new \yii\web\ForbiddenHttpException('No permission to delete administrators.');
         }
 
-        $this->findModel($id_admin)->delete();
+    
+        $model = $this->findModel($id_admin);
+
+        // Prevention for admin to not self delete themselves
+        if ($model->id_utilizador == Yii::$app->user->id) {
+            throw new \yii\web\ForbiddenHttpException(
+                'Removing your own administrator is not allowed.'
+            );
+        }
+
+        // Prevention to deleting the last remaining admin
+        if (Administrador::find()->count() <= 1) {
+            throw new \yii\web\ForbiddenHttpException(
+                'The system must have at least one administrator.'
+            );
+        }
+
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }

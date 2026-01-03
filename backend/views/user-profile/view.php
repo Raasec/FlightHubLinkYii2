@@ -2,47 +2,88 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\assets\UserProfileAsset;
+
+UserProfileAsset::register($this);
+
 
 /** @var yii\web\View $this */
 /** @var common\models\UserProfile $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'User Profiles', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->user->username ?? 'User Profile';
+$this->params['breadcrumbs'] = []; 
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-profile-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- HEADER -->
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="<?= $model->imageUrl ?>" alt="Profile image">
+        </div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+        <div class="profile-main-info">
+            <h1><?= Html::encode($model->full_name ?: $this->title) ?></h1>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'user_id',
-            'image',
-            'full_name',
-            'gender',
-            'date_of_birth',
-            'phone',
-            'nif',
-            'nationality',
-            'country',
-            'address',
-            'postal_code',
-            'role_type',
-        ],
-    ]) ?>
+            <span class="role-badge role-<?= $model->role_type ?>">
+                <?= ucfirst($model->role_type) ?>
+            </span>
+        </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="profile-details">
+
+        <div class="detail-item">
+            <span>Gender</span>
+            <strong><?= ucfirst($model->gender) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Date of Birth</span>
+            <strong><?= Yii::$app->formatter->asDate($model->date_of_birth) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Phone</span>
+            <strong><?= Html::encode($model->phone) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>NIF</span>
+            <strong><?= Html::encode($model->nif) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Nationality</span>
+            <strong><?= Html::encode($model->nationality) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Country</span>
+            <strong><?= Html::encode($model->country) ?></strong>
+        </div>
+
+        <div class="detail-item full-width">
+            <span>Address</span>
+            <strong><?= Html::encode($model->address) ?></strong>
+        </div>
+
+        <div class="detail-item">
+            <span>Postal Code</span>
+            <strong><?= Html::encode($model->postal_code) ?></strong>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="profile-actions">
+        <?= Html::a(
+            'Update Profile',
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-primary']
+        ) ?>
+    </div>
 
 </div>

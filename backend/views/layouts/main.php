@@ -134,6 +134,32 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
                 </a>
             </li>
 
+            <?php
+            use common\models\UserProfile;
+
+            $profileId = null;
+
+            if (!Yii::$app->user->isGuest) {
+                $profile = UserProfile::find()
+                    ->where(['user_id' => Yii::$app->user->id])
+                    ->one();
+
+                if ($profile) {
+                    $profileId = $profile->id;
+                }
+            }
+            ?>
+            <?php if ($profileId): ?>
+            <li class="nav-item">
+                <a class="nav-link" 
+                href="<?= \yii\helpers\Url::to(['/user-profile/view', 'id' => $profileId]) ?>"
+                title="My Profile">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            </li>
+            <?php endif; ?>
+
+
             <!-- Logout -->
             <?php if (!Yii::$app->user->isGuest): ?>
                 <li class="nav-item">
@@ -170,7 +196,11 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
             <!-- User panel -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="info">
-                    <a href="#" class="d-block">
+                    <?php if ($profileId): ?>
+                        <a href="<?= \yii\helpers\Url::to(['/user-profile/view', 'id' => $profileId]) ?>" class="d-block">
+                        <?php else: ?>
+                        <a href="#" class="d-block">
+                        <?php endif; ?>
                         <?php if (!Yii::$app->user->isGuest): ?>
                         <?= Html::encode(Yii::$app->user->identity->username) ?>
                         <?php else: ?>

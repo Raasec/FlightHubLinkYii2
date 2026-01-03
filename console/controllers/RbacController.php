@@ -27,46 +27,85 @@ class RbacController extends Controller
         $auth->add($admin);
 
 
-        // Permissions para managing de users
+        //region ---- Permissions Users -----
+        //-----------------------------------
+
         $createUser = $auth->createPermission('createUser');
-        $createUser->description = 'Criar utilizador';
+        $createUser->description = 'Create User';
         $auth->add($createUser);
 
         $viewUser = $auth->createPermission('viewUser');
-        $viewUser->description = 'Ver utilizador';
+        $viewUser->description = 'View User';
         $auth->add($viewUser);
 
         $updateUser = $auth->createPermission('updateUser');
-        $updateUser->description = 'Editar utilizador';
+        $updateUser->description = 'Update User';
         $auth->add($updateUser);
 
         $deleteUser = $auth->createPermission('deleteUser');
-        $deleteUser->description = 'Eliminar utilizador';
+        $deleteUser->description = 'Delete User';
         $auth->add($deleteUser);
 
         $manageUsers = $auth->createPermission('manageUsers');
-        $manageUsers->description = 'Gerir utilizadores (CRUD)';
+        $manageUsers->description = 'Manage Users (CRUD)';
         $auth->add($manageUsers);
         $auth->addChild($manageUsers, $createUser);
         $auth->addChild($manageUsers, $viewUser);
         $auth->addChild($manageUsers, $updateUser);
         $auth->addChild($manageUsers, $deleteUser);
 
+        //  --- END Permission CRUD Users
+        //endregion 
         
+        //  --- END Permission CRUD Users
+        //  -----------------------------------
 
-        //region ---- Permissions CRUD Funcionarios ----
+
+        //region ---- Permissions Administrador ----
+        // ------------------------------------------
+
+        $createAdministrador = $auth->createPermission('createAdministrador');
+        $auth->add($createAdministrador);
+
+        $viewAdministrador = $auth->createPermission('viewAdministrador');
+        $auth->add($viewAdministrador);
+
+        $updateAdministrador = $auth->createPermission('updateAdministrador');
+        $auth->add($updateAdministrador);
+
+        $deleteAdministrador = $auth->createPermission('deleteAdministrador');
+        $auth->add($deleteAdministrador);
+
+        $manageAdministradores = $auth->createPermission('manageAdministradores');
+        $manageAdministradores->description = 'Manage administradores (CRUD)';
+        $auth->add($manageAdministradores);
+
+        $auth->addChild($manageAdministradores, $createAdministrador);
+        $auth->addChild($manageAdministradores, $viewAdministrador);
+        $auth->addChild($manageAdministradores, $updateAdministrador);
+        $auth->addChild($manageAdministradores, $deleteAdministrador);
+
+        // END Permission CRUD Administrador        
+        //endregion 
+        
+        // END Permission CRUD Administrador
+        //-----------------------------------
+
+
+
+        //region ---- Permissions Funcionarios ----
         // ------------------------------------------
 
         $createFuncionario = $auth->createPermission('createFuncionario');
-        $createFuncionario->description = 'Criar funcionário';
+        $createFuncionario->description = 'Create Employee';
         $auth->add($createFuncionario);
 
         $viewFuncionario = $auth->createPermission('viewFuncionario');
-        $viewFuncionario->description = 'Ver funcionário';
+        $viewFuncionario->description = 'View Employee';
         $auth->add($viewFuncionario);
 
         $viewOwnFuncionario = $auth->createPermission('viewOwnFuncionario');
-        $viewOwnFuncionario->description = 'Ver o próprio perfil de funcionário';
+        $viewOwnFuncionario->description = 'View Employee Own Profile';
         $auth->add($viewOwnFuncionario);
         // Rule (regras) para a confirmar na visualização se o perfil é o próprio
         $rule = new ViewOwnFuncionarioRule();
@@ -75,16 +114,16 @@ class RbacController extends Controller
         $auth->update($viewOwnFuncionario->name, $viewOwnFuncionario);
 
         $updateFuncionario = $auth->createPermission('updateFuncionario');
-        $updateFuncionario->description = 'Editar funcionário';
+        $updateFuncionario->description = 'Update Employee';
         $auth->add($updateFuncionario);
 
         $deleteFuncionario = $auth->createPermission('deleteFuncionario');
-        $deleteFuncionario->description = 'Eliminar funcionário';
+        $deleteFuncionario->description = 'Delete Employee';
         $auth->add($deleteFuncionario);
 
         // Group permission
         $manageFuncionarios = $auth->createPermission('manageFuncionarios');
-        $manageFuncionarios->description = 'Gerir funcionários (CRUD)';
+        $manageFuncionarios->description = 'Manage Employees (CRUD)';
         $auth->add($manageFuncionarios);
 
         // Set inheritance
@@ -93,86 +132,209 @@ class RbacController extends Controller
         $auth->addChild($manageFuncionarios, $updateFuncionario);
         $auth->addChild($manageFuncionarios, $deleteFuncionario);
 
+        // END Permission CRUD Funcionarios        
         //endregion 
-        // ---- (...)
+        
         // END Permission CRUD Funcionarios
         //-----------------------------------
 
-        // Permissions para managing de Flights
+
+
+        //region --- Permissions passageiro ----
+        // -------------------------------------
+
+
+        $createPassageiro = $auth->createPermission('createPassageiro');
+        $auth->add($createPassageiro);
+
+        $viewPassageiro = $auth->createPermission('viewPassageiro');
+        $auth->add($viewPassageiro);
+
+        $updatePassageiro = $auth->createPermission('updatePassageiro');
+        $auth->add($updatePassageiro);
+
+        $deletePassageiro = $auth->createPermission('deletePassageiro');
+        $auth->add($deletePassageiro);
+
+        $managePassageiros = $auth->createPermission('managePassageiros');
+        $managePassageiros->description = 'Manage passageiros (CRUD)';
+        $auth->add($managePassageiros);
+
+        $auth->addChild($managePassageiros, $createPassageiro);
+        $auth->addChild($managePassageiros, $viewPassageiro);
+        $auth->addChild($managePassageiros, $updatePassageiro);
+        $auth->addChild($managePassageiros, $deletePassageiro);
+
+
+
+        //END Permission CRUD Passageiros
+        //endregion
+
+        // END Permission CRUD Passageiros
+        //-----------------------------------
+
+
+
+
+        //region --- Permissions Profile ---
+        //----------------------------------
+
+        $createUserProfile = $auth->createPermission('createUserProfile');
+        $createUserProfile->description = ' Create User Profile';
+        $auth->add($createUserProfile);
+
+        $viewUserProfile = $auth->createPermission('viewUserProfile');
+        $viewUserProfile->description = 'View User Profile';
+        $auth->add($viewUserProfile);
+
+        $updateUserProfile = $auth->createPermission('updateUserProfile');
+        $updateUserProfile->description = 'Update User Profile';
+        $auth->add($updateUserProfile);
+
+        $deleteUserProfile = $auth->createPermission('deleteUserProfile');
+        $deleteUserProfile->description = 'Delete User Profile';
+        $auth->add($deleteUserProfile);
+
+        // Group permission (ADMIN)
+        $manageUserProfiles = $auth->createPermission('manageUserProfiles');
+        $manageUserProfiles->description = 'Manage User Profiles (CRUD)';
+        $auth->add($manageUserProfiles);
+
+        $auth->addChild($manageUserProfiles, $createUserProfile);
+        $auth->addChild($manageUserProfiles, $viewUserProfile);
+        $auth->addChild($manageUserProfiles, $updateUserProfile);
+        $auth->addChild($manageUserProfiles, $deleteUserProfile);
+
+      // -----                            -----
+      //  Own-Profile permissions (with rule)
+      // -----                            -----
+
+        $viewOwnUserProfile = $auth->createPermission('viewOwnUserProfile');
+        $viewOwnUserProfile->description = 'View own user profile';
+        $auth->add($viewOwnUserProfile);
+
+        $updateOwnUserProfile = $auth->createPermission('updateOwnUserProfile');
+        $updateOwnUserProfile->description = 'Update own user profile';
+        $auth->add($updateOwnUserProfile);
+
+        // Rule  
+        $rule = new \console\rbac\ViewOwnUserProfileRule();
+        $auth->add($rule);
+
+        $viewOwnUserProfile->ruleName = $rule->name;
+        $updateOwnUserProfile->ruleName = $rule->name;
+
+        $auth->update($viewOwnUserProfile->name, $viewOwnUserProfile);
+        $auth->update($updateOwnUserProfile->name, $updateOwnUserProfile);
+
+        // Own perms imply base perms
+        $auth->addChild($viewOwnUserProfile, $viewUserProfile);
+        $auth->addChild($updateOwnUserProfile, $updateUserProfile);
+
+
+        // END Permission CRUD User Profile        
+        //endregion 
+        
+        // END Permission CRUD Profile
+        //-----------------------------------
+
+        
+
+        //region ---- Permissions Flights -----
+        // ------------------------------------
+
         $createFlight = $auth->createPermission('createFlight');
-        $createFlight->description = 'Criar voo';
+        $createFlight->description = 'Create voo';
         $auth->add($createFlight);
 
         $viewFlight = $auth->createPermission('viewFlight');
-        $viewFlight->description = 'Ver voo';
+        $viewFlight->description = 'View voo';
         $auth->add($viewFlight);
 
         $updateFlight = $auth->createPermission('updateFlight');
-        $updateFlight->description = 'Editar voo';
+        $updateFlight->description = 'Edit voo';
         $auth->add($updateFlight);
 
         $deleteFlight = $auth->createPermission('deleteFlight');
-        $deleteFlight->description = 'Eliminar voo';
+        $deleteFlight->description = 'Delete voo';
         $auth->add($deleteFlight);
 
         $manageFlights = $auth->createPermission('manageFlights');
-        $manageFlights->description = 'Gerir voos (CRUD)';
+        $manageFlights->description = 'Manage voos (CRUD)';
         $auth->add($manageFlights);
         $auth->addChild($manageFlights, $createFlight);
         $auth->addChild($manageFlights, $viewFlight);
         $auth->addChild($manageFlights, $updateFlight);
         $auth->addChild($manageFlights, $deleteFlight);
 
+        // END Permission CRUD Flights
+        //endregion 
 
-        // Permissions para managing de Incidentes
+        // END Permission CRUD Flights
+        //-----------------------------------
+
+
+
+        //region ---- Permissions Incidentes ----
+        // --------------------------------------
 
         $createIncident = $auth->createPermission('createIncident');
-        $createIncident->description = 'Criar incidente';
+        $createIncident->description = 'Create Incident';
         $auth->add($createIncident);
 
         $viewIncident = $auth->createPermission('viewIncident');
-        $viewIncident->description = 'Ver incidente';
+        $viewIncident->description = 'View Incident';
         $auth->add($viewIncident);
 
         $updateIncident = $auth->createPermission('updateIncident');
-        $updateIncident->description = 'Editar incidente';
+        $updateIncident->description = 'Update Incident';
         $auth->add($updateIncident);
 
         $deleteIncident = $auth->createPermission('deleteIncident');
-        $deleteIncident->description = 'Eliminar incidente';
+        $deleteIncident->description = 'Delete Incident';
         $auth->add($deleteIncident);
 
         $manageIncidents = $auth->createPermission('manageIncidents');
-        $manageIncidents->description = 'Gerir incidentes (CRUD)';
+        $manageIncidents->description = 'Manage Incident (CRUD)';
         $auth->add($manageIncidents);
         $auth->addChild($manageIncidents, $createIncident);
         $auth->addChild($manageIncidents, $viewIncident);
         $auth->addChild($manageIncidents, $updateIncident);
         $auth->addChild($manageIncidents, $deleteIncident);
 
-        // Permissions para managing de notificações
+        // END Permission Incidents CRUD
+        //endregion 
+
+        // END Permission Incidents CRUD
+        //-----------------------------------
+
+
+
+        //region --- Permissions Notificações ----
+        // ---------------------------------------
+
         $createNotification = $auth->createPermission('createNotification');
-        $createNotification->description = 'Criar notificação';
+        $createNotification->description = 'Create Notification';
         $auth->add($createNotification);
 
         $viewNotification = $auth->createPermission('viewNotification');
-        $viewNotification->description = 'Ver notificação';
+        $viewNotification->description = 'View Notification';
         $auth->add($viewNotification);
 
         $updateNotification = $auth->createPermission('updateNotification');
-        $updateNotification->description = 'Editar notificação';
+        $updateNotification->description = 'Update Notification';
         $auth->add($updateNotification);
 
         $deleteNotification = $auth->createPermission('deleteNotification');
-        $deleteNotification->description = 'Eliminar notificação';
+        $deleteNotification->description = 'Delete Notification';
         $auth->add($deleteNotification);
 
         $sendNotification = $auth->createPermission('sendNotification');
-        $sendNotification->description = 'Enviar notificação';
+        $sendNotification->description = 'Send Notification';
         $auth->add($sendNotification);
 
         $manageNotifications = $auth->createPermission('manageNotifications');
-        $manageNotifications->description = 'Gerir notificações (CRUD + envio)';
+        $manageNotifications->description = 'Manage Notifications (CRUD + sending)';
         $auth->add($manageNotifications);
         $auth->addChild($manageNotifications, $createNotification);
         $auth->addChild($manageNotifications, $viewNotification);
@@ -180,7 +342,17 @@ class RbacController extends Controller
         $auth->addChild($manageNotifications, $deleteNotification);
         $auth->addChild($manageNotifications, $sendNotification);
 
-         // Permissions Reviews
+        // END Permission CRUD Notifications
+        //endregion 
+
+        // END Permission CRUD Notifications
+        //-------------------------------------
+
+
+
+        //region --- Permissions Reviews ----
+        // ----------------------------------
+
         $createReview = $auth->createPermission('createReview');
         $createReview->description = 'Criar avaliação';
         $auth->add($createReview);
@@ -205,7 +377,17 @@ class RbacController extends Controller
         $auth->addChild($manageReviews, $updateReview);
         $auth->addChild($manageReviews, $deleteReview);
 
-        // Permissions para managing das Airlines
+        // END Permission CRUD Reviews        
+        //endregion 
+
+        // END Permission CRUD Reviews
+        //--------------------------------------
+
+
+
+        //region --- Permissions Airlines ---
+        // ---------- Companhias areas ------
+        
         $createAirline = $auth->createPermission('createAirline');
         $createAirline->description = 'Criar companhia aérea';
         $auth->add($createAirline);
@@ -230,7 +412,17 @@ class RbacController extends Controller
         $auth->addChild($manageAirlines, $updateAirline);
         $auth->addChild($manageAirlines, $deleteAirline);
 
-        // Permissions Services lojas
+        // END Permission CRUD Airlines        
+        //endregion 
+
+        // END Permission CRUD Airlines
+        //-----------------------------------
+
+
+
+        //region Permissions Services lojas
+        // -------------------------------------
+
         $createService = $auth->createPermission('createService');
         $createService->description = 'Criar serviço';
         $auth->add($createService);
@@ -255,7 +447,16 @@ class RbacController extends Controller
         $auth->addChild($manageServices, $updateService);
         $auth->addChild($manageServices, $deleteService);
 
-        // permissions para o managing dos bilhetes
+        // END Permission CRUD serviços loja        
+        //endregion 
+
+        // END Permission CRUD serviços loja
+        //--------------------------------------
+
+
+
+        //region --- permissions bilhetes ----
+        // -------------------------------------
 
         $createTicket = $auth->createPermission('createTicket');
         $createTicket->description = 'Criar bilhete';
@@ -281,7 +482,17 @@ class RbacController extends Controller
         $auth->addChild($manageTickets, $updateTicket);
         $auth->addChild($manageTickets, $deleteTicket);
 
-        // Permissions checkins
+        // END Permission CRUD Bilhetes        
+        //endregion 
+
+        // END Permission CRUD Bilhetes
+        //--------------------------------------
+
+
+
+        //region ----- Permissions checkins -----
+        // --------------------------------------
+
         $createCheckin = $auth->createPermission('createCheckin');
         $createCheckin->description = 'Criar check-in';
         $auth->add($createCheckin);
@@ -307,7 +518,17 @@ class RbacController extends Controller
         $auth->addChild($manageCheckins, $updateCheckin);
         $auth->addChild($manageCheckins, $deleteCheckin);
 
-        // Permissions para os tickets
+        // END Permission CRUD Check in        
+        //endregion 
+
+        // END Permission CRUD Check ins
+        //--------------------------------------
+
+
+
+        //region --- Permissions pedido assistencia ----
+        // ---------------------------------------------
+
         $createSupportTicket = $auth->createPermission('createSupportTicket');
         $createSupportTicket->description = 'Criar ticket de suporte';
         $auth->add($createSupportTicket);
@@ -332,6 +553,13 @@ class RbacController extends Controller
         $auth->addChild($manageSupportTickets, $updateSupportTicket);
         $auth->addChild($manageSupportTickets, $deleteSupportTicket);
 
+        // END Permission CRUD pedido assistencia        
+        //endregion 
+
+        // END Permission CRUD pedido assistencia
+        //--------------------------------------
+
+
 
         // Perms gerias, fora CRUDS
 
@@ -352,11 +580,8 @@ class RbacController extends Controller
         e o passageiro tens os proprios*/
 
         $auth->addChild($passageiro, $guest);
-        $auth->addChild($passageiro, $manageCheckins);       
-        $auth->addChild($passageiro, $manageReviews);        
-        $auth->addChild($passageiro, $manageTickets);        
-        $auth->addChild($passageiro, $manageSupportTickets); 
         $auth->addChild($passageiro, $editProfile);
+
 
         // funcionario: perms do back-office + herdadas do passageiro, talvez separar em mais 1 role no futuro?
         $auth->addChild($funcionario, $passageiro);
@@ -367,10 +592,16 @@ class RbacController extends Controller
         $auth->addChild($funcionario, $manageServices);
         $auth->addChild($funcionario, $viewOwnFuncionario);
 
+        $auth->addChild($funcionario, $viewOwnUserProfile);
+        $auth->addChild($funcionario, $updateOwnUserProfile);
+
+
         // admin: tudo do funcionario + gestao de utilizadores
         $auth->addChild($admin, $funcionario);
         $auth->addChild($admin, $manageUsers);
         $auth->addChild($admin, $manageFuncionarios);
+        $auth->addChild($admin, $manageAdministradores);
+        $auth->addChild($admin, $manageUserProfiles);
 
     }
     

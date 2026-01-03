@@ -23,6 +23,7 @@ class IncidenteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,12 @@ class IncidenteController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewIncident')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view incidents.'
+            );
+        }
+
         $searchModel = new IncidenteSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +69,12 @@ class IncidenteController extends Controller
      */
     public function actionView($id_incidente)
     {
+        if (!Yii::$app->user->can('viewIncident')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this incident.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_incidente),
         ]);
@@ -74,6 +87,12 @@ class IncidenteController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createIncident')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create incidents.'
+            );
+        }
+
         $model = new Incidente();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +113,12 @@ class IncidenteController extends Controller
      */
     public function actionUpdate($id_incidente)
     {
+        if (!Yii::$app->user->can('updateIncident')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update incidents.'
+            );
+        }
+
         $model = $this->findModel($id_incidente);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +139,12 @@ class IncidenteController extends Controller
      */
     public function actionDelete($id_incidente)
     {
+        if (!Yii::$app->user->can('deleteIncident')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete incidents.'
+            );
+        }
+
         $this->findModel($id_incidente)->delete();
 
         return $this->redirect(['index']);

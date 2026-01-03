@@ -15,15 +15,27 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'full_name')->textInput([
+        'placeholder' => 'Full name'
+    ]) ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?= $form->field($model, 'gender')->dropDownList([
+        '' => 'All',
+        'male' => 'Male',
+        'female' => 'Female',
+        'other' => 'Other',
+    ]) ?>
 
-    <?= $form->field($model, 'image') ?>
+    <?= $form->field($model, 'role_type')->dropDownList([
+        '' => 'All',
+        'administrador' => 'Administrator',
+        'funcionario' => 'Employee',
+        'passageiro' => 'Passenger',
+    ]) ?>
 
-    <?= $form->field($model, 'full_name') ?>
-
-    <?= $form->field($model, 'gender') ?>
+    <?= $form->field($model, 'username')->textInput([
+        'placeholder' => 'Username'
+    ]) ?>
 
     <?php // echo $form->field($model, 'date_of_birth') ?>
 

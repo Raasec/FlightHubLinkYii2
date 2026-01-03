@@ -23,6 +23,7 @@ class ServicoAeroportoController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],  
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,12 @@ class ServicoAeroportoController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewService')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view airport services.'
+            );
+        }
+
         $searchModel = new ServicoAeroportoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +69,12 @@ class ServicoAeroportoController extends Controller
      */
     public function actionView($id_servico)
     {
+        if (!Yii::$app->user->can('viewService')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this airport service.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_servico),
         ]);
@@ -74,6 +87,12 @@ class ServicoAeroportoController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createService')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create airport services.'
+            );
+        }
+
         $model = new ServicoAeroporto();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +113,12 @@ class ServicoAeroportoController extends Controller
      */
     public function actionUpdate($id_servico)
     {
+        if (!Yii::$app->user->can('updateService')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update airport services.'
+            );
+        }
+
         $model = $this->findModel($id_servico);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +139,12 @@ class ServicoAeroportoController extends Controller
      */
     public function actionDelete($id_servico)
     {
+        if (!Yii::$app->user->can('deleteService')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete airport services.'
+            );
+        }
+
         $this->findModel($id_servico)->delete();
 
         return $this->redirect(['index']);

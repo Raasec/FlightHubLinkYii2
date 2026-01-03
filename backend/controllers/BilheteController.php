@@ -23,6 +23,7 @@ class BilheteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -85,7 +86,7 @@ class BilheteController extends Controller
      */
     public function actionCreate()
     {
-        if(Yii::$app->user->can('createTicket'))
+        if(!Yii::$app->user->can('createTicket'))
         {
             throw new \yii\web\ForbiddenHttpException("You do not have permission to create tickets.");
         }

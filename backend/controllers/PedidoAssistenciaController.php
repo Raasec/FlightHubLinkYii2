@@ -21,6 +21,7 @@ class PedidoAssistenciaController extends Controller
      */
     public function behaviors()
     {
+<<<<<<< Updated upstream
         return array_merge(
             parent::behaviors(),
             [
@@ -31,6 +32,16 @@ class PedidoAssistenciaController extends Controller
                             'allow' => true,
                             'roles' => ['administrador', 'funcionario'],
                         ],
+=======
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['administrador','funcionario'],
+>>>>>>> Stashed changes
                     ],
                 ],
                 'verbs' => [
@@ -50,6 +61,12 @@ class PedidoAssistenciaController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewSupportTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view support tickets.'
+            );
+        }
+
         $searchModel = new PedidoAssistenciaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -67,6 +84,12 @@ class PedidoAssistenciaController extends Controller
      */
     public function actionView($id_pedido)
     {
+        if (!Yii::$app->user->can('viewSupportTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this support ticket.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_pedido),
         ]);
@@ -79,6 +102,12 @@ class PedidoAssistenciaController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createSupportTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create support tickets.'
+            );
+        }
+
         $model = new PedidoAssistencia();
 
         if ($this->request->isPost) {
@@ -103,6 +132,12 @@ class PedidoAssistenciaController extends Controller
      */
     public function actionUpdate($id_pedido)
     {
+        if (!Yii::$app->user->can('updateSupportTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update support tickets.'
+            );
+        }
+
         $model = $this->findModel($id_pedido);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
@@ -140,6 +175,12 @@ class PedidoAssistenciaController extends Controller
      */
     public function actionDelete($id_pedido)
     {
+        if (!Yii::$app->user->can('deleteSupportTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete support tickets.'
+            );
+        }
+
         $this->findModel($id_pedido)->delete();
 
         return $this->redirect(['index']);

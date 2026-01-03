@@ -250,4 +250,36 @@ class UserProfile extends \yii\db\ActiveRecord
     {
         $this->role_type = self::ROLE_TYPE_PASSAGEIRO;
     }
+
+    public function getImageUrl()
+    {
+        if (!empty($this->image)) {
+            return Yii::getAlias('@web/uploads/profile-img/' . $this->image);
+        }
+
+        return Yii::getAlias('@web/uploads/profile-img/default.png');
+    }
+
+    public static function profileImages()
+    {
+        return [
+            'male_4214141.png',
+            'male_10245125.png',
+            'male_18931210.png',
+            'man_6997487.png',
+            'man_6997673.png',
+            'male_captain_1241.png',
+            'female_421479.png',
+            'female_4174578.png',
+            'female_8231214.png',
+            'female_12566773.png',
+            'female_15746374.png',
+            'female_34214563.png',
+            
+        ];
+    }
+
+
+
+
 }

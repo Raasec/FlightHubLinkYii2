@@ -23,6 +23,7 @@ class CheckinController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index','view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,10 @@ class CheckinController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewCheckin')) {
+            throw new \yii\web\ForbiddenHttpException('You do not have permission to view check-ins.');
+        }
+
         $searchModel = new CheckinSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +67,10 @@ class CheckinController extends Controller
      */
     public function actionView($id_checkin)
     {
+        if (!Yii::$app->user->can('viewCheckin')) {
+            throw new \yii\web\ForbiddenHttpException('You do not have permission to view check-ins.');
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_checkin),
         ]);
@@ -74,6 +83,12 @@ class CheckinController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createCheckin')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create check-ins.'
+            );
+        }
+
         $model = new Checkin();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +109,12 @@ class CheckinController extends Controller
      */
     public function actionUpdate($id_checkin)
     {
+        if (!Yii::$app->user->can('updateCheckin')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update check-ins.'
+            );
+        }
+
         $model = $this->findModel($id_checkin);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +135,12 @@ class CheckinController extends Controller
      */
     public function actionDelete($id_checkin)
     {
+        if (!Yii::$app->user->can('deleteCheckin')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete check-ins.'
+            );
+        }
+
         $this->findModel($id_checkin)->delete();
 
         return $this->redirect(['index']);

@@ -1,3 +1,21 @@
+Options +FollowSymLinks
+Options +Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # allow direct access to existing files (images, css, js)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # allow direct access to existing directories
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    RewriteRule . index.php [L]
+</IfModule>
+
+
 RewriteEngine On
 
 # Permite seguir links simbólicos (Yii2 precisa disto)

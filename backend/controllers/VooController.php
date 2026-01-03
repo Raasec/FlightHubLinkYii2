@@ -23,6 +23,7 @@ class VooController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -45,6 +46,12 @@ class VooController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewFlight')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view flights.'
+            );
+        }
+
         $searchModel = new VooSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -62,6 +69,12 @@ class VooController extends Controller
      */
     public function actionView($id_voo)
     {
+        if (!Yii::$app->user->can('viewFlight')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to view this flight.'
+            );
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id_voo),
         ]);
@@ -74,6 +87,12 @@ class VooController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createFlight')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to create flights.'
+            );
+        }
+        
         $model = new Voo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +113,12 @@ class VooController extends Controller
      */
     public function actionUpdate($id_voo)
     {
+        if (!Yii::$app->user->can('updateFlight')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to update flights.'
+            );
+        }
+        
         $model = $this->findModel($id_voo);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,6 +139,12 @@ class VooController extends Controller
      */
     public function actionDelete($id_voo)
     {
+        if (!Yii::$app->user->can('deleteFlight')) {
+            throw new \yii\web\ForbiddenHttpException(
+                'You do not have permission to delete flights.'
+            );
+        }
+
         $this->findModel($id_voo)->delete();
 
         return $this->redirect(['index']);

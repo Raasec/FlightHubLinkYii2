@@ -13,12 +13,19 @@ return [
     ['label' => 'User Management', 'header' => true],
 
     [
+        'label' => 'User Profiles',
+        'icon'  => 'fas fa-id-card',
+        'url'   => ['/user-profile/index'],
+        // apenas visivel para admin
+        'visible' => Yii::$app->user->can('administrador'),
+    ],
+
+    [
         'label' => 'Users',
         'icon'  => 'fas fa-user',
         'url'   => ['/user/index'],   // UtilizadorController (a criar)
     ],
 
-    
     [
         'label' => 'Administrator',
         'icon'  => 'fas fa-user-shield',
