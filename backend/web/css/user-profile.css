@@ -1,0 +1,21 @@
+.profile-image-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    outline: none;
+}
+
+.profile-avatar {
+    cursor: pointer;
+}
+
+.avatar-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+input[type=radio]:checked + .avatar-img {
+    border: 3px solid #0d6efd;
+}
