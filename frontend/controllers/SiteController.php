@@ -140,6 +140,9 @@ class SiteController extends Controller
             }
         }
 
+        //so mostra future flights
+        $query->andWhere(['>', 'departure_date', new \yii\db\Expression('NOW()')]);
+
         // Se nenhum criterio for passado, opcionalmente podemos retornar nada ou tudo.
         // Assumindo q se o user clicar search vazio quer ver tudo ou erro.
         // Mas como os inputs nao sao required, vamos assumir q mostra tudo se vazio.
@@ -603,9 +606,9 @@ class SiteController extends Controller
             return $this->redirect(['site/ticket-purchase']);
         }
 
-        // Check availability (2 hours before departure)
+        // (2 hours antes de departure)
         $departureTimestamp = strtotime($voo->departure_date);
-        $minTimestamp = time() + (2 * 3600); // Now + 2 hours
+        $minTimestamp = time() + (2 * 3600); // agora + 2 hours
         
         if ($departureTimestamp < $minTimestamp) {
             Yii::$app->session->setFlash('error', 'Purchase closed. Tickets must be bought at least 2 hours before departure.');

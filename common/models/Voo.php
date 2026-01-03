@@ -49,7 +49,15 @@ class Voo extends \yii\db\ActiveRecord
 
             [['departure_date', 'arrival_date'], 'safe'],
 
-            [['numero_voo', 'origin', 'destination', 'gate', 'status'], 'string', 'max' => 50],
+            [['numero_voo', 'origin', 'destination'], 'string', 'max' => 50],
+            
+            // restriction de status (0 ou 1)
+            [['status'], 'integer'],
+            [['status'], 'in', 'range' => [0, 1]],
+
+            // Restriction de gate (so abcd)
+            [['gate'], 'string', 'max' => 1],
+            [['gate'], 'in', 'range' => ['A', 'B', 'C', 'D']],
 
             //adicionar tbm o tipo de voo (departure/arrival)
             [['tipo_voo'], 'in', 'range' => ['departure', 'arrival']],
@@ -143,5 +151,34 @@ class Voo extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+    /**
+     * OPCOEES PARA UI
+     */
+    public static function optsStatus()
+    {
+        return [
+            1 => 'Ativo / Futuro',
+            0 => 'Inativo / Arquivado'
+        ];
+    }
+
+    public static function optsGate()
+    {
+        return [
+            'A' => 'Gate A',
+            'B' => 'Gate B',
+            'C' => 'Gate C',
+            'D' => 'Gate D',
+        ];
+    }
+
+    public static function optsTipoVoo()
+    {
+        return [
+            'departure' => 'Partida (Departure)',
+            'arrival' => 'Chegada (Arrival)',
+        ];
     }
 }

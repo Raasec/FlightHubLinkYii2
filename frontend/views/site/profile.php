@@ -20,33 +20,32 @@ $this->title = 'My Profile';
                     </span>
                 </div>
 
-                <!-- Profile Body -->
                 <div class="p-4 p-md-5 bg-white">
-                    <h4 class="fw-bold mb-4 text-dark border-bottom pb-2">Configuração da Conta</h4>
+                    <h4 class="fw-bold mb-4 text-dark border-bottom pb-2">Account Settings</h4>
                     
                     <!-- Grid de Informação Principal -->
                     <div class="row g-3 mb-4">
                         <div class="col-sm-6">
                             <div class="h-100 p-3 bg-light rounded-4 border border-white">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Gender / Género</label>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Gender</label>
                                 <span class="fw-semibold text-dark fs-6"><?= $profile->gender ? ucfirst($profile->displayGender()) : '---' ?></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="h-100 p-3 bg-light rounded-4 border border-white">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Data de Nascimento</label>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Date of Birth</label>
                                 <span class="fw-semibold text-dark fs-6"><?= $profile->date_of_birth ? Yii::$app->formatter->asDate($profile->date_of_birth) : '---' ?></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="h-100 p-3 bg-light rounded-4 border border-white">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Telemóvel</label>
-                                <span class="fw-semibold text-dark fs-6"><?= Html::encode($profile->phone ?: 'Sem número') ?></span>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Phone Number</label>
+                                <span class="fw-semibold text-dark fs-6"><?= Html::encode($profile->phone ?: 'Not defined') ?></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="h-100 p-3 bg-light rounded-4 border border-white">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">NIF / Contribuinte</label>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Tax ID (NIF)</label>
                                 <span class="fw-semibold text-dark fs-6"><?= Html::encode($profile->nif ?: '---') ?></span>
                             </div>
                         </div>
@@ -56,11 +55,11 @@ $this->title = 'My Profile';
                     <div class="p-3 bg-light rounded-4 mb-4 border border-white">
                         <div class="row align-items-center">
                             <div class="col-md-4 mb-3 mb-md-0">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Nacionalidade</label>
-                                <span class="fw-semibold text-dark"><?= Html::encode($profile->nationality ?: 'Outra') ?></span>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Nationality</label>
+                                <span class="fw-semibold text-dark"><?= Html::encode($profile->nationality ?: 'Other') ?></span>
                             </div>
                             <div class="col-md-8">
-                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Morada de Residência</label>
+                                <label class="text-muted small fw-bold text-uppercase d-block mb-1">Residential Address</label>
                                 <span class="fw-semibold text-dark">
                                     <?= Html::encode($profile->address ?: '---') ?> 
                                     <?= $profile->postal_code ? " <span class='text-muted mx-1'>|</span> " . Html::encode($profile->postal_code) : '' ?>
@@ -71,23 +70,23 @@ $this->title = 'My Profile';
 
                     <!-- Botões principais -->
                     <div class="mt-5 d-flex gap-2">
-                        <?= Html::a('<i class="fas fa-user-edit me-2"></i> Alterar Dados', ['site/update-profile'], ['class' => 'btn btn-primary btn-lg rounded-pill px-4 shadow-sm']) ?>
-                        <?= Html::a('<i class="fas fa-home me-2"></i> Início', ['index'], ['class' => 'btn btn-outline-secondary btn-lg rounded-pill px-4']) ?>
+                        <?= Html::a('<i class="fas fa-user-edit me-2"></i> Update Profile', ['site/update-profile'], ['class' => 'btn btn-primary btn-lg rounded-pill px-4 shadow-sm']) ?>
+                        <?= Html::a('<i class="fas fa-home me-2"></i> Home', ['index'], ['class' => 'btn btn-outline-secondary btn-lg rounded-pill px-4']) ?>
                     </div>
                 </div>
             </div>
 
             <!-- TABELA DE BILHETES -->
             <div class="card shadow-lg border-0 rounded-4 mt-5 mb-5 overflow-hidden">
-                <div class="card-header bg-dark text-white py-3 px-4 border-0">
+                <div class="card-header bg-dark py-3 px-4 border-0">
                     <h5 class="mb-0 fw-bold d-flex align-items-center text-white">
-                        Os Meus Voos & Bilhetes
+                        My Flights & Tickets
                     </h5>
                 </div>
                 <div class="card-body p-0">
                     <?php if (empty($tickets)): ?>
                         <div class="p-5 text-center">
-                            <p class="text-muted italic mb-0">Você ainda não tem reservas ativas.</p>
+                            <p class="text-muted italic mb-0">You have no active bookings yet.</p>
                         </div>
                     <?php else: ?>
                         <div class="accordion accordion-flush" id="ticketsAccordion">
@@ -107,11 +106,11 @@ $this->title = 'My Profile';
                                                 <div class="mt-2 mt-sm-0">
                                                     <?php if ($ticket->checkin): ?>
                                                         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
-                                                            Check-in Concluído
+                                                            Check-in Completed
                                                         </span>
                                                     <?php else: ?>
                                                         <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">
-                                                            Pendente
+                                                            Pending
                                                         </span>
                                                     <?php endif; ?>
                                                 </div>
@@ -122,27 +121,27 @@ $this->title = 'My Profile';
                                         <div class="accordion-body px-4 py-4 bg-light">
                                             <div class="row">
                                                 <div class="col-6 col-sm-3 mb-3">
-                                                    <small class="text-muted d-block mb-1">Porta de Embarque</small>
+                                                    <small class="text-muted d-block mb-1">Boarding Gate</small>
                                                     <span class="fw-bold fs-6"><?= Html::encode($ticket->gate ?: 'N/A') ?></span>
                                                 </div>
                                                 <div class="col-6 col-sm-3 mb-3">
-                                                    <small class="text-muted d-block mb-1">Classe de Viagem</small>
+                                                    <small class="text-muted d-block mb-1">Travel Class</small>
                                                     <span class="fw-bold fs-6"><?= Html::encode($ticket->travel_class) ?></span>
                                                 </div>
                                                 <div class="col-6 col-sm-3 mb-3">
-                                                    <small class="text-muted d-block mb-1">Assento / Lugar</small>
+                                                    <small class="text-muted d-block mb-1">Seat Assignment</small>
                                                     <span class="fw-bold fs-6 text-uppercase"><?= Html::encode($ticket->seat) ?></span>
                                                 </div>
                                                 <div class="col-6 col-sm-3 mb-3">
-                                                    <small class="text-muted d-block mb-1">Emitido em</small>
+                                                    <small class="text-muted d-block mb-1">Issued On</small>
                                                     <span class="fw-bold fs-6"><?= date('d/m/Y', strtotime($ticket->issue_date)) ?></span>
                                                 </div>
                                             </div>
                                             <div class="border-top mt-3 pt-3 d-flex justify-content-end">
                                                 <?php if ($ticket->checkin): ?>
-                                                    <?= Html::a('Bilhete / Boarding Pass', ['boarding-pass', 'id' => $ticket->id_bilhete], ['class' => 'btn btn-info btn-sm text-white px-3']) ?>
+                                                    <?= Html::a('View Boarding Pass', ['boarding-pass', 'id' => $ticket->id_bilhete], ['class' => 'btn btn-info btn-sm text-white px-3']) ?>
                                                 <?php else: ?>
-                                                    <?= Html::a('Ir para Check-in', ['checkin'], ['class' => 'btn btn-primary btn-sm px-3']) ?>
+                                                    <?= Html::a('Proceed to Check-in', ['checkin'], ['class' => 'btn btn-primary btn-sm px-3']) ?>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
