@@ -28,11 +28,7 @@ return [
         'rules' => [
             [
                 'allow' => true,
-<<<<<<< Updated upstream
                 'roles' => ['administrador', 'funcionario'],
-=======
-                'roles' => ['administrador','funcionario'],   // só ADMIN pode aceder
->>>>>>> Stashed changes
             ],
         ],
     ],

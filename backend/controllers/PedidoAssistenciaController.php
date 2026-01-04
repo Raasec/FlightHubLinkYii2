@@ -21,7 +21,6 @@ class PedidoAssistenciaController extends Controller
      */
     public function behaviors()
     {
-<<<<<<< Updated upstream
         return array_merge(
             parent::behaviors(),
             [
@@ -32,16 +31,6 @@ class PedidoAssistenciaController extends Controller
                             'allow' => true,
                             'roles' => ['administrador', 'funcionario'],
                         ],
-=======
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['administrador','funcionario'],
->>>>>>> Stashed changes
                     ],
                 ],
                 'verbs' => [
