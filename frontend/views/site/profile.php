@@ -115,7 +115,11 @@ $this->title = 'My Profile';
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 mt-sm-0">
-                                                    <?php if ($ticket->checkin): ?>
+                                                    <?php if ($ticket->status === 'Used'): ?>
+                                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">
+                                                            <i class="fas fa-check-circle me-1"></i> Trip Completed
+                                                        </span>
+                                                    <?php elseif ($ticket->checkin): ?>
                                                         <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">
                                                             Check-in Completed
                                                         </span>
@@ -148,8 +152,23 @@ $this->title = 'My Profile';
                                                     <span class="fw-bold fs-6"><?= date('d/m/Y', strtotime($ticket->issue_date)) ?></span>
                                                 </div>
                                             </div>
-                                            <div class="border-top mt-3 pt-3 d-flex justify-content-end">
-                                                <?php if ($ticket->checkin): ?>
+                                            <!-- Review, so aparece se o voo estiver usado e o passageiro ainda nao tiver feito review
+                                            devia dar para editar o review mas faltam 1 dia para entrega 
+                                            -->
+                                            <div class="border-top mt-3 pt-3 d-flex justify-content-end gap-2">
+                                                <?php if ($ticket->status === 'Used'): ?>
+                                                    <?php 
+                                                        $canReview = false;
+                                                        if ($ticket->passageiro) {
+                                                            $canReview = $ticket->passageiro->canReviewFlight($ticket->id_voo);
+                                                        }
+                                                    ?>
+                                                    <?php if ($canReview): ?>
+                                                        <?= Html::a('<i class="fas fa-star me-1"></i> Review Flight', ['review', 'id_voo' => $ticket->id_voo], ['class' => 'btn btn-warning btn-sm px-3 shadow-sm']) ?>
+                                                    <?php else: ?>
+                                                        <button class="btn btn-secondary btn-sm px-3" disabled><i class="fas fa-comment-check me-1"></i> Already Reviewed</button>
+                                                    <?php endif; ?>
+                                                <?php elseif ($ticket->checkin): ?>
                                                     <?= Html::a('View Boarding Pass', ['boarding-pass', 'id' => $ticket->id_bilhete], ['class' => 'btn btn-info btn-sm text-white px-3']) ?>
                                                 <?php else: ?>
                                                     <?= Html::a('Proceed to Check-in', ['checkin'], ['class' => 'btn btn-primary btn-sm px-3']) ?>

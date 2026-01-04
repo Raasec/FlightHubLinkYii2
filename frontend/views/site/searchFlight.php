@@ -26,7 +26,8 @@ $this->title = 'Flight Search Results';
 
     <div class="container pb-5">
         <!-- Condensed Search Form -->
-        <div class="row justify-content-center mb-5" style="margin-top: -100px; position: relative; z-index: 10;">
+        <!-- Condensed Search Form -->
+        <div class="row justify-content-center mb-5" style="margin-top: -80px; position: relative; z-index: 5;">
             <div class="col-lg-12">
                 <div class="bg-white shadow-lg p-4 rounded-4">
                     <form method="get" action="<?= Url::to(['site/search-flight']) ?>" class="row g-3 align-items-end">
@@ -113,31 +114,16 @@ $this->title = 'Flight Search Results';
                                         </div>
 
                                         <div class="mt-4 pt-3 border-top d-flex gap-4">
-                                            <div class="small"><i class="fa fa-door-open text-muted me-2"></i><strong>Gate:</strong> <?= $flight->gate ?: 'TBA' ?></div>
-                                            <div class="small"><i class="fa fa-info-circle text-muted me-2"></i><strong>Status:</strong> 
+                                            <div class="small"><i class="fa fa-door-open text-muted me-2"></i>Gate: <?= $flight->gate ?: 'TBA' ?></div>
+                                            <div class="small"><i class="fa fa-info-circle text-muted me-2"></i>Status: 
                                                 <?php
-                                                    $status = strtolower($flight->status);
-
-                                                    switch ($status) {
-                                                        case 'on time':
-                                                        case 'on-time':
-                                                            $statusClass = 'text-success';
-                                                            break;
-
-                                                        case 'delayed':
-                                                            $statusClass = 'text-warning';
-                                                            break;
-
-                                                        case 'cancelled':
-                                                            $statusClass = 'text-danger';
-                                                            break;
-
-                                                        default:
-                                                            $statusClass = 'text-info';
-                                                            break;
-                                                    };
+                                                    $s = strtolower($flight->status);
+                                                    $cls = 'text-info';
+                                                    if ($s == 'on time' || $s == 'on-time') $cls = 'text-success';
+                                                    elseif ($s == 'delayed') $cls = 'text-warning';
+                                                    elseif ($s == 'cancelled') $cls = 'text-danger';
                                                 ?>
-                                                <span class="<?= $statusClass ?> fw-bold"><?= ucfirst(Html::encode($flight->status)) ?></span>
+                                                <span class="<?= $cls ?> fw-bold"><?= ucfirst(Html::encode($flight->status)) ?></span>
                                             </div>
                                         </div>
                                     </div>

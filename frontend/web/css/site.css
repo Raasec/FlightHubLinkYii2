@@ -242,3 +242,39 @@ a.desc:after {
 .card {
     transition: transform 0.3s ease;
 }
+
+
+.btn-check:checked+label.btn-outline-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    transform: scale(1.1);
+}
+
+.stars-group label:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.review-box {
+    transition: all 0.3s ease;
+}
+
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        background: white !important;
+    }
+}
+
+.border-dash {
+    border-left: 2px dashed #dee2e6 !important;
+}

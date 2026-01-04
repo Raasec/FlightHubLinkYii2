@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Voo; 
+use common\models\Review;
 use common\models\ServicoAeroporto;
 use common\models\CompanhiaAerea; 
 
@@ -32,7 +33,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile'],
+                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -40,7 +41,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile'],
+                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -226,7 +227,7 @@ class SiteController extends Controller
             $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
 
             if (!$passageiro) {
-                // Auto-fix: Create profile if missing
+                // autofix cria profile se missing
                 $passageiro = new \common\models\Passageiro();
                 $passageiro->id_utilizador = $userId;
                 if (!$passageiro->save()) {
@@ -279,13 +280,13 @@ class SiteController extends Controller
                     $error = 'Bilhete não encontrado.';
                     Yii::error('CHECKIN DEBUG: Bilhete not found for reference ' . $reference, 'debug');
                 } else {
-                    // Ownership Check
+                    // check de ownership
                     $userId = Yii::$app->user->id;
                     if ($bilhete->passageiro->id_utilizador !== $userId) {
                         $error = 'Este bilhete não pertence à sua conta.';
                         Yii::error("CHECKIN SECURITY: User $userId tried to check in ticket " . $bilhete->id_bilhete . " which belongs to user " . $bilhete->passageiro->id_utilizador, 'security');
                     } else {
-                        // Check Name
+                        // check name
                         $passageiro = $bilhete->passageiro;
                         Yii::error('CHECKIN DEBUG: Bilhete found. Passageiro data: ' . print_r($passageiro ? $passageiro->attributes : 'NULL', true), 'debug');
                         
@@ -334,7 +335,7 @@ class SiteController extends Controller
             $bilhete = \common\models\Bilhete::findOne($id_bilhete);
 
             if ($bilhete && !$bilhete->checkin) {
-                // Ownership Check
+                // check de ownership
                 $userId = Yii::$app->user->id;
                 if ($bilhete->passageiro->id_utilizador !== $userId) {
                     throw new \yii\web\ForbiddenHttpException('Não tem permissão para realizar o check-in deste bilhete.');
@@ -362,7 +363,7 @@ class SiteController extends Controller
             return $this->redirect(['checkin']);
         }
 
-        // Ownership Check
+        // check de ownership
         $userId = Yii::$app->user->id;
         if ($bilhete->passageiro->id_utilizador !== $userId) {
             throw new \yii\web\ForbiddenHttpException('Não tem permissão para visualizar este cartão de embarque.');
@@ -663,6 +664,60 @@ class SiteController extends Controller
         }
 
         return $this->redirect(['site/ticket-purchase']);
+    }
+
+    public function actionReview($id_voo)
+    {
+        $userId = Yii::$app->user->id;
+        $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+
+        if (!$passageiro) {
+            Yii::$app->session->setFlash('error', 'Only passengers can leave reviews.');
+            return $this->redirect(['profile']);
+        }
+
+        if (!$passageiro->canReviewFlight($id_voo)) {
+            Yii::$app->session->setFlash('error', 'You are not authorized to review this flight or you have already reviewed it.');
+            return $this->redirect(['profile']);
+        }
+
+        $voo = Voo::findOne($id_voo);
+        $review = new Review();
+        $review->id_voo = $id_voo;
+        $review->id_passageiro = $passageiro->id_passageiro;
+
+        return $this->render('review', [
+            'voo' => $voo,
+            'model' => $review
+        ]);
+    }
+
+    public function actionCreateReview()
+    {
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post('Review');
+            $id_voo = $data['id_voo'];
+            
+            $userId = Yii::$app->user->id;
+            $passageiro = \common\models\Passageiro::findOne(['id_utilizador' => $userId]);
+
+            if (!$passageiro || !$passageiro->canReviewFlight($id_voo)) {
+                Yii::$app->session->setFlash('error', 'Action not allowed.');
+                return $this->redirect(['profile']);
+            }
+
+            $model = new Review();
+            $model->load(Yii::$app->request->post());
+            $model->id_passageiro = $passageiro->id_passageiro;
+            $model->review_date = date('Y-m-d');
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Thank you for your review!');
+            } else {
+                Yii::$app->session->setFlash('error', 'An error occurred while saving your review.');
+            }
+        }
+        return $this->redirect(['profile']);
     }
 
 }

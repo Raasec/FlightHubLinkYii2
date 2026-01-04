@@ -47,15 +47,15 @@ $voo = $bilhete->voo;
 
                             <div class="row g-4">
                                 <div class="col-sm-4">
-                                    <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Passenger</small>
+                                    <small class="text-muted text-uppercase d-block mb-1">Passenger</small>
                                     <h6 class="fw-bold mb-0 text-dark"><?= Html::encode($bilhete->passageiro?->userProfile?->full_name ?? 'Passenger') ?></h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Flight</small>
+                                    <small class="text-muted text-uppercase d-block mb-1">Flight</small>
                                     <h6 class="fw-bold mb-0 text-dark"><?= Html::encode($voo?->numero_voo ?? '#' . $bilhete->id_voo) ?></h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Date</small>
+                                    <small class="text-muted text-uppercase d-block mb-1">Date</small>
                                     <h6 class="fw-bold mb-0 text-dark"><?= $voo?->departure_date ? Yii::$app->formatter->asDate($voo->departure_date) : 'TBA' ?></h6>
                                 </div>
                             </div>
@@ -66,11 +66,11 @@ $voo = $bilhete->voo;
                             <div>
                                 <div class="row g-3">
                                     <div class="col-6">
-                                        <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Gate</small>
+                                        <small class="text-muted text-uppercase d-block mb-1">Gate</small>
                                         <h4 class="fw-bold mb-0 text-primary"><?= Html::encode($bilhete->gate ?: ($voo?->gate ?: '--')) ?></h4>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem; letter-spacing: 1px;">Seat</small>
+                                        <small class="text-muted text-uppercase d-block mb-1">Seat</small>
                                         <h4 class="fw-bold mb-0 text-primary"><?= Html::encode($bilhete->seat ?? 'ANY') ?></h4>
                                     </div>
                                 </div>
@@ -79,12 +79,12 @@ $voo = $bilhete->voo;
                             <div class="text-center mt-auto pt-4">
                                 <!-- Boarding Group / Time Info -->
                                 <div class="mb-3">
-                                    <small class="text-muted text-uppercase d-block mb-1" style="font-size: 0.7rem;">Boarding Time</small>
+                                    <small class="text-muted text-uppercase d-block mb-1">Boarding Time</small>
                                     <h5 class="fw-bold mb-0"><?= $voo?->departure_date ? date('H:i', strtotime($voo->departure_date . ' - 45 minutes')) : '--:--' ?></h5>
                                 </div>
-                                <!-- Fake Barcode -->
+                                <!-- barcode -->
                                 <div class="barcode-container mb-2">
-                                    <div style="background: repeating-linear-gradient(90deg, #222 0, #222 1.5%, transparent 1.5%, transparent 3%); height: 60px; width: 100%;" class="rounded"></div>
+                                    <div style="background: #222; height: 35px; width: 100%; border-radius: 4px; border-left: 10px solid #fff; border-right: 25px solid #fff;"></div>
                                 </div>
                                 <small class="text-muted fw-bold">#<?= str_pad($bilhete->id_bilhete, 8, '0', STR_PAD_LEFT) ?></small>
                             </div>
@@ -105,14 +105,3 @@ $voo = $bilhete->voo;
         </div>
     </div>
 </div>
-
-<style>
-    @media print {
-        .no-print { display: none !important; }
-        .card { box-shadow: none !important; border: 1px solid #ddd !important; }
-        body { background: white !important; }
-    }
-    .border-dash {
-        border-left: 2px dashed #dee2e6 !important;
-    }
-</style>

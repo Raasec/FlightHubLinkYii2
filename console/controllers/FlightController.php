@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use yii\console\Controller;
 use common\models\Voo;
+use common\models\Bilhete;
 use yii\helpers\Console;
 
 /**
@@ -109,6 +110,49 @@ class FlightController extends Controller
         }
 
         $this->stdout("feed concluido: $created voos gerados \n", Console::FG_CYAN);
+        return Controller::EXIT_CODE_NORMAL;
+    }
+
+    /**
+     * atualiza o status dos bilhetes de voos que ja aterraram.
+     * Bilhetes que estao paid ou checkin passam para Used se o voo ja chegou (deviamos ter feito ENUM na BD)
+     * php yii flight/update-ticket-status
+     */
+    public function actionUpdateTicketStatus()
+    {
+        $this->stdout("Atualização de bilhetes em curso...\n", Console::FG_CYAN);
+
+        try {
+            // Assumimos que Paid e Check-in sao os status que queremos mudar para Used
+            // Se o voo já aterrou há algum tempo tipo mais de 24h talvez Expired? 
+            
+            $now = date('Y-m-d H:i:s');
+            
+            $subQuery = Voo::find()
+                ->select('id_voo')
+                ->where(['<', 'arrival_date', $now]);
+
+            $count = Bilhete::updateAll(
+                ['status' => 'Used'],
+                [
+                    'and',
+                    ['in', 'id_voo', $subQuery],
+                    ['in', 'status', ['Paid', 'Check-in']]
+                ]
+            );
+
+            if ($count > 0) {
+                $this->stdout("Sucesso: $count bilhetes foram atualizados para Used.\n", Console::FG_GREEN);
+            } else {
+                $this->stdout("Nada para atualizar. Todos os bilhetes estão com status correto.\n", Console::FG_YELLOW);
+            }
+
+        } catch (\Exception $e) {
+            $this->stderr("Erro ao atualizar status dos bilhetes: " . $e->getMessage() . "\n", Console::FG_RED);
+            return Controller::EXIT_CODE_ERROR;
+        }
+
+        $this->stdout("Tarefa concluida.\n", Console::FG_GREEN);
         return Controller::EXIT_CODE_NORMAL;
     }
 }

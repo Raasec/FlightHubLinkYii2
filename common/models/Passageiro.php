@@ -109,13 +109,34 @@ class Passageiro extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Reviews]].
-     *
-     * @return \yii\db\ActiveQuery
+     * um check para ver se o passageiro pode dar review a um determinado voo.
+     * Tem de ter um bilhete para esse voo.
+     * O bilhete tem de estar com status Used.
+     * Ainda nao deu review para esse voo (falta a logica de edit)
      */
-    public function getReviews()
+    public function canReviewFlight($id_voo)
     {
-        return $this->hasMany(Review::class, ['id_passageiro' => 'id_passageiro']);
+        $hasUsedTicket = Bilhete::find()
+            ->where([
+                'id_passageiro' => $this->id_passageiro,
+                'id_voo' => $id_voo,
+                'status' => 'Used'
+            ])
+            ->exists();
+
+        if (!$hasUsedTicket) {
+            return false;
+        }
+
+        // Verifica se ja existe uma review para este voo feita por este passageiro
+        $alreadyReviewed = Review::find()
+            ->where([
+                'id_passageiro' => $this->id_passageiro,
+                'id_voo' => $id_voo
+            ])
+            ->exists();
+
+        return !$alreadyReviewed;
     }
 
 }
