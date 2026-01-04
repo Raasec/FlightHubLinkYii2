@@ -17,9 +17,9 @@ class VooSearch extends Voo
     public function rules()
     {
         return [
-            [['id_voo', 'id_companhia', 'id_funcionario_responsavel'], 'integer'],
+            [['id_voo', 'id_companhia', 'id_funcionario_responsavel', 'status'], 'integer'],
 
-            [['numero_voo', 'origin', 'destination', 'tipo_voo', 'gate', 'departure_date', 'arrival_date', 'status'], 'safe'],
+            [['numero_voo', 'origin', 'destination', 'tipo_voo', 'gate', 'departure_date', 'arrival_date'], 'safe'],
         ];
     }
 
@@ -64,14 +64,14 @@ class VooSearch extends Voo
             'departure_date' => $this->departure_date,
             'arrival_date' => $this->arrival_date,
             'id_funcionario_responsavel' => $this->id_funcionario_responsavel,
+            'status' => $this->status,
+            'gate' => $this->gate,
         ]);
 
         $query->andFilterWhere(['like', 'numero_voo', $this->numero_voo])
             ->andFilterWhere(['like', 'origin', $this->origin])
             ->andFilterWhere(['like', 'destination', $this->destination])
-            ->andFilterWhere(['like', 'tipo_voo', $this->tipo_voo])
-            ->andFilterWhere(['like', 'gate', $this->gate])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'tipo_voo', $this->tipo_voo]);
 
         return $dataProvider;
     }

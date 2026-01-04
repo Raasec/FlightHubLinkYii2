@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Voo;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\VooSearch */
@@ -17,7 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <?= Html::a('Create Flight', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('<i class="fas fa-plus me-1"></i> Create Flight', ['create'], ['class' => 'btn btn-success']) ?>
+                            
+                            <?php if (Yii::$app->user->can('administrador')): ?>
+                                <?= Html::a('<i class="fas fa-magic me-1"></i> Generate Mock Flights', ['feed'], [
+                                    'class' => 'btn btn-info text-white',
+                                    'data' => [
+                                        'confirm' => 'Deseja gerar 10 voos random ?',
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -36,10 +47,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             'origin',
                             'destination',
                             'departure_date',
-                            //'arrival_date',
-                            //'gate',
-                            //'id_funcionario_responsavel',
-                            //'status',
+                            [
+                                'attribute' => 'gate',
+                                'value' => function($model) {
+                                    return $model::optsGate()[$model->gate] ?? $model->gate;
+                                },
+                                'filter' => Voo::optsGate(),
+                            ],
+                            [
+                                'attribute' => 'status',
+                                'format' => 'raw',
+                                'value' => function($model) {
+                                    $label = Voo::optsStatus()[$model->status] ?? $model->status;
+                                    $class = $model->status == 1 ? 'badge-success' : 'badge-secondary';
+                                    return Html::tag('span', $label, ['class' => 'badge ' . $class]);
+                                },
+                                'filter' => Voo::optsStatus(),
+                            ],
 
                             [
                                 'class' => 'hail812\adminlte3\yii\grid\ActionColumn',

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\PedidoAssistencia;
 use common\models\PedidoAssistenciaSearch;
 use yii\web\Controller;
@@ -57,13 +58,16 @@ class PedidoAssistenciaController extends Controller
         }
 
         $searchModel = new PedidoAssistenciaSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search(
+            Yii::$app->request->queryParams
+        );
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single PedidoAssistencia model.

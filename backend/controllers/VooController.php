@@ -23,11 +23,17 @@ class VooController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'feed'],
                 'rules' => [
                     [
                         'allow' => true,
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
                         'roles' => ['administrador','funcionario'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['feed'],
+                        'roles' => ['administrador'],
                     ],
                 ],
             ],
@@ -164,5 +170,62 @@ class VooController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * MOCK DATA GENERATOR (UI version)
+     */
+    public function actionFeed()
+    {
+        if (!Yii::$app->user->can('administrador')) {
+            throw new \yii\web\ForbiddenHttpException('Apenas administradores podem gerar dados de teste.');
+        }
+
+        $airlines = \common\models\CompanhiaAerea::find()->column();
+        if (empty($airlines)) {
+            Yii::$app->session->setFlash('error', 'Crie pelo menos uma Companhia Aérea antes de gerar voos.');
+            return $this->redirect(['index']);
+        }
+
+        $employees = \common\models\Funcionario::find()->column();
+        $gates = ['A', 'B', 'C', 'D'];
+        $cities = ['Lisboa', 'Porto', 'Faro', 'Funchal', 'Madrid', 'Paris', 'Londres', 'Berlim', 'Roma', 'Amesterdão'];
+        $prefixes = ['TP', 'LH', 'AF', 'BA', 'FR'];
+
+        $created = 0;
+        for ($i = 0; $i < 10; $i++) {
+            $voo = new Voo();
+            $isDeparture = (rand(0, 1) == 1);
+            $origin = $isDeparture ? 'Lisboa' : $cities[array_rand($cities)];
+            $dest = $isDeparture ? $cities[array_rand($cities)] : 'Lisboa';
+            
+            if ($origin == $dest) $dest = 'Ponta Delgada';
+
+            $voo->id_companhia = $airlines[array_rand($airlines)];
+            $voo->numero_voo = $prefixes[array_rand($prefixes)] . rand(100, 999);
+            $voo->origin = $origin;
+            $voo->destination = $dest;
+            $voo->tipo_voo = $isDeparture ? 'departure' : 'arrival';
+            $voo->gate = $gates[array_rand($gates)];
+            $voo->status = 1;
+            
+            if (!empty($employees)) {
+                $voo->id_funcionario_responsavel = $employees[array_rand($employees)];
+            }
+
+            $daysOffset = rand(1, 5); // start from tomorrow for clean tests
+            $hoursOffset = rand(0, 23);
+            $date = date('Y-m-d H:i:s', strtotime("+$daysOffset days +$hoursOffset hours"));
+            
+            $voo->departure_date = $date;
+            $voo->arrival_date = date('Y-m-d H:i:s', strtotime($date . ' +2 hours'));
+
+            if ($voo->save()) {
+                $created++;
+            }
+        }
+
+        Yii::$app->session->setFlash('success', "Sucesso! Gerados $created voos aleatórios para os próximos dias.");
+        return $this->redirect(['index']);
     }
 }

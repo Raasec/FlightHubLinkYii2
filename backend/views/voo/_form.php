@@ -12,34 +12,39 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_companhia')->textInput() ?>
-
-    <?= $form->field($model, 'numero_voo')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'origin')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'destination')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'tipo_voo')->dropDownList([
-            'departure' => 'Departure',
-            'arrival'   => 'Arrival'
-        ], ['prompt' => 'Select flight type']) 
+    <?php
+    $companhias = \common\models\CompanhiaAerea::find()->all();
+    $companhiaList = \yii\helpers\ArrayHelper::map($companhias, 'id_companhia', 'nome');
     ?>
 
-    <?= $form->field($model, 'departure_date')->input('datetime-local') ?>
+    <?= $form->field($model, 'id_companhia')->dropDownList($companhiaList, ['prompt' => '-- Selecionar Companhia --']) ?>
 
-    <?= $form->field($model, 'gate')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'numero_voo')->textInput(['maxlength' => true, 'placeholder' => 'Ex: TP123']) ?>
 
-    <?= $form->field($model, 'arrival_date')->input('datetime-local') ?>
+    <div class="row">
+        <div class="col-md-6"><?= $form->field($model, 'origin')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-6"><?= $form->field($model, 'destination')->textInput(['maxlength' => true]) ?></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4"><?= $form->field($model, 'tipo_voo')->dropDownList($model::optsTipoVoo(), ['prompt' => '-- Tipo --']) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList($model::optsStatus()) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'gate')->dropDownList($model::optsGate(), ['prompt' => '-- Gate --']) ?></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6"><?= $form->field($model, 'departure_date')->input('datetime-local') ?></div>
+        <div class="col-md-6"><?= $form->field($model, 'arrival_date')->input('datetime-local') ?></div>
+    </div>
 
     <?php
     $funcionarios = \common\models\Funcionario::find()->joinWith('user')->all();
-    $funcionarioList = \yii\helpers\ArrayHelper::map($funcionarios, 'id_funcionario', 'user.username');
+    $funcionarioList = \yii\helpers\ArrayHelper::map($funcionarios, 'id_funcionario', function($model) {
+        return $model->user->username . ' (' . $model->user->email . ')';
+    });
     ?>
 
-    <?= $form->field($model, 'id_funcionario_responsavel')->dropDownList($funcionarioList, ['prompt' => 'Select Responsible Employee']) ?>
-
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id_funcionario_responsavel')->dropDownList($funcionarioList, ['prompt' => 'Selecionar Funcionário Responsável']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
