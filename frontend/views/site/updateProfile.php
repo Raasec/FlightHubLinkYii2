@@ -5,6 +5,9 @@
 
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use frontend\assets\UserProfileAsset;
+
+UserProfileAsset::register($this);
 
 $this->title = 'Update Profile';
 ?>
@@ -20,6 +23,34 @@ $this->title = 'Update Profile';
                         'id' => 'profile-update-form',
                         'options' => ['class' => 'needs-validation'] 
                     ]); ?>
+
+                    <!-- Profile image (hidden field) -->
+                    <?= $form->field($profile, 'image')->hiddenInput()->label(false) ?>
+
+                    <!-- Profile image selector -->
+                    <div class="mb-5 text-center">
+                        <label class="form-label fw-bold text-dark d-block mb-3">
+                            Profile Picture
+                        </label>
+
+                        <div class="profile-image-selector d-flex justify-content-center flex-wrap gap-3">
+                            <?php foreach (\common\models\UserProfile::profileImages() as $img): ?>
+                                <label class="profile-avatar">
+                                    <input type="radio"
+                                        name="UserProfile[image]"
+                                        value="<?= $img ?>"
+                                        <?= $profile->image === $img ? 'checked' : '' ?>
+                                        hidden>
+
+                                    <img
+                                        src="<?= Yii::getAlias('@web/uploads/profile-img/' . $img) ?>"
+                                        class="rounded-circle shadow-sm avatar-img"
+                                        style="width: 90px; height: 90px; object-fit: cover; cursor: pointer;"
+                                    >
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold text-dark">Full Name</label>

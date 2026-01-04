@@ -81,6 +81,7 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
 
+        <!-- TODO: -->
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">

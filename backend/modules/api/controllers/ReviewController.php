@@ -25,7 +25,7 @@ class ReviewController extends ActiveController
     }
 
     // Controlo de perms (ownership) 
-    protected function checkAccess($action, $model = null, $params = [])
+    public function checkAccess($action, $model = null, $params = [])
     {
         // criar review -> passageiro autenticado
         if ($action === 'create') {

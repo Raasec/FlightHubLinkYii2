@@ -80,12 +80,22 @@ $this->title = 'Support & Contact';
                                             <small class="text-muted"><i class="fa fa-calendar-alt me-1"></i> <?= Yii::$app->formatter->asDate($ticket->request_date, 'medium') ?></small>
                                         </div>
                                         <?php
-                                        $statusClass = match($ticket->status) {
-                                            'open' => 'bg-info',
-                                            'resolved' => 'bg-success',
-                                            'in_progress' => 'bg-warning text-dark',
-                                            'closed' => 'bg-secondary',
-                                            default => 'bg-light text-dark'
+                                        switch ($ticket->status) {
+                                            case 'open':
+                                                $statusClass = 'bg-info';
+                                                break;
+                                            case 'resolved':
+                                                $statusClass = 'bg-success';
+                                                break;
+                                            case 'in_progress':
+                                                $statusClass = 'bg-warning text-dark';
+                                                break;
+                                            case 'closed':
+                                                $statusClass = 'bg-secondary';
+                                                break;
+                                            default:
+                                                $statusClass = 'bg-light text-dark';
+                                                break;
                                         };
                                         ?>
                                         <span class="badge <?= $statusClass ?> px-3 py-2 rounded-pill"><?= ucfirst(Html::encode($ticket->status)) ?></span>

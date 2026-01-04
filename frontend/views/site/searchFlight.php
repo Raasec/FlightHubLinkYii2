@@ -116,12 +116,26 @@ $this->title = 'Flight Search Results';
                                             <div class="small"><i class="fa fa-door-open text-muted me-2"></i><strong>Gate:</strong> <?= $flight->gate ?: 'TBA' ?></div>
                                             <div class="small"><i class="fa fa-info-circle text-muted me-2"></i><strong>Status:</strong> 
                                                 <?php
-                                                $statusClass = match(strtolower($flight->status)) {
-                                                    'on time', 'on-time' => 'text-success',
-                                                    'delayed' => 'text-warning',
-                                                    'cancelled' => 'text-danger',
-                                                    default => 'text-info'
-                                                };
+                                                    $status = strtolower($flight->status);
+
+                                                    switch ($status) {
+                                                        case 'on time':
+                                                        case 'on-time':
+                                                            $statusClass = 'text-success';
+                                                            break;
+
+                                                        case 'delayed':
+                                                            $statusClass = 'text-warning';
+                                                            break;
+
+                                                        case 'cancelled':
+                                                            $statusClass = 'text-danger';
+                                                            break;
+
+                                                        default:
+                                                            $statusClass = 'text-info';
+                                                            break;
+                                                    };
                                                 ?>
                                                 <span class="<?= $statusClass ?> fw-bold"><?= ucfirst(Html::encode($flight->status)) ?></span>
                                             </div>

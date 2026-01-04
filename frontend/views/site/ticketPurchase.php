@@ -132,13 +132,29 @@ $this->title = 'Purchase Tickets';
                                         <div class="mt-4 pt-3 border-top d-flex gap-4">
                                             <div class="small"><i class="fa fa-door-open text-muted me-2"></i><strong>Gate:</strong> <?= $voo->gate ?: 'TBA' ?></div>
                                             <div class="small"><i class="fa fa-info-circle text-muted me-2"></i><strong>Status:</strong> 
+                                            
                                                 <?php
-                                                $statusClass = match(strtolower($voo->status)) {
-                                                    'on time', 'on-time' => 'text-success',
-                                                    'delayed' => 'text-warning',
-                                                    'cancelled' => 'text-danger',
-                                                    default => 'text-info'
+                                                $status = strtolower($voo->status);
+
+                                                switch ($status) {
+                                                    case 'on time':
+                                                    case 'on-time':
+                                                        $statusClass = 'text-success';
+                                                        break;
+
+                                                    case 'delayed':
+                                                        $statusClass = 'text-warning';
+                                                        break;
+
+                                                    case 'cancelled':
+                                                        $statusClass = 'text-danger';
+                                                        break;
+
+                                                    default:
+                                                        $statusClass = 'text-info';
+                                                        break;
                                                 };
+
                                                 ?>
                                                 <span class="<?= $statusClass ?> fw-bold"><?= ucfirst(Html::encode($voo->status)) ?></span>
                                             </div>

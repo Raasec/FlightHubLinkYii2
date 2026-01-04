@@ -12,9 +12,20 @@ $this->title = 'My Profile';
         <div class="col-md-8">
             <div class="profile-card shadow-lg border-0 rounded-4 overflow-hidden">
                 <!-- Header Background -->
-                <div class="profile-card-header text-center py-5" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+                <div class="profile-card-header text-center py-5 position-relative"
+                    style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+
+                    <!-- Avatar -->
+                    <div class="profile-avatar mx-auto mb-3">
+                        <img src="<?= $profile->imageUrl ?>"
+                            alt="Profile image"
+                            class="rounded-circle shadow"
+                            style="width: 120px; height: 120px; object-fit: cover; border: 4px solid white;">
+                    </div>
+
                     <h2 class="text-white fw-bold mb-1"><?= Html::encode($profile->full_name) ?></h2>
                     <p class="text-white-50 mb-0"><?= Html::encode($profile->user->email) ?></p>
+
                     <span class="badge bg-light text-primary mt-3 px-3 py-2 rounded-pill shadow-sm">
                         <i class="fas fa-user-tag me-1"></i> <?= ucfirst($profile->role_type) ?>
                     </span>
@@ -98,9 +109,9 @@ $this->title = 'My Profile';
                                                 <div class="me-3">
                                                     <span class="text-muted small">ID: <?= $ticket->id_bilhete ?></span>
                                                     <div class="fw-bold text-dark fs-5">
-                                                        <?= Html::encode($ticket->voo?->origin) ?> 
+                                                        <?= Html::encode($ticket->voo ? $ticket->voo->origin : '---') ?> 
                                                         <i class="fas fa-plane text-primary mx-2 small"></i> 
-                                                        <?= Html::encode($ticket->voo?->destination) ?>
+                                                        <?= Html::encode($ticket->voo ? $ticket->voo->destination : '---') ?>
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 mt-sm-0">

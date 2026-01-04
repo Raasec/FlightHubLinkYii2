@@ -2,12 +2,12 @@
 
 namespace backend\controllers;
 
-use Yii;
 use common\models\PedidoAssistencia;
 use common\models\PedidoAssistenciaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * PedidoAssistenciaController implements the CRUD actions for PedidoAssistencia model.
@@ -58,16 +58,13 @@ class PedidoAssistenciaController extends Controller
         }
 
         $searchModel = new PedidoAssistenciaSearch();
-        $dataProvider = $searchModel->search(
-            Yii::$app->request->queryParams
-        );
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
 
     /**
      * Displays a single PedidoAssistencia model.

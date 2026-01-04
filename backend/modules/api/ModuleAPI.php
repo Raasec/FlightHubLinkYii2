@@ -2,6 +2,7 @@
 
 namespace backend\modules\api;
 
+use Yii;
 use yii\base\Module;
 
 class ModuleAPI extends Module
@@ -19,7 +20,10 @@ class ModuleAPI extends Module
             'loginUrl' => null,
         ]);
 
-        \Yii::$app->request->enableCsrfValidation = false;
+    // Desativar CSRF apenas em contexto web
+        if (Yii::$app instanceof \yii\web\Application) {
+            Yii::$app->request->enableCsrfValidation = false;
+        }
     }
 
 }
