@@ -76,13 +76,15 @@ class SiteController extends Controller
         // 1. Counts for Top Gadgets
         $totalVoos = \common\models\Voo::find()->count();
         $totalBilhetes = \common\models\Bilhete::find()->count();
-        $totalNotificacoes = \common\models\Notificacao::find()->count(); // Ou filtrar por lidas/não lidas se quiser
+        $totalNotificacoes = \common\models\Notificacao::find()->count();
         $totalPedidos = \common\models\PedidoAssistencia::find()->count();
+        $totalFuncionarios = \common\models\Funcionario::find()->count();
+        $totalPassageiros = \common\models\Passageiro::find()->count();
 
         // 2. Recent Departures (limit 5)
         $recentDepartures = \common\models\Voo::find()
             ->where(['tipo_voo' => 'departure'])
-            ->orderBy(['departure_date' => SORT_DESC]) // Mais recentes primeiro
+            ->orderBy(['departure_date' => SORT_DESC])
             ->limit(5)
             ->all();
 
@@ -93,6 +95,13 @@ class SiteController extends Controller
             ->limit(5)
             ->all();
 
+        // 4. Recent Notifications (limit 5)
+        $recentNotifications = \common\models\Notificacao::find()
+            ->orderBy(['sent_at' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+
         return $this->render('index', [
             'totalVoos' => $totalVoos,
             'totalBilhetes' => $totalBilhetes,
@@ -100,6 +109,9 @@ class SiteController extends Controller
             'totalPedidos' => $totalPedidos,
             'recentDepartures' => $recentDepartures,
             'recentArrivals' => $recentArrivals,
+            'totalFuncionarios' => $totalFuncionarios,
+            'totalPassageiros' => $totalPassageiros,
+            'recentNotifications' => $recentNotifications,
         ]);
     }
 
@@ -159,15 +171,5 @@ class SiteController extends Controller
     }
 
 
-    // render da page do recent Activity
-    public function actionRecentActivity()
-    {
-        return $this->render('recent-activity');
-    }
 
-    // render da page do System Resume
-    public function actionSystemResume ()
-    {
-        return $this->render('system-resume');
-    }
 }

@@ -64,17 +64,7 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
                 </a>
             </li>
 
-            <li class="nav-item d-none d-sm-inline-block">
-                <a class="nav-link" href="<?= \yii\helpers\Url::to(['/site/recent-activity']) ?>">
-                    Recent Activity
-                </a>
-            </li>
 
-            <li class="nav-item d-none d-sm-inline-block">
-                <a class="nav-link" href="<?= \yii\helpers\Url::to(['/site/system-resume']) ?>">
-                    System Resume
-                </a>
-            </li>
         </ul>
 
         
