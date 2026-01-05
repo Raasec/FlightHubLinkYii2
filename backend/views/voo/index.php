@@ -9,7 +9,7 @@ use common\models\Voo;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Flights';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -39,11 +39,40 @@ $this->params['breadcrumbs'][] = $this->title;
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
 
                             'id_voo',
-                            'id_companhia',
-                            'numero_voo',
+                            [
+                                'attribute' => 'id_companhia',
+                                'label' => 'Airline',
+                                'format' => 'raw',
+                                'value' => function ($model) {
+                                    if (!$model->companhia) {
+                                        return Html::tag('span', '(not set)', ['class' => 'text-danger']);
+                                    }
+
+                                    return Html::tag(
+                                        'div',
+                                        Html::img(
+                                            $model->companhia->imageUrl,
+                                            [
+                                                'style' => 'width:40px;height:25px;object-fit:contain;margin-right:8px;',
+                                            ]
+                                        ) . Html::encode($model->companhia->name),
+                                        ['class' => 'd-flex align-items-center']
+                                    );
+                                },
+                                'filter' => \yii\helpers\ArrayHelper::map(
+                                    \common\models\CompanhiaAerea::find()->orderBy('name')->all(),
+                                    'id_companhia',
+                                    'name'
+                                ),
+                            ],
+                            [
+                                'attribute' => 'numero_voo',
+                                'format' => 'raw',
+                                'value' => fn($model) =>
+                                    Html::tag('strong', $model->numero_voo),
+                            ],
                             'origin',
                             'destination',
                             'departure_date',
@@ -86,5 +115,5 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <!--.col-md-12-->
     </div>
-    <!--.row-->
+
 </div>

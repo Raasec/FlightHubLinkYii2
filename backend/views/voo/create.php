@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Voo */
 
 $this->title = 'Create Flight';
-$this->params['breadcrumbs'][] = ['label' => 'Voos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

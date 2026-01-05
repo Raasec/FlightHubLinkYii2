@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Administrador */
 
 $this->title = 'Create Administrator';
-$this->params['breadcrumbs'][] = ['label' => 'Administrators', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

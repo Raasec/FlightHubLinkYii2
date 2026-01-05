@@ -11,6 +11,7 @@ use common\models\Voo;
  */
 class VooSearch extends Voo
 {
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +42,9 @@ class VooSearch extends Voo
      */
     public function search($params)
     {
-        $query = Voo::find();
+        $query = Voo::find()
+            ->alias('voo')
+            ->joinWith('companhia');
 
         // add conditions that should always apply here
 
@@ -60,7 +63,7 @@ class VooSearch extends Voo
         // grid filtering conditions
         $query->andFilterWhere([
             'id_voo' => $this->id_voo,
-            'id_companhia' => $this->id_companhia,
+            'voo.id_companhia' => $this->id_companhia,
             'departure_date' => $this->departure_date,
             'arrival_date' => $this->arrival_date,
             'id_funcionario_responsavel' => $this->id_funcionario_responsavel,

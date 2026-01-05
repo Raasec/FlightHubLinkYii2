@@ -69,4 +69,13 @@ $isAdmin = Yii::$app->user->can('administrador');
         ],
     ]) ?>
 
+    <hr>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Users',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

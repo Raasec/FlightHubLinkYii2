@@ -4,9 +4,7 @@
 /* @var $model common\models\Administrador */
 
 $this->title = 'Update Administrator: ' . $model->id_admin;
-$this->params['breadcrumbs'][] = ['label' => 'Administrator', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_admin, 'url' => ['view', 'id_admin' => $model->id_admin]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 
 <div class="container-fluid">

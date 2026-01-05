@@ -13,8 +13,16 @@ use yii\bootstrap4\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php
-    $companhias = \common\models\CompanhiaAerea::find()->all();
-    $companhiaList = \yii\helpers\ArrayHelper::map($companhias, 'id_companhia', 'nome');
+    $companhias = \common\models\CompanhiaAerea::find()    
+        ->orderBy(['name' => SORT_ASC])
+        ->all();
+    $companhiaList = \yii\helpers\ArrayHelper::map(
+    $companhias,
+    'id_companhia',
+    function ($model) {
+        return "{$model->iata_code} — {$model->name}";
+    }
+);
     ?>
 
     <?= $form->field($model, 'id_companhia')->dropDownList($companhiaList, ['prompt' => '-- Selecionar Companhia --']) ?>
@@ -51,5 +59,13 @@ use yii\bootstrap4\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Flights',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 
 </div>

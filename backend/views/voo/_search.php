@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_voo') ?>
 
-    <?= $form->field($model, 'id_companhia') ?>
+    <?= $form->field($model, 'airline_name')->label('Airline') ?>
 
     <?= $form->field($model, 'numero_voo') ?>
 

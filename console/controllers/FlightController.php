@@ -6,6 +6,8 @@ use yii\console\Controller;
 use common\models\Voo;
 use common\models\Bilhete;
 use yii\helpers\Console;
+use common\services\AirlineSeeder;
+
 
 /**
  * ESTE CONSOLE CONTROLLER É PARA TAREFAS AUTOMÁTICAS RELACIONADAS COM VOOS.
@@ -155,4 +157,19 @@ class FlightController extends Controller
         $this->stdout("Tarefa concluida.\n", Console::FG_GREEN);
         return Controller::EXIT_CODE_NORMAL;
     }
+
+
+    // Sinc com as airlines criadas via Seed no services common
+    //region AirlineSync
+    public function actionSyncAirlines()
+    {
+        $result = AirlineSeeder::syncDefaultAirlines();
+
+        $this->stdout("Airlines synced successfully\n");
+        $this->stdout("Total: {$result['total']}\n");
+        $this->stdout("Created: {$result['created']}\n");
+        $this->stdout("Updated: {$result['updated']}\n");
+    }
+
+    //endregion
 }

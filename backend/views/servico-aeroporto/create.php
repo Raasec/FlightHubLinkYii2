@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\ServicoAeroporto */
 
 $this->title = 'Create Airport Service';
-$this->params['breadcrumbs'][] = ['label' => 'Servico Aeroportos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

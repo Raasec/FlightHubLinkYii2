@@ -15,7 +15,6 @@ $this->params['breadcrumbs'] = [];
 ?>
 <div class="user-profile-index">
 
-    <h1 class="page-title"><?= Html::encode($this->title) ?></h1>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

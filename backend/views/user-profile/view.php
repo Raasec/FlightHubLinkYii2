@@ -35,15 +35,30 @@ $this->params['breadcrumbs'] = [];
     <!-- DETAILS -->
     <div class="profile-details">
 
+        <div class="detail-item full-width">
+            <span>Email</span>
+            <strong>
+                <?= $model->user
+                    ? Html::encode($model->user->email)
+                    : Html::tag('span', '(not set)', ['class' => 'text-muted']) ?>
+            </strong>
+        </div>
+
         <div class="detail-item">
             <span>Gender</span>
-            <strong><?= ucfirst($model->gender) ?></strong>
+            <strong>
+                <?= $model->gender
+                    ? ucfirst(Html::encode($model->gender))
+                    : Html::tag('span', '(not set)', ['class' => 'text-muted']) ?>
+            </strong>
         </div>
+
 
         <div class="detail-item">
             <span>Date of Birth</span>
             <strong><?= Yii::$app->formatter->asDate($model->date_of_birth) ?></strong>
         </div>
+
 
         <div class="detail-item">
             <span>Phone</span>
@@ -78,11 +93,19 @@ $this->params['breadcrumbs'] = [];
     </div>
 
     <!-- ACTIONS -->
-    <div class="profile-actions">
+    <div class="mt-3">
         <?= Html::a(
             'Update Profile',
             ['update', 'id' => $model->id],
             ['class' => 'btn btn-primary']
+        ) ?>
+    </div>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to User Profiles',
+            ['index'],
+            ['class' => 'btn btn-secondary']
         ) ?>
     </div>
 

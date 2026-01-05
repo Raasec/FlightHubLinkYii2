@@ -9,7 +9,6 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Administrators';
-$this->params['breadcrumbs'][] = $this->title;
 
 $isAdmin = Yii::$app->user->can('administrador');
 
@@ -34,7 +33,6 @@ $isAdmin = Yii::$app->user->can('administrador');
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
 
                             'id_admin',
                             [

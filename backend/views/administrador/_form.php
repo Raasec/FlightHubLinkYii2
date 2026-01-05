@@ -17,6 +17,8 @@ $user = $model->user; // relação User
 
     <?php $form = ActiveForm::begin(); ?>
 
+
+
     <!-- ID User em readonly -->
     <?= $form->field($model, 'id_utilizador')->textInput(['readonly' => true]) ?>
 
@@ -45,5 +47,13 @@ $user = $model->user; // relação User
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Administrators',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 
 </div>

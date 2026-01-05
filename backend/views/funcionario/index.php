@@ -9,7 +9,6 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Employees';
-$this->params['breadcrumbs'][] = $this->title;
 
 // Agora usamos RBAC em vez de tipo-utilizador para se fazer a identifacao do utilizador
 $canUpdate = Yii::$app->user->can('updateFuncionario');
@@ -37,7 +36,6 @@ $canDelete = Yii::$app->user->can('deleteFuncionario');
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
 
                             'id_utilizador',
                             [

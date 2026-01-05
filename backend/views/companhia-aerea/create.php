@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\CompanhiaAerea */
 
 $this->title = 'Create Airline';
-$this->params['breadcrumbs'][] = ['label' => 'Companhia Aereas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

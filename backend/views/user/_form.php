@@ -23,6 +23,17 @@ $roles = ArrayHelper::map($auth->getRoles(), 'name', 'name');
 
     <?php $form = ActiveForm::begin(); ?>
 
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Users',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
+    <hr>
+
     <!-- Username -->
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 

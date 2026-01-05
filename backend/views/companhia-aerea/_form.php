@@ -14,15 +14,42 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'iata_code')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'iata_code')->textInput([
+        'maxlength' => true,
+        'style' => 'text-transform: uppercase;',
+    ]) ?>
 
     <?= $form->field($model, 'country_origin')->textInput(['maxlength' => true]) ?>
 
-    <!-- NEW: Image filename -->
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true])->label('Image Filename') ?>
-
+    <!-- IMAGE (READ ONLY + PREVIEW) -->
     <div class="form-group">
+        <label>Current Logo</label>
+        <div class="mb-2">
+            <?= Html::img(
+                $model->imageUrl,
+                [
+                    'style' => 'max-width:180px; max-height:90px; object-fit:contain;',
+                    'alt' => $model->name,
+                ]
+            ) ?>
+        </div>
+
+        <?= Html::activeTextInput(
+            $model,
+            'image',
+            [
+                'class' => 'form-control',
+                'readonly' => true,
+            ]
+        ) ?>
+        <small class="form-text text-muted">
+            Logo filename is managed automatically by the system.
+        </small>
+    </div>
+
+    <div class="form-group mt-3">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Cancel', ['index'], ['class' => 'btn btn-secondary ml-2']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

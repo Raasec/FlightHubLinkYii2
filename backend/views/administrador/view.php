@@ -6,10 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Administrador */
 
-$this->title = "Administrador #{$model->id_admin}";
+$this->title = "Administrator #{$model->id_admin}";
 
-$this->params['breadcrumbs'][] = ['label' => 'Administrators', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 
 
 $isAdmin = Yii::$app->user->can('administrador');
@@ -59,4 +57,14 @@ $isAdmin = Yii::$app->user->can('administrador');
         <!--.card-body-->
     </div>
     <!--.card-->
+
+    <hr>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Administrators',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

@@ -9,7 +9,7 @@ use yii\helpers\Url;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Passengers';
-$this->params['breadcrumbs'][] = $this->title;
+
 
 $user = Yii::$app->user->identity;
 $isAdmin = Yii::$app->user->can('administrador');
@@ -36,7 +36,6 @@ $isFuncionario = Yii::$app->user->can('funcionario');
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
 
                             'id_utilizador',                            
                             [

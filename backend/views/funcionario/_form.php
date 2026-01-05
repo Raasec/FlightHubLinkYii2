@@ -56,4 +56,12 @@ $user = $model->user; // relaçao User para dados
 
     <?php ActiveForm::end(); ?>
 
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Employees',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
 </div>

@@ -43,4 +43,12 @@ $user = $model->user; // relação com User
 
     <?php ActiveForm::end(); ?>
 
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Passengers',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
 </div>

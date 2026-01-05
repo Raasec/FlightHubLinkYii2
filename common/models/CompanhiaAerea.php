@@ -65,12 +65,18 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Voo::class, ['id_companhia' => 'id_companhia']);
     }
+
+
     public function getImageUrl()
     {
-        if (!$this->image) {
-            return Yii::getAlias("@web") . "/img/airlines/default.png";
+        $basePath = Yii::getAlias('@webroot/uploads/Airline-logo/');
+        $baseUrl  = Yii::getAlias('@web/uploads/Airline-logo/');
+
+        if ($this->image && file_exists($basePath . '/' . $this->image)) {
+            return $baseUrl . '/' . $this->image;
         }
 
-        return Yii::getAlias("@web") . "/img/airlines/" . $this->image;
+        return $baseUrl . '/default.png';
     }
+
 }

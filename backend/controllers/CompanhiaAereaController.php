@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\services\AirlineSeeder;
 
 /**
  * CompanhiaAereaController implements the CRUD actions for CompanhiaAerea model.
@@ -35,6 +36,7 @@ class CompanhiaAereaController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'sync-default' => ['POST'],
                 ],
             ],
         ];
@@ -166,4 +168,24 @@ class CompanhiaAereaController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    public function actionSyncDefault()
+    {
+        if (!Yii::$app->user->can('createAirline')) {
+            throw new yii\web\ForbiddenHttpException('You do not have permission to sync airlines.');
+        }
+
+        $result = AirlineSeeder::syncDefaultAirlines();
+
+        Yii::$app->session->setFlash(
+            'success',
+            "Airlines synced successfully: 
+            {$result['created']} created, 
+            {$result['updated']} updated."
+        );
+
+        return $this->redirect(['index']);
+    }
+
 }

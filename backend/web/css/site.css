@@ -98,3 +98,55 @@ a.desc:after {
     text-align: center;
     padding-top: 10px;
 }
+
+
+
+/* CSS na table das Airlines  */
+.airline-table th,
+.airline-table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.airline-table td:nth-child(2) { /* Name */
+    white-space: normal;
+    min-width: 220px;
+}
+
+.airline-table td:nth-child(4) { /* Country */
+    min-width: 160px;
+}
+
+.airline-table td:nth-child(5) { /* Logo */
+    width: 90px;
+    text-align: center;
+}
+
+
+/* CSS dos Logos das Airlines */
+.airline-table img.airline-logo {
+    max-height: 45px !important;
+    max-width: 70px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.airline-table img.airline-logo:hover {
+    transform: scale(1.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* CSS Airline IATA */
+.airline-iata {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    letter-spacing: 0.5px;
+}
+
+.detail-view th {
+    width: 200px;
+    background-color: #f8f9fa;
+}

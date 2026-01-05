@@ -16,6 +16,16 @@ UserProfileAsset::register($this);
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to User Profiles',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
+    <hr>
+
     <!-- id invisivel, nao é necessario -->
     <?= $form->field($model, 'user_id')->hiddenInput(['readonly' => true])-> label (false) ?>
 
@@ -41,21 +51,36 @@ UserProfileAsset::register($this);
 
     <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
 
+    <div class="form-group">
+        <label class="control-label">Email</label>
+        <input type="email"
+            class="form-control"
+            value="<?= $model->user ? Html::encode($model->user->email) : '' ?>"
+            readonly>
+    </div>
+
+
     <?= $form->field($model, 'gender')->dropDownList([ 'male' => 'Male', 'female' => 'Female', 'other' => 'Other', ], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'date_of_birth')->input('date') ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => 20, 'placeholder' => '+351 ...']) ?>
+    <?= $form->field($model, 'phone')->textInput(['maxlength' => 9, 'placeholder' => '123456789']) ?>
 
-    <?= $form->field($model, 'nif')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nif')->textInput(['maxlength' => 9]) ?>
 
-    <?= $form->field($model, 'nationality')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nationality')->dropDownList(
+        \common\models\UserProfile::optsNationality(),
+        ['prompt' => '']
+    ) ?>
 
-    <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'country')->dropDownList(
+        \common\models\UserProfile::optsCountry(),
+        ['prompt' => '']
+    ) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true, 'placeholder' => '0000-000']) ?>
 
     <!-- Role -->
     <?= $form->field($model, 'role_type')->hiddenInput()->label(false) ?>
@@ -68,10 +93,13 @@ UserProfileAsset::register($this);
             readonly>
     </div>
 
+    
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
 
 </div>

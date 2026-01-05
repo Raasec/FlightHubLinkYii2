@@ -9,8 +9,7 @@ use yii\widgets\DetailView;
 
 $this->title = "Employee #".$model->id_funcionario;
 
-$this->params['breadcrumbs'][] = ['label' => 'Employees', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 
 \yii\web\YiiAsset::register($this);
 
@@ -77,4 +76,14 @@ $isOwner = $model->id_utilizador == $user->id;
         <!--.card-body-->
     </div>
     <!--.card-->
+
+    <hr>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Employees',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

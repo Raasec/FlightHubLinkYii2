@@ -591,6 +591,9 @@ class RbacController extends Controller
         $auth->addChild($funcionario, $manageAirlines);
         $auth->addChild($funcionario, $manageServices);
         $auth->addChild($funcionario, $viewOwnFuncionario);
+        $auth->addChild($funcionario, $manageTickets);
+        $auth->addChild($funcionario, $manageCheckins);
+        $auth->addChild($funcionario, $manageSupportTickets);
 
         $auth->addChild($funcionario, $viewOwnUserProfile);
         $auth->addChild($funcionario, $updateOwnUserProfile);
@@ -602,6 +605,10 @@ class RbacController extends Controller
         $auth->addChild($admin, $manageFuncionarios);
         $auth->addChild($admin, $manageAdministradores);
         $auth->addChild($admin, $manageUserProfiles);
+        $auth->addChild($admin, $manageTickets);
+        $auth->addChild($admin, $manageCheckins);
+        $auth->addChild($admin, $manageSupportTickets);
+
 
     }
     

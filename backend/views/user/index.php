@@ -11,7 +11,7 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Users';
-$this->params['breadcrumbs'][] = $this->title;
+
 
 // Agora usa-se RBAC para as permissoes
 $isAdmin = Yii::$app->user->can('administrador');
@@ -19,7 +19,6 @@ $isAdmin = Yii::$app->user->can('administrador');
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?php if ($isAdmin): ?>
         <p><?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?></p>
