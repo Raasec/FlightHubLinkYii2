@@ -82,9 +82,13 @@ return [
                 'pluralize' => false,
                 'extraPatterns' => [
                     'GET origem/{cidade}' => 'porOrigem',
+                    'GET {id}/bilhetes' => 'bilhetes',
+                    'GET {id}/notificacoes' => 'notificacoes',
+                    'GET {id}/reviews' => 'reviews',
                 ],
                 'tokens' => [
                     '{cidade}' => '<cidade:[^\/]+>',
+                    '{id}' => '<id:\\d+>',
                 ],
             ],
             [
@@ -105,6 +109,32 @@ return [
                     'GET me' => 'me',
                     'PUT update' => 'update',
                 ],
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/notificacao',
+                'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/pedido-assistencia',
+                'pluralize' => false,
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/servico-aeroporto',
+                'pluralize' => false,
+                'extraPatterns' => [
+                    'GET tipo/{tipo}' => 'porTipo',
+                ],
+                'tokens' => [
+                    '{tipo}' => '<tipo:[^\/]+>',
+                ],
+            ],
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => 'api/companhia-aerea',
+                'pluralize' => false,
             ],
         ]
 

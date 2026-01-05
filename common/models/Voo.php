@@ -154,6 +154,28 @@ class Voo extends \yii\db\ActiveRecord
     }
 
     /**
+     * publica o update via MQTT se houve mudanças
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // publica mqtt se status ou gate mudou (ou novo voo)
+        $shouldPublish = $insert 
+            || isset($changedAttributes['status']) 
+            || isset($changedAttributes['gate'])
+            || isset($changedAttributes['departure_date']);
+
+        if ($shouldPublish) {
+            try {
+                \common\services\MqttService::publishFlightUpdate($this);
+            } catch (\Exception $e) {
+                \Yii::error("Falha ao publicar MQTT voo: " . $e->getMessage(), 'mqtt');
+            }
+        }
+    }
+
+    /**
      * OPCOEES PARA UI
      */
     public static function optsStatus()

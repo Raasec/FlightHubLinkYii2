@@ -79,4 +79,21 @@ class Notificacao extends \yii\db\ActiveRecord
         return $this->hasOne(Voo::class, ['id_voo' => 'id_voo']);
     }
 
+    /**
+     * quando guarda da publish a uma notificacao pelo mqtt
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // so publica em novas notifs
+        if ($insert) {
+            try {
+                \common\services\MqttService::publishFlightNotification($this);
+            } catch (\Exception $e) {
+                \Yii::error("Falha ao publicar MQTT: " . $e->getMessage(), 'mqtt');
+            }
+        }
+    }
+
 }

@@ -34,8 +34,38 @@ class VooController extends Controller
     {
         $this->checkAccess('porOrigem'); // RBAC
 
-        $search = Voo::find()->where(['origem' => $cidade])->all();
+        $search = Voo::find()->where(['origin' => $cidade])->all();
         return $search;
+    }
+
+    /* Master/Detail: Bilhetes de um voo
+    GET /api/voo/{id}/bilhetes*/
+    public function actionBilhetes($id)
+    {
+        $this->checkAccess('bilhetes');
+        
+        $voo = $this->findModel($id);
+        return $voo->bilhetes;
+    }
+
+    /* Master/Detail: Notificações de um voo
+    GET /api/voo/{id}/notificacoes */
+    public function actionNotificacoes($id)
+    {
+        $this->checkAccess('notificacoes');
+        
+        $voo = $this->findModel($id);
+        return $voo->notificacaos;
+    }
+
+    /* Master/Detail: Reviews de um voo
+    GET /api/voo/{id}/reviews*/
+    public function actionReviews($id)
+    {
+        $this->checkAccess('reviews');
+        
+        $voo = $this->findModel($id);
+        return $voo->reviews;
     }
 
     protected function findModel($id)
