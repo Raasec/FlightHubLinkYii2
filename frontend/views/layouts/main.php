@@ -61,7 +61,7 @@ AppAsset::register($this);
                 <img src="<?= Yii::getAlias('@web') ?>/img/logo_azul.png" alt="Logo" class="navbar-logo">
             </a>
 
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
@@ -71,6 +71,47 @@ AppAsset::register($this);
                     <a href="<?= \yii\helpers\Url::to(['/site/ticket-purchase']) ?>" class="nav-item nav-link">Buy tickets</a>
                     <a href="<?= \yii\helpers\Url::to(['/site/checkin']) ?>" class="nav-item nav-link">Online Check-In</a>  
                     <?php if (!Yii::$app->user->isGuest): ?>
+                        <?php
+                        $myNotifs = \common\services\NotificationService::getNotificationsForUser(Yii::$app->user->id);
+                        $countNotifs = count($myNotifs);
+                        ?>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <?php if ($countNotifs > 0): ?>
+                                    <span class="badge badge-warning text-dark" style="position: relative; top: -5px;"><?= $countNotifs ?></span>
+                                <?php endif; ?>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow-sm p-0 m-0" style="min-width: 300px;">
+                                <?php if (empty($myNotifs)): ?>
+                                    <span class="dropdown-item text-muted small p-3">No notifications</span>
+                                <?php else: ?>
+                                    <?php foreach ($myNotifs as $notif): ?>
+                                        <div class="dropdown-item p-3 border-bottom">
+                                            <small class="text-muted float-right ml-2"><?= Yii::$app->formatter->asRelativeTime($notif->sent_at) ?></small>
+                                            <h6 class="dropdown-header p-0 text-left">
+                                                <?php if ($notif->type == 'delay'): ?>
+                                                    <span class="text-warning font-weight-bold"><i class="fas fa-clock"></i> Flight Delayed</span>
+                                                <?php elseif ($notif->type == 'gate_change'): ?>
+                                                    <span class="text-primary font-weight-bold"><i class="fas fa-door-open"></i> Gate Change</span>
+                                                <?php else: ?>
+                                                    <span class="text-info font-weight-bold"><i class="fas fa-info-circle"></i> Update</span>
+                                                <?php endif; ?>
+                                            </h6>
+                                            <p class="small mb-0 text-wrap">
+                                                <?= \yii\helpers\StringHelper::truncate($notif->message, 100) ?>
+                                            </p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                    <div class="dropdown-divider"></div>
+                                    <?= Html::a('Clear Notifications', ['site/clear-notifications'], [
+                                        'class' => 'dropdown-item text-center small text-muted',
+                                        'data-method' => 'post'
+                                    ]) ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
                         <a href="<?= \yii\helpers\Url::to(['/site/profile']) ?>" class="nav-item nav-link <?= Yii::$app->controller->action->id == 'profile' ? 'active' : '' ?>">My Profile</a>
                     <?php endif; ?>
                     <a href="<?= \yii\helpers\Url::to(['/site/contact']) ?>" class="nav-item nav-link">Support</a>

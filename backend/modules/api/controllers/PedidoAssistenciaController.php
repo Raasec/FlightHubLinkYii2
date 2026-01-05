@@ -31,7 +31,7 @@ class PedidoAssistenciaController extends Controller
 
         // Buscar id_passageiro pelo user_id
         $passageiro = \common\models\Passageiro::find()
-            ->where(['id_user' => $userId])
+            ->where(['id_utilizador' => $userId])
             ->one();
 
         if (!$passageiro) {
@@ -58,7 +58,7 @@ class PedidoAssistenciaController extends Controller
         $userId = Yii::$app->params['id'];
 
         $passageiro = \common\models\Passageiro::find()
-            ->where(['id_user' => $userId])
+            ->where(['id_utilizador' => $userId])
             ->one();
 
         if (!$passageiro) {
@@ -133,7 +133,7 @@ class PedidoAssistenciaController extends Controller
 
         // buscar passageiro do user
         $passageiro = \common\models\Passageiro::find()
-            ->where(['id_user' => $userId])
+            ->where(['id_utilizador' => $userId])
             ->one();
 
         if (!$passageiro) {

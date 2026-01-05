@@ -25,7 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'confirm' => 'Are you sure you want to delete this item?',
                                 'method' => 'post',
                             ],
-                        ]) ?>
+                            ]) ?>
+                            <?= Html::a('<i class="fas fa-bell"></i> Send Notification', ['notify', 'id_incidente' => $model->id_incidente], [
+                                'class' => 'btn btn-warning',
+                                'data' => [
+                                    'confirm' => 'This will broadcast an alert to ALL users. Are you sure?',
+                                    'method' => 'post',
+                                ],
+                            ]) ?>
                     </p>
                     <?= DetailView::widget([
                         'model' => $model,

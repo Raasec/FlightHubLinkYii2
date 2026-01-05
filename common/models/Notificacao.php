@@ -34,8 +34,7 @@ class Notificacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'message', 'sent_at'], 'default', 'value' => null],
-            [['id_voo'], 'required'],
+            [['type', 'message', 'sent_at', 'id_voo'], 'default', 'value' => null],
             [['id_voo'], 'integer'],
             [['message'], 'string'],
             [['sent_at'], 'safe'],

@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Notificacao;
+use common\services\MqttService;
 
 /**
  * IncidenteController implements the CRUD actions for Incidente model.
@@ -148,6 +150,45 @@ class IncidenteController extends Controller
         $this->findModel($id_incidente)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Sends a notification for this incident.
+     * @param int $id_incidente
+     * @return mixed
+     */
+    public function actionNotify($id_incidente)
+    {
+        if (!Yii::$app->user->can('updateIncident')) { // Assuming update permission is enough
+             throw new \yii\web\ForbiddenHttpException('You do not have permission to send notifications.');
+        }
+
+        $model = $this->findModel($id_incidente);
+
+        // Create Notification
+        $notificacao = new Notificacao();
+        $notificacao->id_voo = null; // Global alert
+        $notificacao->type = 'alert';
+        $notificacao->message = $model->description; // Use incident description
+        $notificacao->sent_at = date('Y-m-d H:i:s');
+        
+        if ($notificacao->save()) {
+            // Link back to Incident
+            $model->id_notificacao = $notificacao->id_notificacao;
+            $model->save(false); // Skip validation to just save the ID
+
+            // Broadcast MQTT
+            try {
+                MqttService::publishGlobalAlert($notificacao);
+                Yii::$app->session->setFlash('success', 'Notificação enviada com sucesso e publicada via MQTT!');
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', 'Notificação salva, mas falha no MQTT: ' . $e->getMessage());
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao criar notificação: ' . json_encode($notificacao->errors));
+        }
+
+        return $this->redirect(['view', 'id_incidente' => $id_incidente]);
     }
 
     /**

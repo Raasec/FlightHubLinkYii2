@@ -41,6 +41,7 @@ class Passageiro extends \yii\db\ActiveRecord
             [['id_utilizador', 'user_profile_id'], 'integer'],
 
             [['preferences'], 'string'],
+            [['last_notification_read_at'], 'safe'],
 
             // FK para user(id)
             [

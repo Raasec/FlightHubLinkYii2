@@ -35,8 +35,8 @@ class Incidente extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_funcionario', 'type', 'description', 'created_at'], 'default', 'value' => null],
-            [['id_notificacao'], 'required'],
+            [['id_funcionario', 'type', 'description', 'created_at', 'id_notificacao'], 'default', 'value' => null],
+            [['description'], 'required'], 
             [['id_notificacao', 'id_funcionario'], 'integer'],
             [['description'], 'string'],
             [['created_at'], 'safe'],

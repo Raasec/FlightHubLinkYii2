@@ -112,8 +112,22 @@ class MqttService
             'id_notificacao' => $notificacao->id_notificacao,
             'id_voo' => $notificacao->id_voo,
             'titulo' => $notificacao->titulo ?? 'Notificação',
-            'mensagem' => $notificacao->mensagem,
-            'timestamp' => $notificacao->creation_date ?? date('Y-m-d H:i:s'),
+            'mensagem' => $notificacao->message,
+            'timestamp' => $notificacao->sent_at ?? date('Y-m-d H:i:s'),
+        ];
+
+        return self::publish($topic, $message);
+    }
+
+    public static function publishGlobalAlert($notificacao)
+    {
+        $topic = "flighthub/alertas";
+        $message = [
+            'type' => 'global_alert',
+            'id_notificacao' => $notificacao->id_notificacao,
+            'titulo' => 'Alerta de Aeroporto',
+            'mensagem' => $notificacao->message,
+            'timestamp' => $notificacao->sent_at ?? date('Y-m-d H:i:s'),
         ];
 
         return self::publish($topic, $message);

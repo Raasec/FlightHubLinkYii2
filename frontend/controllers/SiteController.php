@@ -33,7 +33,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review'],
+                'only' => ['logout', 'signup', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review', 'clear-notifications'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -41,7 +41,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review'],
+                        'actions' => ['logout', 'checkin', 'confirm-checkin', 'boarding-pass', 'buy-ticket', 'profile', 'update-profile', 'review', 'create-review', 'clear-notifications'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -51,6 +51,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
+                    'clear-notifications' => ['post'],
                 ],
             ],
         ];
@@ -87,14 +88,29 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    // limpa as notificacoes de um user marca como read
+    public function actionClearNotifications()
+    {
+        $userId = \Yii::$app->user->id;
+        $passageiro = \common\models\Passageiro::find()->where(['id_utilizador' => $userId])->one();
+
+
+        if ($passageiro) {
+            $passageiro->last_notification_read_at = date('Y-m-d H:i:s');
+            if ($passageiro->save(false, ['last_notification_read_at'])) {
+                 Yii::$app->session->setFlash('success', 'Notifications cleared.');
+            } else {
+                 Yii::$app->session->setFlash('error', 'Failed to clear notifications.');
+            }
+        }
+
+        return $this->redirect(Yii::$app->request->referrer ?: ['index']);
+    }
     public function actionIndex()
     {
         // para a table de flights 
         // Partidas: mostrar futuras (ou recentes?) - assumindo default (todos) ou filtrar passados tb?
-        // User request specifcally mentioned "once the flight lands".
-        // Let's filter departures that have already departed too, for consistency, or just keep as is if not requested?
-        // "once the flight lands... shouldn't be shown".
-        // I'll filter both for > NOW to be clean.
+        // "once the flight lands shouldn't be shown".
         
         $partidas = Voo::find()
             ->where(['tipo_voo' => 'departure'])

@@ -23,11 +23,11 @@ class VooController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete', 'feed'],
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'feed', 'delay'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'delay'],
                         'roles' => ['administrador','funcionario'],
                     ],
                     [
@@ -41,6 +41,7 @@ class VooController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delay' => ['POST'],
                 ],
             ],
         ];
@@ -170,6 +171,33 @@ class VooController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    // atrasa um voo e notifica passageiros
+    public function actionDelay($id_voo)
+    {
+        $model = $this->findModel($id_voo);
+        $delayMinutes = Yii::$app->request->post('delay_minutes', 30);
+
+        if ($delayMinutes < 1 || $delayMinutes > 1440) {
+            Yii::$app->session->setFlash('error', 'Tempo de atraso inválido (1-1440 min).');
+            return $this->redirect(['view', 'id_voo' => $id_voo]);
+        }
+
+        // atualiza departure e arrival
+        $oldDeparture = $model->departure_date;
+        $model->departure_date = date('Y-m-d H:i:s', strtotime($model->departure_date . " +{$delayMinutes} minutes"));
+        $model->arrival_date = date('Y-m-d H:i:s', strtotime($model->arrival_date . " +{$delayMinutes} minutes"));
+
+        if ($model->save()) {
+            // cria notificacao para passageiros
+            $count = \common\services\NotificationService::notifyFlightDelay($model, $delayMinutes);
+            Yii::$app->session->setFlash('success', "Voo atrasado em {$delayMinutes} min. {$count} passageiros notificados.");
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao atualizar voo.');
+        }
+
+        return $this->redirect(['view', 'id_voo' => $id_voo]);
     }
 
     /**

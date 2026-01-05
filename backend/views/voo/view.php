@@ -19,6 +19,12 @@ $this->title = 'Flight ' . $model->numero_voo;
                 <div class="col-md-12">
                     <p>
                         <?= Html::a('Update', ['update', 'id_voo' => $model->id_voo], ['class' => 'btn btn-primary']) ?>
+                        
+                        <!-- delay button -->
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#delayModal">
+                            <i class="fas fa-clock"></i> Delay Flight
+                        </button>
+                        
                         <?= Html::a('Delete', ['delete', 'id_voo' => $model->id_voo], [
                             'class' => 'btn btn-danger',
                             'data' => [
@@ -27,6 +33,33 @@ $this->title = 'Flight ' . $model->numero_voo;
                             ],
                         ]) ?>
                     </p>
+
+                    <!-- modal para delay -->
+                    <div class="modal fade" id="delayModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <?= Html::beginForm(['voo/delay', 'id_voo' => $model->id_voo], 'post') ?>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Atrasar Voo <?= $model->numero_voo ?></h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Tempo de atraso (minutos)</label>
+                                        <input type="number" name="delay_minutes" class="form-control" 
+                                               value="30" min="1" max="1440" required>
+                                        <small class="text-muted">Todos os passageiros com bilhete serão notificados.</small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-warning">Confirmar Atraso</button>
+                                </div>
+                                <?= Html::endForm() ?>
+                            </div>
+                        </div>
+                    </div>
+
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [

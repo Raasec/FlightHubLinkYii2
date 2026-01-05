@@ -12,15 +12,22 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_notificacao')->textInput() ?>
+    <?= $form->field($model, 'id_funcionario')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\common\models\Funcionario::find()->all(), 'id_funcionario', 'nome'),
+        ['prompt' => 'Select Responsible Employee (Optional)']
+    ) ?>
 
-    <?= $form->field($model, 'id_funcionario')->textInput() ?>
-
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->dropDownList([
+        'Security' => 'Security',
+        'Maintenance' => 'Maintenance',
+        'Staff' => 'Staff',
+        'Weather' => 'Weather',
+        'Other' => 'Other',
+    ], ['prompt' => 'Select Type']) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_at')->input('datetime-local') ?>
+    
+    <?= $form->field($model, 'created_at')->textInput(['type' => 'datetime-local', 'value' => $model->isNewRecord ? date('Y-m-d\TH:i') : date('Y-m-d\TH:i', strtotime($model->created_at))]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

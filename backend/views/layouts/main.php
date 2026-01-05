@@ -83,43 +83,49 @@ $menuItems = require Yii::getAlias('@backend/config/menu.php');
 
         <!-- TODO: -->
             <!-- Notifications Dropdown Menu -->
+            <?php
+            // busca notificacoes recentes (backoffice ve todas)
+            $recentNotifs = \common\models\Notificacao::find()
+                ->orderBy(['sent_at' => SORT_DESC])
+                ->limit(5)
+                ->all();
+            $notifCount = count($recentNotifs);
+            ?>
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
+                    <?php if ($notifCount > 0): ?>
                     <span class="badge badge-warning navbar-badge">
-                        5
-                    </span> <!-- número fake por agora -->
+                        <?= $notifCount ?>
+                    </span>
+                    <?php endif; ?>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
-                    <span class="dropdown-item dropdown-header">5 Notifications</span>
+                    <span class="dropdown-item dropdown-header"><?= $notifCount ?> Notifications</span>
                     <div class="dropdown-divider"></div>
 
-                    <!-- Example notification items -->
-                    <a href="<?= \yii\helpers\Url::to(['/notificacao/index']) ?>" class="dropdown-item">
-                        <i class="fas fa-headset mr-2 text-warning"></i>
-                        Pedido de Assistência
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-
-                    <div class="dropdown-divider"></div>
-
-                    <a href="<?= \yii\helpers\Url::to(['/notificacao/index']) ?>" class="dropdown-item">
-                        <i class="fas fa-plane-departure mr-2 text-info"></i>
-                        Atualização de voo
-                        <span class="float-right text-muted text-sm">12 mins</span>
-                    </a>
-
-                    <div class="dropdown-divider"></div>
-
-                    <a href="<?= \yii\helpers\Url::to(['/notificacao/index']) ?>" class="dropdown-item">
-                        <i class="fas fa-exclamation-circle mr-2 text-danger"></i>
-                        Incidente reportado
-                        <span class="float-right text-muted text-sm">1 hour</span>
-                    </a>
-
-                    <div class="dropdown-divider"></div>
+                    <?php if (empty($recentNotifs)): ?>
+                        <span class="dropdown-item text-muted">Sem notificações</span>
+                    <?php else: ?>
+                        <?php foreach ($recentNotifs as $notif): ?>
+                        <a href="<?= \yii\helpers\Url::to(['/notificacao/view', 'id' => $notif->id_notificacao]) ?>" class="dropdown-item">
+                            <?php
+                            $icon = 'fa-info-circle';
+                            $color = 'text-info';
+                            if ($notif->type == 'delay') { $icon = 'fa-clock'; $color = 'text-warning'; }
+                            if ($notif->type == 'gate_change') { $icon = 'fa-door-open'; $color = 'text-primary'; }
+                            ?>
+                            <i class="fas <?= $icon ?> mr-2 <?= $color ?>"></i>
+                            <?= \yii\helpers\StringHelper::truncate($notif->message, 40) ?>
+                            <span class="float-right text-muted text-sm">
+                                <?= Yii::$app->formatter->asRelativeTime($notif->sent_at) ?>
+                            </span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
                     <a href="<?= \yii\helpers\Url::to(['/notificacao/index']) ?>" class="dropdown-item dropdown-footer">
                         View All Notifications
