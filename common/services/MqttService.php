@@ -59,7 +59,7 @@ class MqttService
             Yii::info("MQTT publicado em '$topic': $message", 'mqtt');
             return true;
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Yii::error("Falha MQTT em '$topic': " . $e->getMessage(), 'mqtt');
             return false;
         }

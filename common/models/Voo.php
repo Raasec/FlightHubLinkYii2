@@ -169,7 +169,7 @@ class Voo extends \yii\db\ActiveRecord
         if ($shouldPublish) {
             try {
                 \common\services\MqttService::publishFlightUpdate($this);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 \Yii::error("Falha ao publicar MQTT voo: " . $e->getMessage(), 'mqtt');
             }
         }
