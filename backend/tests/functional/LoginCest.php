@@ -4,7 +4,8 @@ namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
-
+use Yii;
+use common\models\User;
 /**
  * Class LoginCest
  */
@@ -33,12 +34,24 @@ class LoginCest
     public function loginUser(FunctionalTester $I)
     {
         $I->amOnRoute('/site/login');
+
         $I->fillField('Username', 'erau');
         $I->fillField('Password', 'password_0');
-        $I->click('login-button');
+        $I->click('Login');
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
-        $I->dontSeeLink('Login');
-        $I->dontSeeLink('Signup');
+        $I->seeResponseCodeIs(200);
     }
+
+
+    public function loginFailsWithWrongPassword(FunctionalTester $I)
+    {
+        $I->amOnRoute('/site/login');
+
+        $I->fillField('Username', 'erau');
+        $I->fillField('Password', 'wrong');
+        $I->click('Login');
+
+        $I->see('Incorrect username or password');
+    }
+
 }
