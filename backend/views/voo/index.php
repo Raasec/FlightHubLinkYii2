@@ -28,6 +28,14 @@ $this->title = 'Flights';
                                         'method' => 'post',
                                     ],
                                 ]) ?>
+
+                                <?= Html::a('<i class="fas fa-ban me-1"></i> Deactivate Expired', ['deactivate-expired'], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Deseja desativar todos os voos passados?',
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
                             <?php endif; ?>
                         </div>
                     </div>

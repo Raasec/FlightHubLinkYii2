@@ -36,7 +36,12 @@ $this->title = 'Notifications';
                             'message:ntext',
                             'sent_at',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id_notificacao' => $model->id_notificacao]);
+                                }
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [

@@ -36,7 +36,12 @@ $this->title = 'Checkins';
                             'checkin_datetime',
                             'method',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id_checkin' => $model->id_checkin]);
+                                }
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [
