@@ -23,7 +23,7 @@ class BilheteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'update-statuses'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -35,6 +35,7 @@ class BilheteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'update-statuses' => ['POST'],
                 ],
             ],
         ];
@@ -143,6 +144,29 @@ class BilheteController extends Controller
         }
 
         $this->findModel($id_bilhete)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Updates tickets statuses (e.g. Paid -> Used upon arrival).
+     */
+    public function actionUpdateStatuses()
+    {
+        if (!Yii::$app->user->can('updateTicket')) {
+            throw new \yii\web\ForbiddenHttpException("You do not have permission to perform this action.");
+        }
+
+        try {
+            $count = \common\services\FlightUtilityService::updateTicketStatuses();
+            if ($count > 0) {
+                 Yii::$app->session->setFlash('success', "Sucesso: $count bilhetes atualizados para 'Used'.");
+            } else {
+                 Yii::$app->session->setFlash('info', "Nenhum bilhete precisou de atualização.");
+            }
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', "Erro: " . $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }

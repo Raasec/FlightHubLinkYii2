@@ -26,14 +26,7 @@ class FlightController extends Controller
 
         // damos run a 1 update na bd para ser super eficiente
         try {
-            $count = Voo::updateAll(
-                ['status' => 0], 
-                [
-                    'and', 
-                    ['!=', 'status', 0], // Só mexe no que ainda n esta 0
-                    ['<', 'departure_date', date('Y-m-d H:i:s')]
-                ]
-            );
+            $count = \common\services\FlightUtilityService::deactivateExpiredFlights();
 
             if ($count > 0) {
                 $this->stdout("Sucesso: $count voos foram desativados.\n", Console::FG_GREEN);
@@ -128,20 +121,7 @@ class FlightController extends Controller
             // Assumimos que Paid e Check-in sao os status que queremos mudar para Used
             // Se o voo já aterrou há algum tempo tipo mais de 24h talvez Expired? 
             
-            $now = date('Y-m-d H:i:s');
-            
-            $subQuery = Voo::find()
-                ->select('id_voo')
-                ->where(['<', 'arrival_date', $now]);
-
-            $count = Bilhete::updateAll(
-                ['status' => 'Used'],
-                [
-                    'and',
-                    ['in', 'id_voo', $subQuery],
-                    ['in', 'status', ['Paid', 'Check-in']]
-                ]
-            );
+            $count = \common\services\FlightUtilityService::updateTicketStatuses();
 
             if ($count > 0) {
                 $this->stdout("Sucesso: $count bilhetes foram atualizados para Used.\n", Console::FG_GREEN);

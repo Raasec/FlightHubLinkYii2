@@ -23,7 +23,7 @@ class VooController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'view', 'create', 'update', 'delete', 'feed', 'delay'],
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'feed', 'delay', 'deactivate-expired'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -32,7 +32,7 @@ class VooController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['feed'],
+                        'actions' => ['feed', 'deactivate-expired'],
                         'roles' => ['administrador'],
                     ],
                 ],
@@ -42,6 +42,7 @@ class VooController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'delay' => ['POST'],
+                    'deactivate-expired' => ['POST'],
                 ],
             ],
         ];
@@ -254,6 +255,25 @@ class VooController extends Controller
         }
 
         Yii::$app->session->setFlash('success', "Sucesso! Gerados $created voos aleatórios para os próximos dias.");
+        return $this->redirect(['index']);
+    }
+    public function actionDeactivateExpired()
+    {
+        if (!Yii::$app->user->can('administrador')) {
+             throw new \yii\web\ForbiddenHttpException('Apenas administradores podem realizar esta ação.');
+        }
+
+        try {
+            $count = \common\services\FlightUtilityService::deactivateExpiredFlights();
+            if ($count > 0) {
+                 Yii::$app->session->setFlash('success', "Sucesso: $count voos expirados foram desativados.");
+            } else {
+                 Yii::$app->session->setFlash('info', "Nenhum voo expirado encontrado para desativar.");
+            }
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', "Erro: " . $e->getMessage());
+        }
+
         return $this->redirect(['index']);
     }
 }

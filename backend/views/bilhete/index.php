@@ -21,6 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="row mb-2">
                         <div class="col-md-12">
                             <?= Html::a('Create Ticket', ['create'], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('<i class="fas fa-sync me-1"></i> Update Statuses', ['update-statuses'], [
+                                'class' => 'btn btn-warning',
+                                'title' => 'Updates Paid/Check-in tickets of landed flights to Used',
+                                'data' => [
+                                    'confirm' => 'Atualizar status de bilhetes de voos já realizados?',
+                                    'method' => 'post',
+                                ],
+                            ]) ?>
                         </div>
                     </div>
 
@@ -43,7 +51,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'seat',
                             'status',
 
-                            ['class' => 'hail812\adminlte3\yii\grid\ActionColumn'],
+                            [
+                                'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
+                                'urlCreator' => function ($action, $model, $key, $index) {
+                                    return \yii\helpers\Url::to([$action, 'id_bilhete' => $model->id_bilhete]);
+                                }
+                            ],
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [
