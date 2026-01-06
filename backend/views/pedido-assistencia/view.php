@@ -7,8 +7,7 @@ use yii\widgets\DetailView;
 /** @var common\models\PedidoAssistencia $model */
 
 $this->title = $model->id_pedido;
-$this->params['breadcrumbs'][] = ['label' => 'Pedido Assistencias', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="pedido-assistencia-view">
@@ -40,5 +39,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'response:ntext',
         ],
     ]) ?>
+
+    <hr>
+    
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Assistance-Requests',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 
 </div>

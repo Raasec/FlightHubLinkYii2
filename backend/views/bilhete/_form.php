@@ -6,32 +6,80 @@ use yii\bootstrap4\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Bilhete */
 /* @var $form yii\bootstrap4\ActiveForm */
+/* @var $passageiros array */
+/* @var $voos array */
 ?>
 
-<div class="bilhete-form">
+<?php $form = ActiveForm::begin(); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <!-- Passageiro -->
+    <?= $form->field($model, 'id_passageiro')->dropDownList(
+        $passageiros,
+        ['prompt' => 'Select passenger']
+    ) ?>
 
-    <?= $form->field($model, 'id_passageiro')->textInput() ?>
+    <!-- Voo -->
+    <?= $form->field($model, 'id_voo')->dropDownList(
+        $voos,
+        ['prompt' => 'Select flight']
+    ) ?>
 
-    <?= $form->field($model, 'id_voo')->textInput() ?>
+    <!-- Gate -->
+    <?= $form->field($model, 'gate')->dropDownList(
+        [
+            'A' => 'A',
+            'B' => 'B',
+            'C' => 'C',
+            'D' => 'D',
+        ],
+        ['prompt' => 'Select gate']
+    ) ?>
 
-    <?= $form->field($model, 'gate')->textInput(['maxlength' => true]) ?>
-
+    <!-- Issue Date -->
     <?= $form->field($model, 'issue_date')->input('date') ?>
 
-    <?= $form->field($model, 'price')->textInput() ?>
+    <!-- Price -->
+    <?= $form->field($model, 'price')->textInput([
+        'type' => 'number',
+        'step' => '0.01'
+    ]) ?>
 
-    <?= $form->field($model, 'travel_class')->textInput(['maxlength' => true]) ?>
+    <!-- Travel Class -->
+    <?= $form->field($model, 'travel_class')->dropDownList(
+        [
+            'Economy' => 'Economy',
+            'Business' => 'Business',
+            'First' => 'First Class',
+        ],
+        ['prompt' => 'Select class']
+    ) ?>
 
+    <!-- Seat -->
     <?= $form->field($model, 'seat')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <!-- Status -->
+    <?= $form->field($model, 'status')->dropDownList(
+        [
+            'issued' => 'Issued',
+            'checked_in' => 'Checked-in',
+            'cancelled' => 'Cancelled',
+        ],
+        ['prompt' => 'Select status']
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Cancel', ['index'], ['class' => 'btn btn-secondary ml-2']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Tickets',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 
 </div>

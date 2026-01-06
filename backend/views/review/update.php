@@ -4,9 +4,7 @@
 /* @var $model common\models\Review */
 
 $this->title = 'Update Review: ' . $model->id_review;
-$this->params['breadcrumbs'][] = ['label' => 'Reviews', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_review, 'url' => ['view', 'id_review' => $model->id_review]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 
 <div class="container-fluid">

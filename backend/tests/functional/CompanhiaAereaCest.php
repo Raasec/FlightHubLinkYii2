@@ -6,8 +6,7 @@ use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
 use common\fixtures\AuthItemFixture;
 use common\fixtures\AuthAssignmentFixture;
-use Yii;
-use common\models\User;
+
 
 class CompanhiaAereaCest
 {
@@ -19,14 +18,11 @@ class CompanhiaAereaCest
             'auth_assignment' => AuthAssignmentFixture::class,
         ];
     }
-    public function adminCanAccessCreateCompanhia(FunctionalTester $I)
+    public function adminCannotAccessCreateCompanhia(FunctionalTester $I)
     {
-        $I->executeInYii(function () {
-            Yii::$app->user->setIdentity(User::findOne(1)); // admin
-        });
-
+        $I->amLoggedInAs(1);
         $I->amOnRoute('/companhia-aerea/create');
-        $I->seeResponseCodeIs(200);
+        $I->seeResponseCodeIs(403);
     }
 
 

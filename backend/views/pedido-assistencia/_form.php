@@ -63,4 +63,12 @@ $isNew = $model->isNewRecord;
 
     <?php ActiveForm::end(); ?>
 
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Assistance-Requests',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
 </div>

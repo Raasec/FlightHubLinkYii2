@@ -12,7 +12,15 @@ class m260105_213000_add_missing_columns extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('review', 'review_date', $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'));
+        $table = Yii::$app->db->schema->getTableSchema('review');
+
+        if (!isset($table->columns['review_date'])) {
+            $this->addColumn(
+                'review',
+                'review_date',
+                $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP')
+            );
+        }
     }
 
     /**

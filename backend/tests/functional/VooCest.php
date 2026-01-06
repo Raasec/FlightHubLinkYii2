@@ -6,8 +6,7 @@ use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
 use common\fixtures\AuthItemFixture;
 use common\fixtures\AuthAssignmentFixture;
-use Yii;
-use common\models\User;
+
 
 class VooCest
 {
@@ -19,16 +18,11 @@ class VooCest
             'auth_assignment' => AuthAssignmentFixture::class,
         ];
     }
-    public function adminCanAccessCreateVoo(FunctionalTester $I)
+    public function adminCannotAccessCreateVoo(FunctionalTester $I)
     {
-        $I->executeInYii(function () {
-            Yii::$app->user->setIdentity(User::findOne(1)); // admin
-        });
-
+        $I->amLoggedInAs(1);
         $I->amOnRoute('/voo/create');
-        $I->seeResponseCodeIs(200);
+        $I->seeResponseCodeIs(403);
     }
-
-
 
 }

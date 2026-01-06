@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use common\models\Bilhete;
+use common\models\Funcionario;
 
 /**
  * CheckinController implements the CRUD actions for Checkin model.
@@ -91,12 +94,38 @@ class CheckinController extends Controller
 
         $model = new Checkin();
 
+        // bilhete sem check-in
+        $bilhetes = ArrayHelper::map(
+            Bilhete::find()
+                ->leftJoin('checkin', 'checkin.id_bilhete = bilhete.id_bilhete')
+                ->where(['checkin.id_bilhete' => null])
+                ->all(),
+            'id_bilhete',
+            function ($b) {
+                return 'Ticket #' . $b->id_bilhete;
+            }
+        );
+
+        // funcionarios -
+        $funcionarios = ArrayHelper::map(
+            Funcionario::find()->all(),
+            'id_funcionario',
+            function ($f) {
+                return $f->user->username;
+            }
+        );
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_checkin' => $model->id_checkin]);
+            return $this->redirect([
+                'view',
+                'id_checkin' => $model->id_checkin
+            ]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'bilhetes' => $bilhetes,
+            'funcionarios' => $funcionarios,
         ]);
     }
 
@@ -117,14 +146,32 @@ class CheckinController extends Controller
 
         $model = $this->findModel($id_checkin);
 
+        $bilhetes = ArrayHelper::map(
+            Bilhete::find()->all(),
+            'id_bilhete',
+            fn($b) => 'Ticket #' . $b->id_bilhete
+        );
+
+        $funcionarios = ArrayHelper::map(
+            Funcionario::find()->all(),
+            'id_funcionario',
+            fn($f) => $f->user->username
+        );
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_checkin' => $model->id_checkin]);
+            return $this->redirect([
+                'view',
+                'id_checkin' => $model->id_checkin
+            ]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'bilhetes' => $bilhetes,
+            'funcionarios' => $funcionarios,
         ]);
     }
+
 
     /**
      * Deletes an existing Checkin model.

@@ -28,7 +28,7 @@ return ArrayHelper::merge(
             ],
         ],
 
-        // ACCESS CONTROL LIMPO E CORRETO
+        //
         'as access' => [
             'class' => yii\filters\AccessControl::class,
             'except' => [
@@ -86,7 +86,7 @@ return ArrayHelper::merge(
                 'errorAction' => 'site/error',
             ],
 
-            // URL RULES SÓ AQUI
+            // URL RULES 
             'urlManager' => [
                 'enablePrettyUrl' => true,
                 'showScriptName' => false,

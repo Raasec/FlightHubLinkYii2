@@ -7,8 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Notificacao */
 
 $this->title = "Notification #:" . $model->id_notificacao;
-$this->params['breadcrumbs'][] = ['label' => 'Notifications', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 ?>
 
@@ -45,4 +44,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--.card-body-->
     </div>
     <!--.card-->
+
+    <hr>
+    
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Notifications',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

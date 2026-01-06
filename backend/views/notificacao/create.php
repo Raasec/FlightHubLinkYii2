@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Notificacao */
 
 $this->title = 'Create Notification';
-$this->params['breadcrumbs'][] = ['label' => 'Notifications', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

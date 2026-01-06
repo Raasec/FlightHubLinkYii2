@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Review */
 
 $this->title = 'Create Review';
-$this->params['breadcrumbs'][] = ['label' => 'Reviews', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

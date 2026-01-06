@@ -4,9 +4,7 @@
 /* @var $model common\models\Notificacao */
 
 $this->title = 'Update Notification: ' . $model->id_notificacao;
-$this->params['breadcrumbs'][] = ['label' => 'Notifications', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_notificacao, 'url' => ['view', 'id_notificacao' => $model->id_notificacao]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 
 <div class="container-fluid">

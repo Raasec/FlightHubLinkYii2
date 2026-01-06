@@ -4,9 +4,7 @@
 /* @var $model common\models\Incidente */
 
 $this->title = 'Update Incident: ' . $model->id_incidente;
-$this->params['breadcrumbs'][] = ['label' => 'Incidents', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_incidente, 'url' => ['view', 'id_incidente' => $model->id_incidente]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 
 <div class="container-fluid">

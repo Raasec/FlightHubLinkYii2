@@ -7,8 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Bilhete */
 
 $this->title = "Ticket #" . $model->id_bilhete;
-$this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 ?>
 
@@ -49,4 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--.card-body-->
     </div>
     <!--.card-->
+
+    <hr>
+
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Tickets',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

@@ -21,14 +21,14 @@ class AcessoNegadoCest
             'auth_assignment' => AuthAssignmentFixture::class, 
         ];
     }
-    public function userCannotAccessAdminPage(FunctionalTester $I)
+    public function userCannotAccessAdminPage(\backend\tests\FunctionalTester $I)
     {
-        $I->executeInYii(function () {
-            Yii::$app->user->setIdentity(User::findOne(3)); // passageiro
-        });
+        // assumes que o user id 3 já existe (fixture)
+        $I->amLoggedInAs(3);
 
         $I->amOnRoute('/administrador/index');
         $I->seeResponseCodeIs(403);
     }
+
 
 }

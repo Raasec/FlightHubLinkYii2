@@ -35,4 +35,12 @@ use yii\bootstrap4\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
+        <div class="mt-3">
+        <?= Html::a(
+            '← Back to Incidents',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
+
 </div>

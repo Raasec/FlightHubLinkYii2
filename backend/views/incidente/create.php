@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Incidente */
 
 $this->title = 'Create Incident';
-$this->params['breadcrumbs'][] = ['label' => 'Incidents', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">

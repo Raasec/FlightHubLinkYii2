@@ -7,8 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Review */
 
 $this->title = "Review #:" . $model->id_review;
-$this->params['breadcrumbs'][] = ['label' => 'Reviews', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 \yii\web\YiiAsset::register($this);
 ?>
 
@@ -46,4 +45,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--.card-body-->
     </div>
     <!--.card-->
+
+    <hr>
+    
+    <div class="mt-3">
+        <?= Html::a(
+            '← Back to Incidents',
+            ['index'],
+            ['class' => 'btn btn-secondary']
+        ) ?>
+    </div>
 </div>

@@ -251,6 +251,16 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Passageiro::class, ['id_utilizador' => 'id']);
     }
 
+    // common/models/User.php
+    public static function getPassageiros()
+    {
+        return self::find()
+            ->innerJoin('{{%auth_assignment}}', '{{%auth_assignment}}.user_id = {{%user}}.id')
+            ->where(['{{%auth_assignment}}.item_name' => 'passageiro'])
+            ->all();
+    }
+
+
     /**
      * Save handler (only password hashing)
      */

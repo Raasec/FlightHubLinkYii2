@@ -4,9 +4,7 @@
 /* @var $model common\models\Checkin */
 
 $this->title = 'Update Checkin: ' . $model->id_checkin;
-$this->params['breadcrumbs'][] = ['label' => 'Checkins', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_checkin, 'url' => ['view', 'id_checkin' => $model->id_checkin]];
-$this->params['breadcrumbs'][] = 'Update';
+
 ?>
 
 <div class="container-fluid">
@@ -15,7 +13,9 @@ $this->params['breadcrumbs'][] = 'Update';
             <div class="row">
                 <div class="col-md-12">
                     <?=$this->render('_form', [
-                        'model' => $model
+                        'model' => $model,
+                        'bilhetes' => $bilhetes,
+                        'funcionarios' => $funcionarios,
                     ]) ?>
                 </div>
             </div>

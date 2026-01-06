@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Bilhete */
 
 $this->title = 'Create Ticket';
-$this->params['breadcrumbs'][] = ['label' => 'Ticket', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">
@@ -16,7 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <?=$this->render('_form', [
-                        'model' => $model
+                        'model' => $model,
+                        'passageiros' => $passageiros,
+                        'voos' => $voos,
                     ]) ?>
                 </div>
             </div>

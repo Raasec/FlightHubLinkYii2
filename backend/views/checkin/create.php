@@ -6,8 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\Checkin */
 
 $this->title = 'Create Checkin';
-$this->params['breadcrumbs'][] = ['label' => 'Checkins', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="container-fluid">
@@ -16,7 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-12">
                     <?=$this->render('_form', [
-                        'model' => $model
+                        'model' => $model,
+                        'bilhetes' => $bilhetes,
+                        'funcionarios' => $funcionarios,
                     ]) ?>
                 </div>
             </div>

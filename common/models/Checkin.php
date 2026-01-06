@@ -80,4 +80,17 @@ class Checkin extends \yii\db\ActiveRecord
         return $this->hasOne(Funcionario::class, ['id_funcionario' => 'id_funcionario']);
     }
 
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        // define automaticamente a data/hora
+        $this->checkin_datetime = date('Y-m-d H:i:s');
+
+        return true;
+    }
+
+
 }
