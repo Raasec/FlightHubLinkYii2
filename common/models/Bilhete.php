@@ -101,4 +101,12 @@ class Bilhete extends \yii\db\ActiveRecord
         return $this->hasOne(Voo::class, ['id_voo' => 'id_voo']);
     }
 
+    public function beforeSave($insert)
+    {
+        if ($insert && empty($this->issue_date)) {
+            $this->issue_date = date('Y-m-d H:i:s');
+        }
+
+        return parent::beforeSave($insert);
+    }
 }
