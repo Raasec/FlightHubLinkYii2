@@ -50,18 +50,6 @@ class Bilhete extends \yii\db\ActiveRecord
             //FK
             [['id_voo'], 'exist', 'skipOnError' => true, 'targetClass' => Voo::class, 'targetAttribute' => ['id_voo' => 'id_voo']],
 
-            
-            ['issue_date', function ($attribute) {
-                if (!empty($this->$attribute)) {
-                    $today = date('Y-m-d');
-                    if ($this->$attribute > $today) {
-                        $this->addError(
-                            $attribute,
-                            'Issue date cannot be in the future.'
-                        );
-                    }
-                }
-            }],
         ];
     }
 

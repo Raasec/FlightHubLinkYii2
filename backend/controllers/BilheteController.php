@@ -121,11 +121,16 @@ class BilheteController extends Controller
             'numero_voo'
         );
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([
-                'view',
-                'id_bilhete' => $model->id_bilhete
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->issue_date = date('Y-m-d'); 
+
+            if ($model->save()) {
+                return $this->redirect([
+                    'view',
+                    'id_bilhete' => $model->id_bilhete
+                ]);
+            }
         }
 
         return $this->render('create', [
@@ -177,13 +182,18 @@ class BilheteController extends Controller
             'numero_voo'
         );
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([
-                'view',
-                'id_bilhete' => $model->id_bilhete
-            ]);
-        }
+        if ($model->load(Yii::$app->request->post())) {
 
+            $model->issue_date = date('Y-m-d'); 
+
+            if ($model->save()) {
+                return $this->redirect([
+                    'view',
+                    'id_bilhete' => $model->id_bilhete
+                ]);
+            }
+        }
+        
         // RENDERIZA UPDATE 
         return $this->render('update', [
             'model' => $model,

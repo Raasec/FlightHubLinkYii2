@@ -611,6 +611,18 @@ class SiteController extends Controller
      */
     public function actionBuyTicket()
     {
+        $userId = Yii::$app->user->id;
+
+        $roles = Yii::$app->authManager->getRolesByUser($userId);
+
+        if (!isset($roles['passageiro'])) {
+            Yii::$app->session->setFlash(
+                'error',
+                'Only passengers can buy tickets. Please login with a passenger account.'
+            );
+            return $this->redirect(['site/index']);
+        }
+
         $id_voo = Yii::$app->request->post('id_voo');
         if (!$id_voo) {
             Yii::$app->session->setFlash('error', 'Invalid flight.');
@@ -632,7 +644,6 @@ class SiteController extends Controller
             return $this->redirect(['site/ticket-purchase']);
         }
 
-        $userId = Yii::$app->user->id;
 
         // userprofile tem de existir
         $userProfile = \common\models\UserProfile::findOne(['user_id' => $userId]);
@@ -666,7 +677,6 @@ class SiteController extends Controller
         $bilhete = new \common\models\Bilhete();
         $bilhete->id_passageiro = $passageiro->id_passageiro;
         $bilhete->id_voo = $voo->id_voo;
-        $bilhete->issue_date = date('Y-m-d H:i:s');
         $bilhete->price = 300.00; // hardocded por falta de logica de purchase/pricing
         $bilhete->travel_class = 'Economy';
         $bilhete->seat = 'Auto';

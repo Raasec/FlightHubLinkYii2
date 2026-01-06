@@ -36,7 +36,10 @@ use yii\bootstrap4\ActiveForm;
     ) ?>
 
     <!-- Issue Date -->
-    <?= $form->field($model, 'issue_date')->input('date') ?>
+    <?= $form->field($model, 'issue_date')->textInput([
+        'readonly' => true,
+        'value' => $model->issue_date ?: '(auto generated)',
+    ]) ?>
 
     <!-- Price -->
     <?= $form->field($model, 'price')->textInput([
