@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use common\models\Passageiro;
+use common\models\Voo;
 
 /**
  * BilheteController implements the CRUD actions for Bilhete model.
@@ -86,22 +89,51 @@ class BilheteController extends Controller
      */
     public function actionCreate()
     {
-        if(!Yii::$app->user->can('createTicket'))
-        {
-            throw new \yii\web\ForbiddenHttpException("You do not have permission to create tickets.");
+        if (!Yii::$app->user->can('createTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                "You do not have permission to create tickets."
+            );
         }
 
         $model = new Bilhete();
 
+        //  usa Passageiro.id_passageiro 
+        $passageiros = ArrayHelper::map(
+            Passageiro::find()
+                ->innerJoin('user', 'user.id = passageiro.id_utilizador')
+                ->innerJoin(
+                    'auth_assignment',
+                    'auth_assignment.user_id = user.id'
+                )
+                ->where(['auth_assignment.item_name' => 'passageiro'])
+                ->all(),
+            'id_passageiro',
+            function ($p) {
+                return $p->user->username;
+            }
+        );
+
+        // voos
+        $voos = ArrayHelper::map(
+            Voo::find()->all(),
+            'id_voo',
+            'numero_voo'
+        );
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
+            return $this->redirect([
+                'view',
+                'id_bilhete' => $model->id_bilhete
+            ]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'passageiros' => $passageiros,
+            'voos' => $voos,
         ]);
-        
     }
+
 
     /**
      * Updates an existing Bilhete model.
@@ -112,19 +144,50 @@ class BilheteController extends Controller
      */
     public function actionUpdate($id_bilhete)
     {
-        if (!Yii::$app->user->can('updateTicket'))
-        {
-            throw new \yii\web\ForbiddenHttpException("You do not have permission to update tickets.");
+        if (!Yii::$app->user->can('updateTicket')) {
+            throw new \yii\web\ForbiddenHttpException(
+                "You do not have permission to update tickets."
+            );
         }
 
+        // carrega o bilhete 
         $model = $this->findModel($id_bilhete);
 
+        //usa Passageiro.id_passageiro 
+        $passageiros = ArrayHelper::map(
+            Passageiro::find()
+                ->innerJoin('user', 'user.id = passageiro.id_utilizador')
+                ->innerJoin(
+                    'auth_assignment',
+                    'auth_assignment.user_id = user.id'
+                )
+                ->where(['auth_assignment.item_name' => 'passageiro'])
+                ->all(),
+            'id_passageiro',
+            function ($p) {
+                return $p->user->username;
+            }
+        );
+
+        // voos
+        $voos = ArrayHelper::map(
+            Voo::find()->all(),
+            'id_voo',
+            'numero_voo'
+        );
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_bilhete' => $model->id_bilhete]);
+            return $this->redirect([
+                'view',
+                'id_bilhete' => $model->id_bilhete
+            ]);
         }
 
+        // RENDERIZA UPDATE 
         return $this->render('update', [
             'model' => $model,
+            'passageiros' => $passageiros,
+            'voos' => $voos,
         ]);
     }
 
