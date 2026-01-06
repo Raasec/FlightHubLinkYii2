@@ -28,7 +28,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    //public $new_password;
     public $role;
     public $password;
     
@@ -72,12 +71,10 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique'],
 
-            [['password'], 'required', 'on' => 'create'],   // este é o campo usado no form para criar password
+            [['password'], 'required', 'on' => 'create'],
             [['password'], 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
 
-            [['role'], 'string'],   // este é o campo usado para atribuir role via RBAC
-
-            //['new_password', 'string', 'min' => 8],
+            [['role'], 'string'],
         ];
     }
 
@@ -94,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -251,7 +248,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Passageiro::class, ['id_utilizador' => 'id']);
     }
 
-    // common/models/User.php
     public static function getPassageiros()
     {
         return self::find()
@@ -259,27 +255,4 @@ class User extends ActiveRecord implements IdentityInterface
             ->where(['{{%auth_assignment}}.item_name' => 'passageiro'])
             ->all();
     }
-
-
-    /**
-     * Save handler (only password hashing)
-     */
-
-    
-    /*
-    public function beforeSave($insert)
-    {
-        if (!parent::beforeSave($insert)) {
-            return false;
-        }
-
-        if (!empty($this->new_password)) {
-            $this->setPassword($this->new_password);
-            $this->generateAuthKey();
-        }
-
-        return true;
-    }
-        */
-
 }

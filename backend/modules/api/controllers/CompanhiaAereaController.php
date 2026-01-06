@@ -5,43 +5,39 @@ namespace backend\modules\api\controllers;
 use Yii;
 use common\models\CompanhiaAerea;
 use common\models\CompanhiaAereaSearch;
-use yii\data\ActiveDataProvider;
-use yii\rest\Controller;
+use yii\rest\ActiveController;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
-class CompanhiaAereaController extends Controller
+class CompanhiaAereaController extends ActiveController
 {
+    public $modelClass = 'common\models\CompanhiaAerea';
 
-    public function actionIndex()
+    public function actions()
     {
-        $this->checkAccess('index'); // RBAC
+        $actions = parent::actions();
+        unset($actions['create'], $actions['update'], $actions['delete']);
+        
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        return $actions;
+    }
 
+    public function prepareDataProvider()
+    {
         $searchModel = new CompanhiaAereaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $dataProvider;
+        return $searchModel->search(Yii::$app->request->queryParams);
     }
 
-    public function actionView($id)
+    public function checkAccess($action, $model = null, $params = [])
     {
-        $this->checkAccess('view', $id); // RBAC
-
-        return $this->findModel($id);
-    }
-
-    protected function findModel($id)
-    {
-        if (($model = CompanhiaAerea::findOne($id)) !== null) {
-            return $model;
+        if (in_array($action, ['index', 'view'])) {
+             return; 
         }
-
-        throw new NotFoundHttpException('Companhia aérea não encontrada.');
-    }
-
-    protected function checkAccess($action, $model = null, $params = [])
-    {
-        if (!Yii::$app->user->can('passageiro') && !Yii::$app->user->can('guest')) {
-            throw new \yii\web\ForbiddenHttpException('Não tem permissão para aceder a esta ação.');
+        
+        if (in_array($action, ['create', 'update', 'delete'])) {
+            if (!Yii::$app->user->can('funcionario')) {
+                throw new ForbiddenHttpException('Apenas funcionários podem gerir companhias aéreas.');
+            }
         }
     }
 }

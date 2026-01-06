@@ -43,16 +43,25 @@ class ReviewController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
-
-        // override do create para forçar ownership
-        $actions['create']['prepareDataProvider'] = function () {
-            $model = new Review();
-            $model->load(Yii::$app->request->bodyParams, '');
-            $model->id_passageiro = Yii::$app->params['id'];
-            $model->review_date = date('Y-m-d H:i:s');
-            return $model;
-        };
-
+        unset($actions['create']); // Custom create implementation
         return $actions;
+    }
+
+    public function actionCreate()
+    {
+        $this->checkAccess('create');
+
+        $model = new Review();
+        $model->load(Yii::$app->request->bodyParams, '');
+        $model->id_passageiro = Yii::$app->params['id'];
+        $model->review_date = date('Y-m-d H:i:s');
+
+        if ($model->save()) {
+            return $model;
+        } elseif (!$model->hasErrors()) {
+            throw new \yii\web\ServerErrorHttpException('Falha ao criar review por razões desconhecidas.');
+        }
+
+        return $model;
     }
 }

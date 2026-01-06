@@ -29,7 +29,6 @@ class PedidoAssistenciaController extends Controller
     {
         $userId = Yii::$app->params['id'];
 
-        // Buscar id_passageiro pelo user_id
         $passageiro = \common\models\Passageiro::find()
             ->where(['id_utilizador' => $userId])
             ->one();
@@ -93,7 +92,6 @@ class PedidoAssistenciaController extends Controller
 
         $model->load(Yii::$app->request->bodyParams, '');
         
-        // não deixa alterar esses campos
         $model->id_passageiro = $model->getOldAttribute('id_passageiro');
         $model->request_date = $model->getOldAttribute('request_date');
 

@@ -34,4 +34,28 @@ class AuthController extends Controller
             ],
         ];
     }
+    /**
+     * Registo de novos utilizadores (Passageiros)
+     */
+    public function actionSignup()
+    {
+        $params = Yii::$app->request->bodyParams;
+        $model = new \frontend\models\SignupForm();
+
+        if ($model->load($params, '')) {
+            if ($model->signup()) {
+                return [
+                    'success' => true,
+                    'message' => 'Registo efetuado com sucesso! Verifique o seu email (simulado) ou faça login.',
+                ];
+            }
+        }
+
+        Yii::$app->response->statusCode = 422;
+        return [
+            'success' => false,
+            'message' => 'Erro no registo',
+            'errors' => $model->errors,
+        ];
+    }
 }

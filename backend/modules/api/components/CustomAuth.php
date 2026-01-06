@@ -9,12 +9,17 @@ class CustomAuth extends AuthMethod
     {
         $authToken = $request->getQueryString();
         $token=explode('=', $authToken)[1];
-        $user = \common\models\User::findIdentityByAccessToken($token);
-        if(!$user)
+        $userIdentity = \common\models\User::findIdentityByAccessToken($token);
+        if(!$userIdentity)
         {
             throw new \yii\web\ForbiddenHttpException('No authentication');
         }
-        Yii::$app->params['id']= $user->id;
-        return $user;
+        Yii::$app->params['id'] = $userIdentity->id;
+        
+        Yii::$app->params['id'] = $userIdentity->id;
+        
+        $user->login($userIdentity);
+        
+        return $userIdentity;
     }
 }

@@ -11,9 +11,17 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'api' => [
+            'class' => 'backend\modules\api\ModuleAPI',
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -40,8 +48,56 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            //'enableStrictParsing' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/auth',
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/voo',
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET origem/{cidade}' => 'porOrigem',
+                        'GET {id}/bilhetes' => 'bilhetes',
+                        'GET {id}/notificacoes' => 'notificacoes',
+                        'GET {id}/reviews' => 'reviews',
+                    ],
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                        '{cidade}' => '<cidade:[^\/]+>',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/bilhete',
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/review',
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user-profile',
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'GET me' => 'me',
+                        'PUT update' => 'update',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/companhia-aerea',
+                    'pluralize' => false,
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/pedido-assistencia',
+                    'pluralize' => false,
+                ],
             ],
         ],
         

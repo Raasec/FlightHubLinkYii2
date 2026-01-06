@@ -103,8 +103,12 @@ return ArrayHelper::merge(
                         'pluralize' => false,
                         'extraPatterns' => [
                             'GET origem/{cidade}' => 'porOrigem',
+                            'GET {id}/bilhetes' => 'bilhetes',
+                            'GET {id}/notificacoes' => 'notificacoes',
+                            'GET {id}/reviews' => 'reviews',
                         ],
                         'tokens' => [
+                            '{id}' => '<id:\d+>',
                             '{cidade}' => '<cidade:[^\/]+>',
                         ],
                     ],
