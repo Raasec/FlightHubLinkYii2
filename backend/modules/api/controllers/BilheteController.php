@@ -41,7 +41,7 @@ class BilheteController extends Controller
         return $bilhete;
     }
 
-    // POST /api/bilhete (Comprar Bilhete)
+    // POST /api/bilhete (Comprar aquela viagem de sonho)
     public function actionCreate()
     {
         $this->checkAccess('create');
@@ -67,7 +67,7 @@ class BilheteController extends Controller
         return ['success' => false, 'errors' => $model->errors];
     }
 
-    // PUT /api/bilhete/{id} (Alterar lugar ou classe)
+    // PUT /api/bilhete/{id} (Mudar o sitio onde senta ou a classe)
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -75,7 +75,7 @@ class BilheteController extends Controller
 
         $request = Yii::$app->request;
         
-        // Apenas permite alterar lugar
+        // Só dá para mudar o lugar, nada de upgrades à borla
         if ($request->post('seat')) {
             $model->seat = $request->post('seat');
         }
@@ -87,7 +87,7 @@ class BilheteController extends Controller
         return ['success' => false, 'errors' => $model->errors];
     }
 
-    // DELETE /api/bilhete/{id} (Cancelar Bilhete)
+    // DELETE /api/bilhete/{id} (Cancelar a viagem toda)
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -124,7 +124,7 @@ class BilheteController extends Controller
 
     protected function checkAccess($action, $model = null, $params = [])
     {
-        // Apenas passageiros podem usar este controller (comprar, ver etc)
+        // so users q são passageiro é que mexe nisto
         $passageiro = $this->getPassageiroLogado();
 
         if ($model && $model->id_passageiro !== $passageiro->id_passageiro) {

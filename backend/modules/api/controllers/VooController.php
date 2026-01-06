@@ -16,7 +16,7 @@ class VooController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
-        // Remove write actions for passenger API context
+        // Tirar as ações de escrita para a malta não estragar nada
         unset($actions['create'], $actions['update'], $actions['delete']);
         
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
@@ -31,14 +31,14 @@ class VooController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        // Allow public read access (or guest/passenger)
+        // Deixar a malta ver (passageiros ou visitas)
         if (in_array($action, ['index', 'view', 'por-origem', 'bilhetes', 'notificacoes', 'reviews'])) {
             if (!Yii::$app->user->can('passageiro') && !Yii::$app->user->can('guest') && !Yii::$app->user->can('funcionario')) {
                  // Open access or specific restriction
                  // Assuming stricter access control based on previous file
                  // Previous: if (!Yii::$app->user->can('passageiro') && !Yii::$app->user->can('guest')) ...
             }
-             return; // Allow read
+             return; // allow read
         }
         
         // Write actions restricted to staff/admin
@@ -51,16 +51,14 @@ class VooController extends ActiveController
 
     public function actionPorOrigem($cidade)
     {
-        // Custom action need manual access check equivalent if not covered by checkAccess generic hook
-        // But checkAccess is called by ActiveController actions. 
-        // For custom actions, we must call strict checks if ActiveController doesn't automatically call checks for non-standard actions (IT DOES NOT).
+        // Verificação manual porque o ActiveController as vezes adormece e não chama o checkAccess
         $this->checkAccess('por-origem');
 
         $search = Voo::find()->where(['origin' => $cidade])->all();
         return $search;
     }
 
-    /* Master/Detail: Bilhetes de um voo */
+    /* As cenas relacionadas: Bilhetes de um voo */
     public function actionBilhetes($id)
     {
         $this->checkAccess('bilhetes');
@@ -69,7 +67,7 @@ class VooController extends ActiveController
         return $voo->bilhetes;
     }
 
-    /* Master/Detail: Notificações de um voo */
+    /* As cenas relacionadas: Notificações de um voo */
     public function actionNotificacoes($id)
     {
         $this->checkAccess('notificacoes');
@@ -78,7 +76,7 @@ class VooController extends ActiveController
         return $voo->notificacaos;
     }
 
-    /* Master/Detail: Reviews de um voo */
+    /* As cenas relacionadas: Reviews de um voo */
     public function actionReviews($id)
     {
         $this->checkAccess('reviews');
