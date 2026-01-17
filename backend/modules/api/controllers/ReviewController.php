@@ -51,9 +51,22 @@ class ReviewController extends ActiveController
     {
         $this->checkAccess('create');
 
+        // [FIX] First, find the Passenger profile associated with the logged-in User
+        $userId = Yii::$app->params['id'];
+        $passageiro = \common\models\Passageiro::find()
+            ->where(['id_utilizador' => $userId])
+            ->one();
+
+        if (!$passageiro) {
+            throw new ForbiddenHttpException('Perfil de passageiro não encontrado.');
+        }
+
         $model = new Review();
         $model->load(Yii::$app->request->bodyParams, '');
-        $model->id_passageiro = Yii::$app->params['id'];
+        
+        // [FIX] Use the real Passenger ID, not the User ID
+        $model->id_passageiro = $passageiro->id_passageiro;
+        
         $model->review_date = date('Y-m-d H:i:s');
 
         if ($model->save()) {
