@@ -34,7 +34,16 @@ class ReviewController extends ActiveController
 
         // update ou delete -> só o dono
         if (in_array($action, ['update', 'delete'])) {
-            if ($model->id_passageiro != Yii::$app->params['id']) {
+            // [FIX] 1. Get the User ID
+            $userId = Yii::$app->params['id'];
+            
+            // [FIX] 2 encontra o passageiro par ao user
+            $passageiro = \common\models\Passageiro::find()
+                ->where(['id_utilizador' => $userId])
+                ->one();
+
+            // [FIX] 3
+            if (!$passageiro || $model->id_passageiro != $passageiro->id_passageiro) {
                 throw new ForbiddenHttpException('Só pode alterar as suas próprias reviews.');
             }
         }
